@@ -1,0 +1,51 @@
+.azul {
+    color: var(--azul);
+}
+
+.verde {
+    color: var(--verde);
+}
+
+.cinza {
+    color: var(--cinza);
+}
+
+.amarelo {
+    color: var(--amarelo);
+}
+
+.azul-escuro {
+    color: var(--azul-escuro);
+}
+
+.vermelho-suave {
+    color: var(--vermelho-suave);
+}
+
+.preto {
+    color: var(--preto);
+}
+
+.verde-escuro {
+    color: var(--verde-escuro);
+}
+
+.cinza-claro {
+    color: var(--cinza-claro);
+}
+
+.cinza-medio {
+    color: var(--cinza-medio);
+}
+
+.branco {
+    color: var(--branco);
+}
+
+.azul-claro {
+    color: var(--azul-claro);
+}
+
+.cinza-claro-alt {
+    color: var(--cinza-claro); /* Esse nome foi ajustado para evitar conflitos */
+}

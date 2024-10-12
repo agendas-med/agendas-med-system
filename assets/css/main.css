@@ -1,134 +1,11 @@
+@import "../css/variaveis.css";
+@import "../css/color-classes.css";
+@import "../css/fonts.css";
+@import "../css/font-classes.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "@assets/css/fonts.css";
-
-:root {
-    --azul: #4a90e2;
-    --verde: #7cdf64;
-    --cinza: #514f59;
-    --amarelo: #ffcc17;
-    --azul-escuro: #34495e;
-    --vermelho-suave: #d0021b;
-    --preto: #131313;
-    --verde-escuro: #64b451;
-    --cinza-claro: #f3f3f3;
-    --cinza-medio: #dfdfdf;
-    --branco: #f5f9fd;
-    --azul-claro: #c8e1ff;
-    --cinza-claro: #f4f4f4;
-
-    /* Spaces */
-    --space-0: 1px;
-    --space-1: 4px;
-    --space-2: 6px;
-    --space-3: 8px;
-    --space-4: 12px;
-    --space-5: 16px;
-    --space-6: 20px;
-    --space-7: 24px;
-    --space-8: 32px;
-    --space-10: 40px;
-    --space-12: 48px;
-    --space-16: 64px;
-    --space-20: 80px;
-    --space-40: 160px;
-    --space-64: 256px;
-    --space-80: 320px;
-
-    /* Border Radius */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-full: 100%;
-    
-    /* Box Shadow */
-    --boxshadow-default: 2px 2px 10px rgba(0, 0, 0, 0.05);
-    --boxshadow-regular: 4px 4px 20px rgba(0, 0, 0, 0.15);
-    --boxshadow-bold: 4px 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.fontsize-xl-bold {
-    font-family: Poppins;
-    font-size: 40.8px; /* 34px aumentado em 20% */
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-xl {
-    font-family: Poppins;
-    font-size: 40.8px; /* 34px aumentado em 20% */
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-lg-bold {
-    font-family: Poppins;
-    font-size: 28.8px; /* 24px aumentado em 20% */
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-lg {
-    font-family: Poppins;
-    font-size: 28.8px; /* 24px aumentado em 20% */
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-md-bold {
-    font-family: Poppins;
-    font-size: 19.2px; /* 16px aumentado em 20% */
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-md {
-    font-family: Poppins;
-    font-size: 19.2px; /* 16px aumentado em 20% */
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-sm-bold {
-    font-family: Poppins;
-    font-size: 14.4px; /* 12px aumentado em 20% */
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
-.fontsize-sm {
-    font-family: Poppins;
-    font-size: 14.4px; /* 12px aumentado em 20% */
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-}
-
 
 * {
     margin: 0;
@@ -142,3 +19,32 @@ html, body {
     position: relative;
 }
 
+.avatar {
+    border-radius: var(--radius-full);
+    margin-right: var(--space-3);
+    object-fit: cover;
+    display: flex;
+}
+
+.avatar-pp {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+}
+
+/* ANIMAÇÕES DO VUE */
+
+/* Animação de entrada e saída */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   fontawesome: {
     icons: {
-      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 'chart-simple', 'wallet'],
+      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 'chart-simple', 'wallet', 'bars', 'angle-down'],
       regular: ['comment', 'face-smile'],
       brands: ['twitter'],
     },
@@ -16,5 +16,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  ssr: false,
   modules: ['@vesp/nuxt-fontawesome'],
 })

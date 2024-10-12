@@ -1,0 +1,79 @@
+.fontsize-xl-bold {
+    font-family: Poppins;
+    font-size: 40.8px; /* 34px aumentado em 20% */
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-xl {
+    font-family: Poppins;
+    font-size: 40.8px; /* 34px aumentado em 20% */
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-lg-bold {
+    font-family: Poppins;
+    font-size: 28.8px; /* 24px aumentado em 20% */
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-lg {
+    font-family: Poppins;
+    font-size: 28.8px; /* 24px aumentado em 20% */
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-md-bold {
+    font-family: Poppins;
+    font-size: 19.2px; /* 16px aumentado em 20% */
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-md {
+    font-family: Poppins;
+    font-size: 19.2px; /* 16px aumentado em 20% */
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-sm-bold {
+    font-family: Poppins;
+    font-size: 14.4px; /* 12px aumentado em 20% */
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.fontsize-sm {
+    font-family: Poppins;
+    font-size: 14.4px; /* 12px aumentado em 20% */
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
