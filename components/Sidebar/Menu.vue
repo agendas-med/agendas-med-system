@@ -4,7 +4,7 @@
             <router-link to="/"><img src="@/assets/img/agendasmed-logo.png" alt="Logotipo AgendasMed"></router-link>
         </div>
         <SidebarConnectedUser />
-        <SidebarNav />
+        <SidebarNav @closeSidebar="$emit('closeSidebar')" />
     </aside>
 </template>
 <style scoped>

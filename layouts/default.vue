@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SidebarMenu class="sidebar" ref="sidebar" :class="isResponsive ? sidebarOpen  ? 'sidebar-opened' : 'sidebar-closed' : ''" />
+        <SidebarMenu class="sidebar" ref="sidebar" :class="isResponsive ? sidebarOpen  ? 'sidebar-opened' : 'sidebar-closed' : ''" @closeSidebar="sidebarOpen = false" />
         <div class="sidebar-menu-wrapper" v-show="isResponsive && sidebarOpen" v-on:click="toggleSidebar()"></div>
         <Header class="header" @toggleMenu="toggleSidebar()" />
         <div class="slot">
