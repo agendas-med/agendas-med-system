@@ -75,6 +75,6 @@ export default defineComponent({
 <style scoped>
 canvas {
   width: 100%;
-  max-height: 670px;
+  max-height: calc(100vh - 300px);
 }
 </style>
