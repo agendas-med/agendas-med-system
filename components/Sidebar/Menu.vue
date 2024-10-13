@@ -1,7 +1,7 @@
 <template>
     <aside class="sidebar-container">
         <div class="brand">
-            <img src="@/assets/img/agendasmed-logo.png" alt="Logotipo AgendasMed">
+            <router-link to="/"><img src="@/assets/img/agendasmed-logo.png" alt="Logotipo AgendasMed"></router-link>
         </div>
         <SidebarConnectedUser />
         <SidebarNav />

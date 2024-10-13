@@ -17,5 +17,5 @@ export default defineNuxtConfig({
     },
   },
   ssr: false,
-  modules: ['@vesp/nuxt-fontawesome'],
+  modules: ['@vesp/nuxt-fontawesome']
 })

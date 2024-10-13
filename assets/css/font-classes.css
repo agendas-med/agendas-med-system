@@ -1,6 +1,6 @@
 .fontsize-xl-bold {
     font-family: Poppins;
-    font-size: 40.8px; /* 34px aumentado em 20% */
+    font-size: 36.72px; /* 40.8px diminuído em 10% */
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -10,7 +10,7 @@
 
 .fontsize-xl {
     font-family: Poppins;
-    font-size: 40.8px; /* 34px aumentado em 20% */
+    font-size: 36.72px; /* 40.8px diminuído em 10% */
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -20,7 +20,7 @@
 
 .fontsize-lg-bold {
     font-family: Poppins;
-    font-size: 28.8px; /* 24px aumentado em 20% */
+    font-size: 25.92px; /* 28.8px diminuído em 10% */
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -30,7 +30,7 @@
 
 .fontsize-lg {
     font-family: Poppins;
-    font-size: 28.8px; /* 24px aumentado em 20% */
+    font-size: 25.92px; /* 28.8px diminuído em 10% */
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -40,7 +40,7 @@
 
 .fontsize-md-bold {
     font-family: Poppins;
-    font-size: 19.2px; /* 16px aumentado em 20% */
+    font-size: 17.28px; /* 19.2px diminuído em 10% */
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -50,7 +50,7 @@
 
 .fontsize-md {
     font-family: Poppins;
-    font-size: 19.2px; /* 16px aumentado em 20% */
+    font-size: 17.28px; /* 19.2px diminuído em 10% */
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -60,7 +60,7 @@
 
 .fontsize-sm-bold {
     font-family: Poppins;
-    font-size: 14.4px; /* 12px aumentado em 20% */
+    font-size: 12.96px; /* 14.4px diminuído em 10% */
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -70,7 +70,7 @@
 
 .fontsize-sm {
     font-family: Poppins;
-    font-size: 14.4px; /* 12px aumentado em 20% */
+    font-size: 12.96px; /* 14.4px diminuído em 10% */
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;

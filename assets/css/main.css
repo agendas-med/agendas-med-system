@@ -35,6 +35,27 @@ html, body {
     max-height: 40px;
 }
 
+input, textarea, select {
+  max-width: 300px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cinza-medio);
+  margin-right: var(--space-3);
+}
+
+  input:focus, textarea:focus, select:focus {
+    outline: 2px solid var(--verde-escuro);
+  }
+
+@media (max-width: 480px) {
+  input, textarea, select {
+    min-width: 100%;
+    margin-right: 0;
+    margin-bottom: var(--space-3);
+  }
+  
+}
+
 /* ANIMAÇÕES DO VUE */
 
 /* Animação de entrada e saída */
