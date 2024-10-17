@@ -11,7 +11,7 @@
             <input v-if="dateRange === 'semanal'" type="week" v-model="week" @change="updateChartRange" placeholder="Semana" />
         </div>
         <div class="chart-container">
-            <Chart :chartData="activeChart.chartData" v-if="activeChart" :chartType="activeChart.type" :chartTitle="activeChart.title" />
+            <Chart :chartData="activeChart2.chartData" v-if="activeChart" :chartType="activeChart.type" :chartTitle="activeChart.title" />
         </div>
     </section>
 </template>
@@ -31,6 +31,23 @@ export default {
                     default: false
                 }
             ],
+            activeChart2: { chartData: {
+                        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                        datasets: [
+                            {
+                                label: 'Quantidade de Consultas 2024',
+                                data: [120, 150, 180, 130, 170, 190, 220, 210, 160, 180, 240, 250],
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                fill: true,
+                                tension: 0.3,
+                                pointRadius: 5,
+                                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            },
+                        ]
+                    },
+                    type: "line",
+                    title: "Consultas realizadas", },
             charts: {
                 consultations: {
                     chartData: {
