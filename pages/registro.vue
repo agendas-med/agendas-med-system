@@ -1,8 +1,8 @@
 <template>
     <div class="authentication-page-internal">
       <div class="authentication-header text-left">
-        <h1 class="fontsize-xl-bold preto">Entrar</h1>
-        <p class="fontsize-md cinza">Faça login na sua conta do AgendasMed para acompanhar suas consultas.</p>
+        <h1 class="fontsize-xl-bold preto">Cadastre-se</h1>
+        <p class="fontsize-md cinza">Cadastre-se no AgendasMed para começar a gerenciar o seu consultório.</p>
       </div>
       <form @submit.prevent="login">
         <div class="form-group">
@@ -12,10 +12,13 @@
         <div class="form-group">
           <label for="password">Sua senha</label>
           <input type="password" v-model="password" id="password" required>
-          <UtilsSwitch label="Lembrar-me" @changedState="lembrar" style="margin-top: var(--space-3);" />
+        </div>
+        <div class="form-group">
+          <label for="repeat-password">Repita a senha</label>
+          <input type="password" v-model="repeat_password" id="repeat-password" required>
         </div>
         <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
-        <button type="submit" class="btn btn-primary">Entrar</button>
+        <button type="submit" class="btn btn-primary">Registrar</button>
       </form>
       <div class="or-separator">
         <span class="fontsize-sm preto">ou</span>
@@ -30,6 +33,7 @@
       return {
         email: "",
         password: "",
+        repeat_password: "",
         response: "",
         responseType: "",
         loading: false
@@ -42,18 +46,21 @@
           password: this.password
         }
 
+        if (this.password != this.repeat_password) {
+            this.$myFunctions.setResponse(this, "As senhas não coincidem", "error");
+            return;
+        }
+
         this.loading = true;
-        this.$myFunctions.setResponse(this, "Falha na autenticação", "error");
+        this.$myFunctions.setResponse(this, "Erro ao cadastrar", "error")
 
         setTimeout(() => {
           this.loading = false;
         }, 5000)
 
         console.log(data);
-      },
-      lembrar: function (active) {
-        console.log("lembrar email? " + active)
       }
     }
   }
   </script>
+  

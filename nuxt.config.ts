@@ -17,5 +17,8 @@ export default defineNuxtConfig({
     },
   },
   ssr: false,
+  plugins: [
+    '~/plugins/myFunctions.js'
+  ],
   modules: ['@vesp/nuxt-fontawesome']
 })
