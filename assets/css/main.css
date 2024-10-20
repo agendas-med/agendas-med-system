@@ -93,6 +93,10 @@ input, textarea, select {
     cursor: pointer;
   }
 
+.filter {
+    margin: var(--space-6) 0;
+}
+
 @media (max-width: 480px) {
   input, textarea, select {
     /* min-width: 100%; */

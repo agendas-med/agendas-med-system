@@ -28,40 +28,6 @@
                 </button>
             </div>
           </tr>
-          <tr>
-            <td v-if="showElement" class="px-4 py-2">
-              <UtilsMiniPerfil image="https://avatars.githubusercontent.com/u/61715554?v=4" name="Jefferson Alves" :age="26" />
-            </td>
-            <UtilsMiniPerfil v-else image="https://avatars.githubusercontent.com/u/61715554?v=4" name="Jefferson Alves" :age="26" />
-            <td data-th="Telefone" class="px-4 py-2">(11) 99999-9999</td>
-            <td data-th="Última consulta" class="px-4 py-2">10/10/2024</td>
-            <td data-th="Próxima consulta" class="px-4 py-2">10/10/2024</td>
-            <td data-th="Total de consultas" class="px-4 py-2">2</td>
-            <td v-if="showElement" data-th="Ação" class="px-4 py-2"><font-awesome icon="calendar-day" class="sidebar-icons" /></td>
-            <div v-else class="flex justify-center">
-                <button class="w-9/12 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 m-4">
-                    Ver agenda
-                </button>
-            </div>
-          </tr>
-          <tr>
-            <td v-if="showElement" class="px-4 py-2">
-              <UtilsMiniPerfil image="https://avatars.githubusercontent.com/u/61715554?v=4" name="Jefferson Alves" :age="26" />
-            </td>
-            <UtilsMiniPerfil v-else image="https://avatars.githubusercontent.com/u/61715554?v=4" name="Jefferson Alves" :age="26" />
-            <td data-th="Telefone" class="px-4 py-2">(11) 99999-9999</td>
-            <td data-th="Última consulta" class="px-4 py-2">10/10/2024</td>
-            <td data-th="Próxima consulta" class="px-4 py-2">10/10/2024</td>
-            <td data-th="Total de consultas" class="px-4 py-2">2</td>
-            <td v-if="showElement" data-th="Ação" class="px-4 py-2"><font-awesome icon="calendar-day" class="sidebar-icons" /></td>
-            <div v-else class="flex justify-center">
-                <button class="w-9/12 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 m-4">
-                    Ver agenda
-                </button>
-            </div>
-          </tr>
-
-
         </tbody>
       </table>
     </div>

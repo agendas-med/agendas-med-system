@@ -7,10 +7,10 @@
                     <router-link to="/agenda" @click.native="$emit('closeSidebar')"><font-awesome icon="calendar-day" class="sidebar-icons" />Agenda</router-link>
                 </li>
                 <li class="fontsize-md sidebar-text">
-                    <router-link to="/pacientes" @click.native="$emit('closeSidebar')"><font-awesome icon="user-group" class="sidebar-icons" />Pacientes</router-link>
+                    <router-link to="/pacientes/todos" @click.native="$emit('closeSidebar')"><font-awesome icon="user-group" class="sidebar-icons" />Pacientes</router-link>
                 </li>
                 <li class="fontsize-md sidebar-text">
-                    <router-link to="/relatorios" @click.native="$emit('closeSidebar')"><font-awesome icon="chart-simple" class="sidebar-icons" />Relatórios</router-link>
+                    <router-link to="/relatorios/consultas" @click.native="$emit('closeSidebar')"><font-awesome icon="chart-simple" class="sidebar-icons" />Relatórios</router-link>
                 </li>
             </ul>
         </div>

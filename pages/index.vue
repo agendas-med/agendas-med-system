@@ -1,9 +1,11 @@
 <template>
     <div>
-      Página Principal
-      <router-link to="/agendas">Ir para Agendas</router-link>
     </div>
   </template>
-<script setup>
-    const loading = ref(false);
+<script>
+    export default {
+      mounted: function () {
+        this.$router.push('/agenda');
+      }
+    }
 </script>
