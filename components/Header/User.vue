@@ -11,9 +11,12 @@
         <transition name="fade">
             <div v-if="dropdownOpened" class="user-dropdown">
                 <ul>
-                <li v-on:click="toggleDropdown()">Meu perfil</li>
-                <li v-on:click="toggleDropdown()">Configurações</li>
-                <li v-on:click="toggleDropdown()">Sair</li>
+                <li v-on:click="toggleDropdown()">
+                    <nuxt-link to="/gerenciar">
+                        Meu perfil
+                    </nuxt-link>
+                </li>
+                <li v-on:click="logout()">Sair</li>
                 </ul>
             </div>
         </transition>   
@@ -28,6 +31,9 @@ export default {
         }
     },
     methods: {
+        logout: function () {
+            this.toggleDropdown();
+        },
         toggleDropdown: function () {
             this.dropdownOpened = !this.dropdownOpened;
         }

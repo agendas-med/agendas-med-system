@@ -1,7 +1,7 @@
 <template>
     <section>
         <UtilsPageheader title="Pacientes" subtitle="Veja todas as informações dos seus pacientes" />
-        <UtilsTabs :tabs="tabs" @changedTab="$myFunctions.goToSubRoute(this, $event, 'pacientes', ['todos', 'nao-fidelizados', 'fidelizados'])" />
+        <UtilsTabs :tabs="tabs" @changedTab="$myFunctions.goToSubRoute(this, $event, 'pacientes', tabs)" />
         <NuxtPage/>
     </section>
 </template>
@@ -14,23 +14,23 @@ export default {
                 {
                     name: "Todos os clientes",
                     quantity: 25,
+                    route: "todos",
                     default: true
                 },
                 {
                     name: "Não fidelizados",
-                    quantity: null,
+                    route: "nao-fidelizados",
+                    quantity: 24,
                     default: false
                 },
                 {
                     name: "Fidelizados",
-                    quantity: null,
+                    route: "fidelizados",
+                    quantity: 1,
                     default: false
                 }
             ]       
         }
-    },
-    mounted: function () {
-        this.$router.push('/pacientes/todos');
     }
 }
 </script>

@@ -35,6 +35,15 @@ html, body {
     max-height: 40px;
 }
 
+.avatar-g {
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  min-height: 120px;
+  max-width: 120px;
+  max-height: 120px;
+}
+
 .btn {
   display: flex;
   align-items: center;
@@ -76,18 +85,21 @@ input, textarea, select {
   }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
   margin: var(--space-7) 0;
 }
 
-  .form-group input {
+.form-group, .input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+  .form-group input, .input-group input, .input-group select {
     max-width: 100%;
     margin: 0;
   }
 
-  .form-group label {
+  .form-group label, .input-group label {
     font-size: var(--fontsize-md);
     color: var(--preto);
     cursor: pointer;

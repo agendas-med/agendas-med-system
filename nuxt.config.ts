@@ -18,7 +18,8 @@ export default defineNuxtConfig({
   },
   ssr: false,
   plugins: [
-    '~/plugins/myFunctions.js'
+    '~/plugins/myFunctions.js',
+    { src: '~/plugins/fullcalendar.js', mode: 'client' }
   ],
   modules: ['@vesp/nuxt-fontawesome']
 })

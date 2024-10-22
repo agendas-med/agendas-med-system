@@ -10,8 +10,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       instance.responseType = "";
   };
 
-  const goToSubRoute = (instance, index, mainRoute, subRoutes = []) => {
-    instance.$router.push("/" + mainRoute + "/" + subRoutes[index]);
+  const goToSubRoute = (instance, index, mainRoute, tabs = []) => {
+    instance.$router.push("/" + mainRoute + "/" + tabs[index].route);
   }
 
   nuxtApp.provide('myFunctions', {
