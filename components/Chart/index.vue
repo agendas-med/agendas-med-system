@@ -76,5 +76,9 @@ export default defineComponent({
 canvas {
   width: 100%;
   max-height: calc(100vh - 300px);
+  border: 1px solid var(--cinza-medio);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding: var(--space-3);
 }
 </style>
