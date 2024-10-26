@@ -1,11 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'pt-BR',
+      }
+    },
+  },
   devtools: { enabled: false },
   css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   fontawesome: {
     icons: {
-      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short'],
+      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus'],
       regular: ['comment', 'face-smile'],
       brands: ['twitter'],
     },
@@ -19,7 +26,8 @@ export default defineNuxtConfig({
   ssr: false,
   plugins: [
     '~/plugins/myFunctions.js',
-    { src: '~/plugins/fullcalendar.js', mode: 'client' }
+    { src: '~/plugins/fullcalendar.js', mode: 'client' },
+    { src: '~/plugins/jquery.js', mode: 'client' }
   ],
   modules: ['@vesp/nuxt-fontawesome']
 })

@@ -1,7 +1,7 @@
 <template>
     <div class="switch-group flex items-center">
-      <label class="switch">
-        <input type="checkbox" id="switch-input" v-model="active">
+      <label class="switch" :class="type == 'big' ? 'big' : ''">
+        <input type="checkbox" id="switch-input" v-model="active" @change="handleChange">
         <span class="slider round"></span>
       </label>
       <label class="fontsize-sm cinza" for="switch-input">{{ label }}</label>
@@ -10,16 +10,19 @@
   
   <script>
   export default {
-    props: ["label"],
+    props: ["label", "type", "isactive"],
     data() {
       return {
         active: false
       }
     },
-    watch: {
-        active: function () {
-            this.$emit("changedState", this.active);
-        }
+    methods: {
+      handleChange() {
+        this.$emit("changedState", this.active);
+      }
+    },
+    mounted: function () {
+      this.active = this.isactive ? this.isactive : false;
     }
   }
   </script>
@@ -35,6 +38,11 @@
     width: 37px;
     height: 16px;
     margin-right: var(--space-3);
+  }
+
+  .switch.big {
+    width: 60px;
+    height: 27px;
   }
   
   .switch input {
@@ -66,6 +74,11 @@
     transition: .4s;
     border-radius: 50%;
   }
+
+  .switch.big .slider:before {
+    height: 23px;
+    width: 23px;
+  }
   
   input:checked + .slider {
     background-color: var(--verde-escuro);
@@ -73,6 +86,10 @@
   
   input:checked + .slider:before {
     transform: translateX(21.6px);
+  }
+
+  .switch.big input:checked + .slider:before {
+    transform: translateX(33px);
   }
   
   .slider.round {

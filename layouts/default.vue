@@ -89,6 +89,12 @@ export default {
         }
     }
 
+    @media (max-width: 768px) {
+        .slot {
+            overflow-y: scroll
+        }
+    }
+
     @media (max-width: 480px) {
         .sidebar {
             width: 100vw;

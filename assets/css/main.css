@@ -94,7 +94,7 @@ input, textarea, select {
   width: 100%;
 }
 
-  .form-group input, .input-group input, .input-group select {
+  .form-group input, .form-group select, .input-group input, .input-group select {
     max-width: 100%;
     margin: 0;
   }
