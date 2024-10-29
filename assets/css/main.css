@@ -57,22 +57,41 @@ html, body {
   max-width: 300px;
   font-size: var(--fontsize-md);
   font-weight: 600;
-}
 
-  .btn.btn-primary {
+  & svg {
+    margin-right: var(--space-3);
+  }
+
+  &.btn-primary {
     background: var(--verde-escuro);
     color: var(--branco);
   }
 
-    .btn.btn-primary:hover {
+    &.btn-primary:hover {
       background: var(--verde-escuro-2);
     }
 
-    .btn.btn-primary:active, .btn.btn-primary:focus {
+    &.btn-primary:active, &.btn-primary:focus {
       outline: 2px solid var(--verde);
     }
 
-input, textarea, select {
+  &.btn-primary-alt {
+    background: var(--branco);
+    color: var(--verde-escuro);
+    border: 1px solid var(--verde-escuro);
+  }
+
+    &.btn-primary-alt:hover {
+      background: var(--verde-escuro-2);
+      color: var(--branco);
+    }
+
+    &.btn-primary-alt:active, &.btn-primary-alt:focus {
+      outline: 2px solid var(--verde);
+    }
+}
+
+input:not([type="checkbox"]):not([type="radio"]), textarea, select {
   max-width: 300px;
   padding: var(--space-3);
   border-radius: var(--radius-md);
@@ -80,7 +99,7 @@ input, textarea, select {
   margin-right: var(--space-3);
 }
 
-  input:focus, textarea:focus, select:focus {
+  input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, select:focus {
     outline: 2px solid var(--verde-escuro);
   }
 
@@ -94,7 +113,7 @@ input, textarea, select {
   width: 100%;
 }
 
-  .form-group input, .form-group select, .input-group input, .input-group select {
+  .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group select, .input-group input:not([type="checkbox"]):not([type="radio"]), .input-group select {
     max-width: 100%;
     margin: 0;
   }
@@ -109,9 +128,77 @@ input, textarea, select {
     margin: var(--space-6) 0;
 }
 
-@media (max-width: 480px) {
-  input, textarea, select {
-    /* min-width: 100%; */
+input[type="radio"] {
+  border-radius: var(--radius-full);
+}
+
+input[type="checkbox"] {
+  border-radius: var(--radius-sm);
+}
+
+input[type="checkbox"], input[type="radio"] {
+  width: 23px;
+  height: 23px;
+  border: 2px solid var(--cinza-medio);
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s;
+}
+
+  input[type="checkbox"]:hover, input[type="radio"]:hover {
+    border: 2px solid var(--verde-escuro);
+  }
+
+  input[type="checkbox"]:checked, input[type="radio"]:checked {
+    background: var(--verde-escuro);
+    border: 2px solid var(--verde-escuro);
+  }
+
+    input[type="checkbox"]:checked::after {
+      content: "\f00c"; /* Código unicode do ícone de check */
+      font-family: "Font Awesome 6 Free"; /* Especifica a fonte do Font Awesome */
+      font-weight: 900; /* Necessário para o estilo "solid" do Font Awesome */
+      color: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input[type="radio"]:checked::after {
+      content: "";
+      width: 17px;
+      height: 17px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--branco);
+      background: var(--verde-escuro);
+      display: inline-block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+    }
+
+.input-checkbox-group, .input-radio-group {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  margin: var(--space-3) 0;
+
+  & label {
+    cursor: pointer;
+    margin-left: var(--space-3);
+  }
+}
+
+@media (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]), textarea, select {
+    min-width: 100%;
+    max-width: 100%;
     margin-right: 0;
     margin-bottom: var(--space-3);
   }

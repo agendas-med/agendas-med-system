@@ -68,6 +68,7 @@ export default {
         left: 300px;
         transition: transform 0.4s;
         padding: var(--space-6);
+        overflow-y: auto;
     }
 
     @media (max-width: 1029px) {
@@ -88,13 +89,6 @@ export default {
             width: 100vw;
         }
     }
-
-    @media (max-width: 768px) {
-        .slot {
-            overflow-y: scroll
-        }
-    }
-
     @media (max-width: 480px) {
         .sidebar {
             width: 100vw;

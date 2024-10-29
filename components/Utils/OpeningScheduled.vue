@@ -165,8 +165,8 @@ export default {
 </script>
 <style scoped>
 input, button {
-    margin: 0;
-    max-width: initial;
+    margin-right: 0 !important;
+    max-width: initial !important;
 }
 
 .spacer {
@@ -210,22 +210,35 @@ input, button {
     margin-top: var(--space-4);
 }
 
-@media (max-width: 768px) {
-    .hour-buttons svg {
-        display: flex;
-        width: calc(100% - 24px);
-        justify-content: center;
-        padding: var(--space-4);
-        margin-top: -11px;
-        background-color: var(--cinza-claro);
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        transition: background-color 0.4s;
-    }
+.hour-buttons {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+}
 
-        .hour-buttons svg:hover {
-            background-color: var(--cinza-medio);
+@media (max-width: 768px) {
+    .hour-buttons {
+        margin-top: var(--space-3);
+
+        & svg {
+            display: flex;
+            width: calc(100% - 24px);
+            justify-content: center;
+            padding: var(--space-4);
+            margin-top: -11px;
+            background-color: var(--cinza-claro);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background-color 0.4s;
         }
+
+            & svg:hover {
+                background-color: var(--cinza-medio);
+            }
+    }
 
     .day-hours > div {
         margin-top: var(--space-8);
