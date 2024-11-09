@@ -89,6 +89,14 @@ html, body {
     &.btn-primary-alt:active, &.btn-primary-alt:focus {
       outline: 2px solid var(--verde);
     }
+
+  &.btn-square {
+    max-width: 40px;
+  }
+
+  &.btn-square svg {
+    margin: 0;
+  }
 }
 
 input:not([type="checkbox"]):not([type="radio"]), textarea, select {
