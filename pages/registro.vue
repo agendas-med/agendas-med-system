@@ -52,7 +52,7 @@
         }
 
         this.loading = true;
-        this.$myFunctions.setResponse(this, "Erro ao cadastrar", "error")
+        this.$myFunctions.setResponse(this, "Erro ao cadastrar", "error");
 
         setTimeout(() => {
           this.loading = false;

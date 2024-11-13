@@ -75,6 +75,20 @@ html, body {
       outline: 2px solid var(--verde);
     }
 
+    &.btn-cinza {
+      background: var(--cinza-claro);
+      color: var(--preto);
+    }
+  
+      &.btn-cinza:hover {
+        background: var(--cinza-medio);
+      }
+  
+      &.btn-cinza:active, &.btn-cinza:focus {
+        outline: 2px solid var(--cinza);
+      }
+  
+
   &.btn-primary-alt {
     background: var(--branco);
     color: var(--verde-escuro);
@@ -89,7 +103,7 @@ html, body {
     &.btn-primary-alt:active, &.btn-primary-alt:focus {
       outline: 2px solid var(--verde);
     }
-
+ 
   &.btn-square {
     max-width: 40px;
   }
