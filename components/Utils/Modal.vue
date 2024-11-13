@@ -27,16 +27,15 @@ export default {
     watch: {
         title: function () {
             if (this.title != "") {
-                setTimeout(() => {
+                this.$nextTick(() => {
                     this.showModal = true;
-                }, 10)
+                });
             }
         }
     },
     methods: {
         closeModal: function () {
             this.showModal = false;
-            
             setTimeout(() => {
                 this.$emit("closeModal");
             }, 400);
@@ -52,13 +51,14 @@ export default {
 }
 
 .modal, .modal-wrapper {
-    width: 100vw;
-    height: calc(100vh - 60px);
-    position: fixed;
+    width: 100%;
+    height: 100%;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 2;
     transition: opacity 0.4s;
+    overflow: none;
 }
 
 .modal-wrapper {
@@ -108,6 +108,17 @@ export default {
     & button {
         max-width: inherit;
         width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        opacity: 1 !important;
+        transform: translateY(100vh);
+        width: 100vw;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
     }
 }
 

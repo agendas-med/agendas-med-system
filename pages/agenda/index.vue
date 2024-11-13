@@ -2,7 +2,7 @@
   <UtilsPageheader title="Agenda" subtitle="Organize seus horários e acompanhe suas consultas." />
   <div class="calendar-container">
     <div class="calendar-header flex justify-between">
-      <div class="input-selecao-periodo">
+      <div class="input-selecao-periodo" :style="responsive ? 'opacity: 0;' : ''">
           <span v-on:click="changePeriod(1)">Mensal</span>
           <span v-on:click="changePeriod(2)">Semanal</span>
           <div class="frame-botao"></div>
@@ -26,6 +26,7 @@
 <script>
   import FullCalendar from '@fullcalendar/vue3';
   import dayGridPlugin from '@fullcalendar/daygrid';
+  import listPlugin from '@fullcalendar/list';
   import interactionPlugin from '@fullcalendar/interaction';
   import timeGridPlugin from '@fullcalendar/timegrid';
   import momentTimezonePlugin from '@fullcalendar/moment-timezone';
@@ -46,13 +47,14 @@
         modalSaveButton: "",
         modalCancelButton: "",
         eventId: "",
-        dateString: ""
+        dateString: "",
+        responsive: false
       }
     },
     computed: {
       calendarOptions: function () {
         return {
-          plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin, momentTimezonePlugin ],
+          plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin, momentTimezonePlugin, listPlugin ],
           locale: ptLocale,
           initialView: this.calendarType,
           dateClick: this.handleDateClick,
@@ -84,6 +86,14 @@
     },
     mounted: function () {
       this.getEvents();
+
+      this.$nextTick(() => {
+          this.resizeCalendar();
+      });
+
+      $(window).on("resize", () => {
+        this.resizeCalendar();
+      })
     },
     methods: {
       getEvents: function () {
@@ -123,7 +133,6 @@
         this.$myFunctions.openModal(this, "Alterar agendamento", "Salvar", "Cancelar", { eventId: info.event.id });
       },
       handleEventResize: function (info) {
-        console.log(info)
         if (!confirm("Tem certeza que deseja alterar o agendamento?")) {
           info.revert();
         } else {
@@ -156,7 +165,6 @@
 
         for (let i = 0; i < this.calendarEvents.length; i++) {
           if (this.isSameDay(this.calendarEvents[i].start, e.date)) {
-            console.log(this.calendarEvents[i])
             filteredEvents.push(this.calendarEvents[i]);
           }
         }
@@ -171,6 +179,21 @@
               inputDate.getMonth() === dateObj.getMonth() &&
               inputDate.getDate() === dateObj.getDate()
           );
+      },
+      resizeCalendar: function () {
+        this.reload = true;
+        
+        if (window.innerWidth < 480) {
+          this.calendarType = "listWeek";
+          this.responsive = true;
+        } else {
+          this.calendarType = "dayGridMonth";
+          this.responsive = false;
+        }
+
+        this.$nextTick(() => {
+          this.reload = false;
+        });
       },
       changePeriod: function (position) {
         let frame = $(".input-selecao-periodo .frame-botao");
@@ -187,9 +210,9 @@
             break;
         }
 
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.reload = false;
-        }, 1)
+        });
       }
     }
   }

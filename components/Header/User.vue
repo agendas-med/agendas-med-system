@@ -60,6 +60,7 @@ export default {
     position: absolute;
     top: 110%;
     z-index: 5;
+    right: 0;
 }
 
 li {
