@@ -27,9 +27,9 @@ export default {
     watch: {
         title: function () {
             if (this.title != "") {
-                this.$nextTick(() => {
+                setTimeout(() => {
                     this.showModal = true;
-                });
+                }, 50)
             }
         }
     },
