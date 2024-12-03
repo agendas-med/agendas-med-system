@@ -1,5 +1,5 @@
 <template>
-    <div class="modal flex items-center justify-center" :class="showModal ? 'show' : ''">
+    <div class="modal flex items-center justify-center" v-if="title != ''" :class="showModal ? 'show' : ''">
         <div class="modal-wrapper" v-on:click="closeModal()"></div>
         <div class="modal-container">
             <div class="modal-header flex justify-between items-center">
@@ -10,7 +10,7 @@
                 <slot />
             </div>
             <div class="modal-footer flex justify-end">
-                <button type="button" class="btn btn-primary" v-if="saveButton">{{ saveButton }}</button>
+                <button type="button" class="btn btn-primary" id="modal-submit-button" v-if="saveButton" v-on:click="saveData()">{{ saveButton }}</button>
                 <button type="button" class="btn btn-cinza" v-if="cancelButton" v-on:click="closeModal()">{{ cancelButton }}</button>
             </div>
         </div>
@@ -29,6 +29,18 @@ export default {
             if (this.title != "") {
                 setTimeout(() => {
                     this.showModal = true;
+
+                    $("#submit-button").off("click").on("click", () => {
+                        let informationsForm = $("#informations-form");
+                        
+                        if (informationsForm.find(":invalid").length > 0 || informationsForm.attr("invalid") == "true") {
+                            $("#modal-submit-button").removeAttr("disabled").removeClass("btn-loading");
+                        }
+                    })
+                }, 50)
+            } else {
+                setTimeout(() => {
+                    this.showModal = false;
                 }, 50)
             }
         }
@@ -39,9 +51,12 @@ export default {
             setTimeout(() => {
                 this.$emit("closeModal");
             }, 400);
+        },
+        saveData: function () {
+            $("#modal-submit-button").attr("disabled", "disabled").addClass("btn-loading");
+
+            $("#submit-button").click();
         }
-    },
-    mounted: function () {
     }
 }
 </script>

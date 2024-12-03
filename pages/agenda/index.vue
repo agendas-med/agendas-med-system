@@ -18,7 +18,7 @@
     </div>
     <FullCalendar ref="fullCalendar" :options="calendarOptions" v-if="!reload" />
     <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId', 'dateString'])">
-      <ModalContentAgenda :eventId="eventId" :dateString="dateString" />
+      <ModalContentAgenda :event="selectedEvent" @savedContent="$myFunctions.closeModal(this); getEvents();" />
     </UtilsModal>
   </div>
   
@@ -47,8 +47,15 @@
         modalSaveButton: "",
         modalCancelButton: "",
         eventId: "",
-        dateString: "",
-        responsive: false
+        responsive: false,
+        selectedEvent: {
+          paciente_id: null,
+          paciente_nome: "",
+          especialidade: "",
+          data: "",
+          duracao: "",
+          observacoes: ""
+        }
       }
     },
     computed: {
@@ -101,9 +108,14 @@
           {
             id: 1,
             title: "Aline - 1ª Consulta",
-            start: "2024-11-12T09:30:15-03:00",
-            end: "2024-11-12T10:00:15-03:00",
-            displayEventEnd: true
+            start: "2024-12-02T14:30:45-03:00",
+            end: "2024-12-02T14:30:45-03:00",
+            paciente_id: 0,
+            paciente_nome: "Saymon Felipe",
+            especialidade: "1",
+            data: "2024-12-02T14:30:45",
+            duracao: "15",
+            observacoes: "testeeee"
           },
           {
             id: 2,
@@ -130,7 +142,9 @@
         }
       },
       eventClick: function (info) {
-        this.$myFunctions.openModal(this, "Alterar agendamento", "Salvar", "Cancelar", { eventId: info.event.id });
+        this.selectedEvent = this.calendarEvents.filter(event => event.id == info.event.id)[0];
+        
+        this.$myFunctions.openModal(this, "Alterar agendamento", "Salvar", "Cancelar");
       },
       handleEventResize: function (info) {
         if (!confirm("Tem certeza que deseja alterar o agendamento?")) {
@@ -163,13 +177,22 @@
       handleDateClick: function(e) {
         let filteredEvents = [];
 
+        this.selectedEvent = {
+          paciente_id: null,
+          paciente_nome: "",
+          especialidade: "",
+          data: e.dateStr + "T09:00:00",
+          duracao: "",
+          observacoes: ""
+        }
+
         for (let i = 0; i < this.calendarEvents.length; i++) {
           if (this.isSameDay(this.calendarEvents[i].start, e.date)) {
             filteredEvents.push(this.calendarEvents[i]);
           }
         }
 
-        this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", { dateString: e.dateStr });
+        this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar");
       },
       isSameDay: function (dateString, dateObj) {
           const inputDate = new Date(dateString);
