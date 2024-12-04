@@ -1,9 +1,20 @@
 <template>
-    <input type="text" class="input-search-with-icon" :placeholder="placeholder">
+    <input type="text" class="input-search-with-icon" :placeholder="'Procure um ' + table" v-model="inputData">
 </template>
 <script>
 export default {
-    props: ["placeholder"]
+    props: ["table", "search"],
+    data() {
+        return {
+            inputData: this.search
+        }
+    },
+    watch: {
+        inputData: function () {
+            this.$emit("input", this.inputData);
+            this.$emit("model", this.inputData)
+        }
+    }
 }
 </script>
 <style scoped>

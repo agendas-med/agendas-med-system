@@ -36,11 +36,30 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }
 
+  //Métodos de manipulação de valores
+  const formatTel = (tel) => {
+    const cleaned = tel.replace(/\D/g, '');
+    
+    if (cleaned.length === 11) {
+        return cleaned.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, '($1) $2 $3-$4');
+    } else if (cleaned.length === 10) {
+        return cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+    }
+    
+    return tel;
+  }
+
+  const formatDate = (date) => {
+    return date.trim() != "" ? moment(date).format("DD/MM/YYYY") : "";
+  }
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
       goToSubRoute,
       openModal,
-      closeModal
+      closeModal,
+      formatTel,
+      formatDate
   });
 });

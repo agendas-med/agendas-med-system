@@ -44,6 +44,21 @@ html, body {
   max-height: 120px;
 }
 
+.rounded-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: var(--cinza-claro);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--cinza-medio);
+  }
+}
+
 .btn {
   display: flex;
   align-items: center;

@@ -16,7 +16,8 @@ export default defineNuxtConfig({
   fontawesome: {
     icons: {
       solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 
-        'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right'],
+        'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right',
+        'backward-step', 'forward-step'],
       regular: ['comment', 'face-smile'],
       brands: ['twitter'],
     },
@@ -31,7 +32,8 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/myFunctions.js',
     { src: '~/plugins/fullcalendar.js', mode: 'client' },
-    { src: '~/plugins/jquery.js', mode: 'client' }
+    { src: '~/plugins/jquery.js', mode: 'client' },
+    { src: '~/plugins/moment.js', mode: 'client' }
   ],
   modules: ['@vesp/nuxt-fontawesome']
 })

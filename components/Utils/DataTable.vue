@@ -1,0 +1,215 @@
+<template>
+    <div class="data-table">
+      <!-- Search/Filter -->
+      <UtilsInputSearch
+        :search="searchQuery"
+        @model="searchQuery = $event"
+        @input="filterData"
+        :table="table"
+      />
+  
+      <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th
+              v-for="column in columnsToRender"
+              :key="column"
+              @click="sortData(column)"
+            >
+              <span style="text-transform: capitalize;">{{ column.replace("_", " ") }}</span>
+              <span v-if="sortColumn === column">
+                {{ sortDirection === 'asc' ? ' ▲' : ' ▼' }}
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in paginatedData" :key="item.id">
+            <td v-for="column in columnsToRender" :key="column">
+              <!-- Renderiza o slot personalizado, se existir -->
+              <slot 
+                    :name="`column-${column}`" 
+                    :item="item" 
+                >
+                    {{ item[column] }}
+                </slot>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Pagination -->
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">
+          <font-awesome icon="backward-step" class="cinza" />
+        </button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">
+          <font-awesome icon="forward-step" class="cinza" />
+        </button>
+      </div>
+    </div>
+  </template>
+  
+  
+  <script>
+  export default {
+  props: {
+    dataTable: {
+      type: Object,
+      required: true,
+    },
+    table: {
+      type: String,
+      required: true,
+    },
+    rowsPerPage: {
+      type: Number,
+      default: 10,
+    },
+  },
+  data() {
+    return {
+      searchQuery: '',
+      filteredData: this.dataTable,
+      currentPage: 1,
+      sortColumn: '',
+      sortDirection: 'asc',
+    };
+  },
+  computed: {
+    /**
+     * Determina quais colunas devem ser renderizadas.
+     * Se existir ao menos um slot personalizado para colunas, renderiza apenas essas colunas.
+     */
+     columnsToRender() {
+        const allColumns = this.dataTable.length > 0
+            ? Object.keys(this.dataTable[0]) 
+            : [];
+
+        const customColumns = allColumns.filter((column) => {
+            return this.$slots[`column-${column}`];
+        });
+
+        const templateColumns = Object.keys(this.$slots).filter(slotName => {
+            return slotName.startsWith('column-'); 
+        }).map(slotName => {
+            return slotName.replace('column-', '');
+        });
+
+        const combinedColumns = [...new Set([...customColumns, ...templateColumns])];
+
+        const columnsToReturn = customColumns.length > 0 ? combinedColumns : allColumns;
+
+        return columnsToReturn;
+    },
+    /**
+     * Gera as colunas visíveis com base nos dados ou nas colunas fornecidas.
+     */
+    visibleColumns() {
+        if (this.dataTable.length) {
+            return this.dataTable;
+        } else {
+            return [];
+        }
+    },
+    totalPages() {
+      return Math.ceil(this.filteredData.length / this.rowsPerPage);
+    },
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.rowsPerPage;
+      return this.filteredData.slice(start, start + this.rowsPerPage);
+    },
+  },
+  methods: {
+    filterData() {
+      this.filteredData = this.dataTable.filter((item) =>
+        Object.values(item).some((val) =>
+          String(val).toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      );
+      this.currentPage = 1; // Reset to the first page
+    },
+    sortData(columnKey) {
+      if (this.sortColumn === columnKey) {
+        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortDirection = 'asc';
+      }
+      this.sortColumn = columnKey;
+      this.filteredData.sort((a, b) => {
+        const modifier = this.sortDirection === 'asc' ? 1 : -1;
+        return a[columnKey] > b[columnKey] ? modifier : -modifier;
+      });
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    }
+  },
+  watch: {
+    'dataTable.data': {
+      handler(newData) {
+        this.filteredData = newData;
+        this.currentPage = 1; // Reset to the first page
+      },
+      deep: true,
+    },
+  },
+};
+  </script>
+  
+  <style>
+  /* Estilize conforme necessário */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-6) 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    outline: 1px solid var(--cinza-medio);
+  }
+
+  .table th, .table td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--cinza-claro);
+  }
+
+  .table td p {
+    line-height: 100%;
+    margin: var(--space-1) 0;
+    font-size: var(--fontsize-sm);
+    color: var(--preto);
+  }
+
+  .table th {
+    cursor: pointer;
+    font-size: var(--fontsize-sm);
+    color: var(--cinza);
+    font-weight: 500;
+    background: var(--cinza-claro);
+  }
+
+  .pagination {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    & button {
+        padding: 0 var(--space-3);
+        cursor: pointer;
+    }
+  }
+  .search-bar {
+    margin-bottom: 10px;
+  }
+  </style>
+  
