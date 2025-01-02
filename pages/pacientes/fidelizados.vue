@@ -1,5 +1,6 @@
 <template>
     <section>
+        <TableMain v-if="false" />
         <UtilsDataTable :dataTable="pacientes" :rowsPerPage="7" table="cliente">
             <template #column-nome="{ item }">
                 <div class="flex items-center">
@@ -50,13 +51,9 @@ export default {
             modalCancelButton: "",
             showResponsiveFilter: true, 
             pacientes: [
-                { id: 1, nome: 'John', telefone: '41998564552', ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "2024-12-04 15:30:00", total_consultas: 2, idade: 30, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 2, nome: 'Jane', idade: 25, telefone: '41998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "", total_consultas: 3, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 3, nome: 'Astolfo', idade: 23, telefone: '55998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "2024-12-04 15:30:00", total_consultas: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 4, nome: 'João', idade: 32, telefone: '41998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "", total_consultas: 1, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 5, nome: 'Miyo', idade: 14, telefone: '41998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "", total_consultas: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 6, nome: 'Rina', idade: 15, telefone: '41998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "2024-12-04 15:30:00", total_consultas: 7, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                { id: 7, nome: 'Yuto', idade: 9, telefone: '41998564582',ultima_consulta: "2024-12-03 15:30:00", proxima_consulta: "2024-12-04 15:30:00", total_consultas: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
+                { id: 1, nome: 'John', telefone: '41998564552', ultima_consulta: "2024-12-04 15:30:00", proxima_consulta: "", total_consultas: 0, idade: 30, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
+                { id: 2, nome: 'Jane', idade: 25, telefone: '41998564582',ultima_consulta: "2024-12-04 15:30:00", proxima_consulta: "", total_consultas: 0, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
+                { id: 3, nome: 'Astolfo', idade: 23, telefone: '55998564582',ultima_consulta: "2024-12-04 15:30:00", proxima_consulta: "2024-12-04 15:30:00", total_consultas: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
             ]
         }
     },
