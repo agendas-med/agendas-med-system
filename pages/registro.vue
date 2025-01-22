@@ -2,7 +2,7 @@
     <div class="authentication-page-internal">
       <div class="authentication-header text-left">
         <h1 class="fontsize-xl-bold preto">Cadastre-se</h1>
-        <p class="fontsize-md cinza">Cadastre-se no AgendasMed para começar a gerenciar o seu consultório.</p>
+        <p class="fontsize-md cinza">Cadastre-se no AgendasPro para começar a gerenciar o seu negócio.</p>
       </div>
       <form @submit.prevent="login">
         <div class="form-group">

@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <span class="fontsize-sm cinza">© {{ year }} AgendasMed - Todos os direitos reservados</span>
+        <span class="fontsize-sm cinza">© {{ year }} AgendasPro - Todos os direitos reservados</span>
     </footer>
 </template>
 <script>

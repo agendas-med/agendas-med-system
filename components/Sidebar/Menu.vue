@@ -1,7 +1,7 @@
 <template>
     <aside class="sidebar-container">
         <div class="brand">
-            <router-link to="/"><img src="@/assets/img/agendasmed-logo.png" alt="Logotipo AgendasMed"></router-link>
+            <router-link to="/"><img src="@/assets/img/agendaspro-logo.png" alt="Logotipo AgendasPro"></router-link>
         </div>
         <SidebarConnectedUser />
         <SidebarNav @closeSidebar="$emit('closeSidebar')" />

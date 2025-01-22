@@ -4,7 +4,7 @@
             <div class="authentication-container">
                 <slot></slot>
             </div>
-            <img src="../assets/img/system-print.png" alt="Systema AgendasMed">
+            <img src="../assets/img/system-print.png" alt="Systema AgendasPro">
             <MiscFooterData />
         </div>
     </div>
