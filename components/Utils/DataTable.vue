@@ -54,7 +54,8 @@
   
   
   <script>
-  export default {
+
+export default {
   props: {
     dataTable: {
       type: Object,
@@ -67,81 +68,71 @@
     rowsPerPage: {
       type: Number,
       default: 10,
-    },
+    }
   },
   data() {
     return {
-      searchQuery: '',
+      searchQuery: "",
       filteredData: this.dataTable,
       currentPage: 1,
-      sortColumn: '',
-      sortDirection: 'asc',
+      sortColumn: "",
+      sortDirection: "asc",
     };
   },
   computed: {
-    /**
-     * Determina quais colunas devem ser renderizadas.
-     * Se existir ao menos um slot personalizado para colunas, renderiza apenas essas colunas.
-     */
-     columnsToRender() {
-        const allColumns = this.dataTable.length > 0
-            ? Object.keys(this.dataTable[0]) 
-            : [];
+    columnsToRender() {
+      if (!this.dataTable || this.dataTable.length === 0) return [];
+      const allColumns = Object.keys(this.dataTable[0]);
 
-        const customColumns = allColumns.filter((column) => {
-            return this.$slots[`column-${column}`];
-        });
+      const customColumns = allColumns.filter((column) => {
+        return this.$slots[`column-${column}`];
+      });
 
-        const templateColumns = Object.keys(this.$slots).filter(slotName => {
-            return slotName.startsWith('column-'); 
-        }).map(slotName => {
-            return slotName.replace('column-', '');
-        });
+      
 
-        const combinedColumns = [...new Set([...customColumns, ...templateColumns])];
-
-        const columnsToReturn = customColumns.length > 0 ? combinedColumns : allColumns;
-
-        return columnsToReturn;
-    },
-    /**
-     * Gera as colunas visíveis com base nos dados ou nas colunas fornecidas.
-     */
-    visibleColumns() {
-        if (this.dataTable.length) {
-            return this.dataTable;
-        } else {
-            return [];
-        }
+      const templateColumns = Object.keys(this.$slots)
+        .filter((slotName) => slotName.startsWith("column-"))
+        .map((slotName) => slotName.replace("column-", ""));
+        
+      return [...new Set([...customColumns, ...templateColumns])] || allColumns;
     },
     totalPages() {
-      return Math.ceil(this.filteredData.length / this.rowsPerPage);
+      return this.filteredData.length
+        ? Math.ceil(this.filteredData.length / this.rowsPerPage)
+        : 1;
     },
     paginatedData() {
+      if (!this.filteredData || this.filteredData.length === 0) return [];
       const start = (this.currentPage - 1) * this.rowsPerPage;
       return this.filteredData.slice(start, start + this.rowsPerPage);
     },
   },
   methods: {
     filterData() {
+      if (!this.dataTable || this.dataTable.length === 0) {
+        this.filteredData = [];
+        return;
+      }
       this.filteredData = this.dataTable.filter((item) =>
         Object.values(item).some((val) =>
           String(val).toLowerCase().includes(this.searchQuery.toLowerCase())
         )
       );
-      this.currentPage = 1; // Reset to the first page
+      this.currentPage = 1;
     },
     sortData(columnKey) {
-      if (this.sortColumn === columnKey) {
-        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-      } else {
-        this.sortDirection = 'asc';
-      }
+      if (!this.dataTable || this.dataTable.length === 0) return;
+
+      this.sortDirection =
+        this.sortColumn === columnKey && this.sortDirection === "asc"
+          ? "desc"
+          : "asc";
       this.sortColumn = columnKey;
-      this.filteredData.sort((a, b) => {
-        const modifier = this.sortDirection === 'asc' ? 1 : -1;
-        return a[columnKey] > b[columnKey] ? modifier : -modifier;
-      });
+
+      const modifier = this.sortDirection === "asc" ? 1 : -1;
+      this.filteredData.sort((a, b) =>
+        a[columnKey] > b[columnKey] ? modifier : -modifier
+      );
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
@@ -155,16 +146,16 @@
     }
   },
   watch: {
-    'dataTable.data': {
+    dataTable: {
       handler(newData) {
-        this.filteredData = newData;
-        this.currentPage = 1; // Reset to the first page
+        this.filteredData = newData || [];
+        this.currentPage = 1;
       },
       deep: true,
     },
   },
 };
-  </script>
+</script>
   
   <style>
   /* Estilize conforme necessário */

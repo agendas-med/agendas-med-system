@@ -139,5 +139,6 @@ export default {
 
 .modal-body {
     flex: 1;
+    overflow-y: auto;
 }
 </style>

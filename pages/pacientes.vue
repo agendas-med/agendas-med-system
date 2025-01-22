@@ -1,8 +1,17 @@
 <template>
     <section>
-        <UtilsPageheader title="Pacientes" subtitle="Veja todas as informações dos seus pacientes" />
+        <div class="flex items-center justify-between">
+            <UtilsPageheader title="Pacientes" subtitle="Veja todas as informações dos seus pacientes" />
+            <button type="button" v-on:click="newPatient()" class="btn btn-primary">
+                <font-awesome icon="plus" />
+                Adicionar
+            </button>
+        </div>
         <UtilsTabs :tabs="tabs" @changedTab="$myFunctions.goToSubRoute(this, $event, 'pacientes', tabs)" />
         <NuxtPage/>
+        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this)">
+            <ModalContentPacientes @savedContent="$myFunctions.closeModal(this, [], true);" />
+        </UtilsModal>
     </section>
 </template>
 
@@ -10,6 +19,9 @@
 export default {
     data() {
         return {
+            modalTitle: "",
+            modalSaveButton: "",
+            modalCancelButton: "",
             tabs: [
                 {
                     name: "Todos os clientes",
@@ -30,6 +42,11 @@ export default {
                     default: false
                 }
             ]       
+        }
+    },
+    methods: {
+        newPatient: function () {
+            this.$myFunctions.openModal(this, "Cadastrar paciente", "Cadastrar", "Cancelar");
         }
     }
 }

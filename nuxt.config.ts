@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     icons: {
       solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 
         'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right',
-        'backward-step', 'forward-step'],
+        'backward-step', 'forward-step', 'plus', 'user-pen'],
       regular: ['comment', 'face-smile'],
       brands: ['twitter'],
     },
@@ -31,6 +31,7 @@ export default defineNuxtConfig({
   ssr: false,
   plugins: [
     '~/plugins/myFunctions.js',
+    '~/plugins/global.js',
     { src: '~/plugins/fullcalendar.js', mode: 'client' },
     { src: '~/plugins/jquery.js', mode: 'client' },
     { src: '~/plugins/moment.js', mode: 'client' }
