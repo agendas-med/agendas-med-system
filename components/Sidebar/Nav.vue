@@ -1,7 +1,7 @@
 <template>
     <nav>
         <div class="nav-group">
-            <p class="fontsize-sm">CLÍNICA</p>
+            <p class="fontsize-sm">ESTABELECIMENTO</p>
             <ul>
                 <li class="fontsize-md sidebar-text">
                     <router-link to="/agenda" @click.native="$emit('closeSidebar')"><font-awesome icon="calendar-day" class="sidebar-icons" />Agenda</router-link>

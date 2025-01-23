@@ -1,6 +1,6 @@
 <template>
     <section>
-        <UtilsPageheader title="Relatórios" subtitle="Visualize suas consultas e ganhos em relatórios completos." />
+        <UtilsPageheader title="Relatórios" subtitle="Visualize seus agendamentos e ganhos em relatórios completos." />
         <UtilsTabs :tabs="tabs" @changedTab="changeChart($event)" />
         <div>
             <div class="filter">

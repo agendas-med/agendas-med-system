@@ -2,7 +2,7 @@
     <div class="authentication-page-internal">
       <div class="authentication-header text-left">
         <h1 class="fontsize-xl-bold preto">Entrar</h1>
-        <p class="fontsize-md cinza">Faça login na sua conta do AgendasPro para acompanhar suas consultas.</p>
+        <p class="fontsize-md cinza">Faça login na sua conta do AgendasPro para acompanhar seus agendamentos.</p>
       </div>
       <form @submit.prevent="login">
         <div class="form-group">
