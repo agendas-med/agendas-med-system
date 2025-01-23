@@ -1,5 +1,5 @@
 <template>
-  <UtilsPageheader title="Agenda" subtitle="Organize seus horários e acompanhe suas consultas." />
+  <UtilsPageheader title="Agenda" subtitle="Organize seus horários e acompanhe seus agendamentos." />
   <div class="calendar-container">
     <div class="calendar-header flex justify-between">
       <div class="input-selecao-periodo" :style="responsive ? 'opacity: 0;' : ''">
@@ -49,9 +49,9 @@
         eventId: "",
         responsive: false,
         selectedEvent: {
-          paciente_id: null,
-          paciente_nome: "",
-          especialidade: "",
+          cliente_id: null,
+          cliente_nome: "",
+          servicos: "",
           data: "",
           duracao: "",
           observacoes: ""
@@ -110,9 +110,9 @@
             title: "Aline - 1ª Consulta",
             start: "2024-12-02T14:30:45-03:00",
             end: "2024-12-02T14:30:45-03:00",
-            paciente_id: 0,
-            paciente_nome: "Saymon Felipe",
-            especialidade: "1",
+            cliente_id: 0,
+            cliente_nome: "Saymon Felipe",
+            servico: "1",
             data: "2024-12-02T14:30:45",
             duracao: "15",
             observacoes: "testeeee"

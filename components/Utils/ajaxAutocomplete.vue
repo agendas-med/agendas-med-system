@@ -13,7 +13,7 @@
                 </div>
                 <div class="entities-list-inner" v-if="entity_search.length > 2 && entities_list.length > 0">
                     <div class="entity" v-for="(entityObj, index) in entities_list" :key="index" v-on:click="selectEntity(entityObj)">
-                        <div class="customers-entity" v-if="ajaxtype == 'pacientes'">
+                        <div class="customers-entity" v-if="ajaxtype == 'clientes'">
                             <div class="entity-line">
                                 <p>{{ entityObj.nome }}</p>
                             </div>
@@ -114,8 +114,8 @@ export default {
             self.force_close = false;
 
             switch (this.ajaxtype) {
-                case "pacientes":
-                    domain = "/patients/";
+                case "clientes":
+                    domain = "/customers/";
                     break;
                 default: 
                     return;
@@ -137,7 +137,7 @@ export default {
                     telefone: "(99) 9 9999-9999"
                 }
             ]
-            
+            console.log(this.entities_list)
             /*api.post(domain + "search", data).then((response) => {
                 self.entities_list = response.data.returnObj;
             }).catch((error) => {

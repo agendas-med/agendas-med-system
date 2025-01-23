@@ -3,8 +3,7 @@
         <div class="user-container flex items-center" v-on:click="toggleDropdown()">
             <img src="https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg" alt="Imagem usuário" class="avatar avatar-pp">
             <div class="informacoes-usuario">
-                <p class="fontsize-md preto">Saymon Felipe</p>
-                <p class="fontsize-sm cinza">Paciente</p>
+                <p class="fontsize-md preto">{{ $global.user.name }}</p>
             </div>
             <font-awesome icon="angle-down" class="dropdown-button cinza" :class="dropdownOpened ? 'rotated' : ''" />
         </div>
@@ -12,7 +11,7 @@
             <div v-if="dropdownOpened" class="user-dropdown">
                 <ul>
                 <li v-on:click="toggleDropdown()">
-                    <nuxt-link to="/gerenciar">
+                    <nuxt-link to="/gerenciar/perfil">
                         Meu perfil
                     </nuxt-link>
                 </li>
@@ -61,6 +60,7 @@ export default {
     top: 110%;
     z-index: 5;
     right: 0;
+    white-space: nowrap;
 }
 
 li {

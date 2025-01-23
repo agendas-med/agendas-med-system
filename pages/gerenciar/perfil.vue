@@ -1,10 +1,10 @@
 <template>
     <section>
         <div class="profile-header flex items-center">
-            <img :src="conta.foto_perfil" class="avatar avatar-g">
+            <img :src="$global.user.url_photo" class="avatar avatar-g">
             <div class="profile-header-informations">
-                <p class="fontsize-lg cinza">{{ conta.nome }}</p>
-                <p class="fontsize-sm cinza">{{ conta.email }}</p>
+                <p class="fontsize-lg cinza">{{ user.name }}</p>
+                <p class="fontsize-sm cinza">{{ user.email }}</p>
             </div>
         </div>
         <div class="profile-informations">
@@ -12,59 +12,56 @@
             <form @submit.prevent="changeProfileInformations">
                 <div class="input-list grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="input-group">
-                        <label for="crm">CRM</label>
-                        <input type="text" id="crm" v-model="form_data.crm" required>
-                    </div>
-                    <div class="input-group">
                         <label for="tel">Telefone</label>
-                        <input type="tel" id="tel" v-model="form_data.tel" required>
+                        <input type="tel" id="tel" v-model="user.tel" @input="$myFunctions.formatTelInput($event, user.tel)" required>
                     </div>
                     <div class="input-group"> 
-                        <label for="cep">CEP Consultorio</label>
-                        <input type="text" id="cep" v-model="form_data.cep" required>
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" v-model="user.cep" required>
                     </div>
                     <div class="input-group"> 
-                        <label for="num">Número Consultorio</label>
-                        <input type="text" id="num" v-model="form_data.num_consultorio" required>
+                        <label for="adress">Endereço</label>
+                        <input type="text" id="adress" v-model="user.adress" required>
                     </div>
                     <div class="input-group"> 
-                        <label for="cidade">Cidade</label>
-                        <input type="text" id="cidade" v-model="form_data.cidade" required>
+                        <label for="city">Cidade</label>
+                        <input type="text" id="city" v-model="user.city" required>
                     </div>
                     <div class="input-group"> 
-                        <label for="especialidade">Especialidade</label>
-                        <select id="especialidade" v-model="form_data.especialidade" required>
-                            <option value="">* Selecione</option>
-                            <option value="clinica-medica">Clínica Geral</option>
-                            <option value="pediatria">Pediatria</option>
-                            <option value="ginecologia">Ginecologia</option>
-                            <option value="obstetricia">Obstetrícia</option>
-                            <option value="cardiologia">Cardiologia</option>
-                            <option value="dermatologia">Dermatologia</option>
-                            <option value="neurologia">Neurologia</option>
-                            <option value="ortopedia">Ortopedia</option>
-                            <option value="psiquiatria">Psiquiatria</option>
-                            <option value="oftalmologia">Oftalmologia</option>
-                            <option value="otorrinolaringologia">Otorrinolaringologia</option>
-                            <option value="endocrinologia">Endocrinologia</option>
-                            <option value="gastroenterologia">Gastroenterologia</option>
-                            <option value="nefrologia">Nefrologia</option>
-                            <option value="hematologia">Hematologia</option>
-                            <option value="oncologia">Oncologia</option>
-                            <option value="reumatologia">Reumatologia</option>
-                            <option value="urologia">Urologia</option>
-                            <option value="cirurgia-geral">Cirurgia Geral</option>
-                            <option value="anestesiologia">Anestesiologia</option>
-                            <option value="pneumologia">Pneumologia</option>
+                        <label for="state">Estado</label>
+                        <select id="state" v-model="user.state" required>
+                            <option value="AC">Acre (AC)</option>
+                            <option value="AL">Alagoas (AL)</option>
+                            <option value="AP">Amapá (AP)</option>
+                            <option value="AM">Amazonas (AM)</option>
+                            <option value="BA">Bahia (BA)</option>
+                            <option value="CE">Ceará (CE)</option>
+                            <option value="DF">Distrito Federal (DF)</option>
+                            <option value="ES">Espírito Santo (ES)</option>
+                            <option value="GO">Goiás (GO)</option>
+                            <option value="MA">Maranhão (MA)</option>
+                            <option value="MT">Mato Grosso (MT)</option>
+                            <option value="MS">Mato Grosso do Sul (MS)</option>
+                            <option value="MG">Minas Gerais (MG)</option>
+                            <option value="PA">Pará (PA)</option>
+                            <option value="PB">Paraíba (PB)</option>
+                            <option value="PR">Paraná (PR)</option>
+                            <option value="PE">Pernambuco (PE)</option>
+                            <option value="PI">Piauí (PI)</option>
+                            <option value="RJ">Rio de Janeiro (RJ)</option>
+                            <option value="RN">Rio Grande do Norte (RN)</option>
+                            <option value="RS">Rio Grande do Sul (RS)</option>
+                            <option value="RO">Rondônia (RO)</option>
+                            <option value="RR">Roraima (RR)</option>
+                            <option value="SC">Santa Catarina (SC)</option>
+                            <option value="SP">São Paulo (SP)</option>
+                            <option value="SE">Sergipe (SE)</option>
+                            <option value="TO">Tocantins (TO)</option>
                         </select>
                     </div>
                     <div class="input-group"> 
-                        <label for="nome">Nome consultório</label>
-                        <input type="text" id="nome" v-model="form_data.nome_consultorio" required>
-                    </div>
-                    <div class="input-group"> 
-                        <label for="endereco">Endereço consultório</label>
-                        <input type="text" id="endereco" v-model="form_data.endereco" required>
+                        <label for="country">País</label>
+                        <input type="text" id="country" v-model="user.country" required>
                     </div>
                     <div class="input-group">
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -94,6 +91,23 @@ export default {
                 nome_consultorio: "",
                 endereco: ""
             }
+        }
+    },
+    watch: {
+        "user.cep": function () {
+            this.user.cep = this.user.cep.replace(/\D/g, '');
+
+            if (this.user.cep.length == 8) {
+                this.user.cep = this.user.cep.replace(/(\d{5})(\d{3})/, '$1-$2');
+
+                //Executa busca automatica do cep
+                console.log(this.user.cep)
+            }
+        }
+    },
+    computed: {
+        user: function () {
+            return reactive(JSON.parse(JSON.stringify(this.$global.user)));
         }
     },
     mounted() {

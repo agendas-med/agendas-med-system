@@ -1,22 +1,22 @@
 <template>
-    <form id="informations-form" @submit.prevent="savePatient()" :invalid="invalidForm">
+    <form id="informations-form" @submit.prevent="saveCustomer()" :invalid="invalidForm">
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label for="name">Nome</label>
-                <input type="text" id="name" required v-model="patient.nome">
+                <input type="text" id="name" required v-model="customer.nome">
             </div>
             <div class="input-group">
                 <label for="birthday">Data de nascimento</label>
-                <input type="date" id="birthday" required v-model="patient.data_nascimento">
+                <input type="date" id="birthday" required v-model="customer.data_nascimento">
             </div>
             <div class="input-group">
                 <label for="tel">Telefone</label>
-                <input type="text" id="tel" required v-model="patient.telefone" @input="$myFunctions.formatTelInput($event, patient.telefone)">
+                <input type="text" id="tel" required v-model="customer.telefone" @input="$myFunctions.formatTelInput($event, customer.telefone)">
             </div>
             <div class="input-group">
                 <label>Foto de perfil</label>
                 <div class="flex items-center mt-2">
-                    <img :src="patient.url_foto != undefined ? patient.url_foto : defaultUserImage" class="avatar avatar-g">
+                    <img :src="customer.url_foto != undefined ? customer.url_foto : defaultUserImage" class="avatar avatar-g">
                     <input type="file" @change="onFileChange" accept="image/*">
                 </div>
             </div>
@@ -39,16 +39,16 @@ export default {
         }
     },
     computed: {
-        patient: function () {
+        customer: function () {
             return reactive(this.$global.contentObject);
         }
     },
     methods: {
-        savePatient: function () {
+        saveCustomer: function () {
             this.$myFunctions.resetResponse(this);
             this.invalidForm = false;
 
-            console.log(this.patient)
+            console.log(this.customer)
             this.$emit("savedContent");
         },
         onFileChange(event) {
@@ -58,7 +58,7 @@ export default {
                 const reader = new FileReader();
 
                 reader.onload = (e) => {
-                    this.patient.url_foto = e.target.result; // Define a URL base64 no estado
+                    this.customer.url_foto = e.target.result; // Define a URL base64 no estado
                 };
 
                 reader.readAsDataURL(file); // Lê o arquivo como um Data URL (base64)

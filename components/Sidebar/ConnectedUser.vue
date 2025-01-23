@@ -1,9 +1,9 @@
 <template>
     <div class="connected-user flex items-center">
-        <font-awesome icon="user-doctor" class="sidebar-icons" />
-        <div class="connected-user-informations">
-            <p class="fontsize-md sidebar-text">Ozonmar</p>
-            <p class="fontsize-sm sidebar-text">Av. das Flores, 1485</p>
+        <font-awesome icon="store" class="sidebar-icons" />
+        <div class="connected-user-informations w-full">
+            <p class="fontsize-md sidebar-text line-clamp-1">{{ $global.company.name }}</p>
+            <p class="fontsize-sm sidebar-text line-clamp-1">{{ $global.company.adress }}</p>
         </div>
     </div>
 </template>

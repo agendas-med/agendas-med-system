@@ -13,7 +13,7 @@
     box-sizing: border-box;
 }
 
-html, body {
+html, body, #__nuxt {
     overflow: hidden;
     min-height: 100vh;
     position: relative;
@@ -205,6 +205,11 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
 
 .filter {
     margin: var(--space-6) 0;
+    display: flex;
+
+    & button {
+      max-width: 200px;
+    }
 }
 
 input[type="radio"] {

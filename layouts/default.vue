@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div class="w-full h-full flex items-center justify-center absolute" v-if="systemLoading">
+        <UtilsLoading :loading="true" />
+    </div>
+    <div v-else>
         <SidebarMenu class="sidebar" ref="sidebar" :class="isResponsive ? sidebarOpen  ? 'sidebar-opened' : 'sidebar-closed' : ''" @closeSidebar="sidebarOpen = false" />
         <div class="sidebar-menu-wrapper" v-show="isResponsive && sidebarOpen" v-on:click="toggleSidebar()"></div>
         <Header class="header" @toggleMenu="toggleSidebar()" />
@@ -13,21 +16,134 @@ export default {
     data() {
         return {
             sidebarOpen: false,
-            isResponsive: window.innerWidth <= 1029
+            isResponsive: window.innerWidth <= 1029,
+            systemLoading: true
         }
     },
     methods: {
         toggleSidebar: function () {
             this.sidebarOpen = !this.sidebarOpen;
+        },
+        getCompany: function () {
+            return new Promise((resolve, reject) => {
+                this.$global.company = {
+                    id: 1,
+                    name: "Barbearia Estilo & Barba",
+                    adress: "Rua dos Cabelos, 123 - Centro, São Paulo, SP"
+                }
+
+                resolve();
+            })
+        },
+        getUser: function () {
+            return new Promise((resolve, reject) => {
+                this.$global.user = {
+                    id: 1,
+                    name: "Saymon",
+                    email: "linnubr@gmail.com",
+                    url_photo: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
+                    tel: "43996352536",
+                    cep: "83322070",
+                    adress: "Rua Brasholanda 556",
+                    city: "Pinhais",
+                    state: "PR",
+                    country: "Brasil",
+                    configurations: {
+                        opening_hours: [
+                            {
+                                day: 1, // Domingo
+                                hours: []
+                            },
+                            {
+                                day: 2, // Segunda-feira
+                                hours: [
+                                    {
+                                        initial_date: "09:00",
+                                        final_date: "12:00"
+                                    },
+                                    {
+                                        initial_date: "13:00",
+                                        final_date: "18:00"
+                                    }
+                                ]
+                            },
+                            {
+                                day: 3, // Terça-feira
+                                hours: [] // Sem horário
+                            },
+                            {
+                                day: 4, // Quarta-feira
+                                hours: [
+                                    {
+                                        initial_date: "09:00",
+                                        final_date: "12:00"
+                                    },
+                                    {
+                                        initial_date: "13:00",
+                                        final_date: "18:00"
+                                    }
+                                ]
+                            },
+                            {
+                                day: 5, // Quinta-feira
+                                hours: [
+                                    {
+                                        initial_date: "09:00",
+                                        final_date: "12:00"
+                                    },
+                                    {
+                                        initial_date: "13:00",
+                                        final_date: "18:00"
+                                    }
+                                ]
+                            },
+                            {
+                                day: 6, // Sexta-feira
+                                hours: [] // Sem horário
+                            },
+                            {
+                                day: 7, // Sábado
+                                hours: [] // Sem horário
+                            }
+                        ],
+                        notifications: [
+                            {
+                                id: "scheduled_consultation",
+                                active: false
+                            },
+                            {
+                                id: "in_app_payment",
+                                active: true
+                            },
+                            {
+                                id: "consultation_cancelation",
+                                active: true
+                            }
+                        ]
+                    }
+                }
+
+                resolve();
+            })
         }
     },
     mounted: function () {
         window.onresize = () => {
             this.isResponsive = window.innerWidth <= 1029;
         }
+    },
+    async created() {
+        this.getCompany().then(() => {
+            this.getUser().then(() => {
+                setTimeout(() => {
+                    this.systemLoading = false;
+                }, 500)
+            })
+        })
     }
 }
 </script>
+
 <style>
     .sidebar {
         position: fixed;

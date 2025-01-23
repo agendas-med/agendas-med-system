@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   fontawesome: {
     icons: {
-      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'user-doctor', 'calendar-day', 'user-group', 
+      solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'store', 'calendar-day', 'user-group', 
         'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right',
         'backward-step', 'forward-step', 'plus', 'user-pen'],
       regular: ['comment', 'face-smile'],
