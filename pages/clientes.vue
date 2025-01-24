@@ -10,22 +10,21 @@
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
         <UtilsLoading :loading="loading" />
         <UtilsDataTable v-if="!loading" :dataTable="clientes" :rowsPerPage="7" table="cliente">
-            <template #column-nome="{ item }">
+            <template #column-cliente="{ item }">
                 <div class="flex items-center">
                     <img :src="item.url_foto" class="avatar avatar-pp" alt="">
                     <div>
                         <p><strong>{{ item.nome }}</strong></p>
-                        <p class="cinza">{{ $myFunctions.returnAge(item.data_nascimento) }}</p>
                     </div>
                 </div>
             </template>
             <template #column-telefone="{ item }">
                 <p>{{ $myFunctions.formatTel(item.telefone) }}</p>
             </template>
-            <template #column-ultima_consulta="{ item }">
+            <template #column-último-agendamento="{ item }">
                 <p>{{ $myFunctions.formatDate(item.ultimo_agendamento) }}</p>
             </template>
-            <template #column-proxima_consulta="{ item }">
+            <template #column-próximo-agendamento="{ item }">
                 <p>{{ $myFunctions.formatDate(item.proximo_agendamento) }}</p>
             </template>
             <template #column-acoes="{ item }">

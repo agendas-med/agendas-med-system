@@ -137,6 +137,27 @@ html, body, #__nuxt {
   }
 }
 
+.tag {
+  background: var(--cinza-medio);
+  width: fit-content;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+
+  &.red {
+    background: var(--vermelho-suave);
+    color: var(--branco);
+  }
+
+  &.yellow {
+    background: var(--amarelo);
+  }
+
+  &.green {
+    background: var(--verde-escuro);
+    color: var(--branco);
+  }
+}
+
 input[type="submit"] {
   display: none;
 }

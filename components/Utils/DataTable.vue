@@ -17,7 +17,7 @@
               :key="column"
               @click="sortData(column)"
             >
-              <span style="text-transform: capitalize;">{{ column.replace("_", " ") }}</span>
+              <span style="text-transform: capitalize;">{{ column.replace("-", " ") }}</span>
               <span v-if="sortColumn === column">
                 {{ sortDirection === 'asc' ? ' ▲' : ' ▼' }}
               </span>
@@ -82,19 +82,24 @@ export default {
   computed: {
     columnsToRender() {
       if (!this.dataTable || this.dataTable.length === 0) return [];
+
+      // Obtenha todas as colunas disponíveis nos dados
       const allColumns = Object.keys(this.dataTable[0]);
 
-      const customColumns = allColumns.filter((column) => {
-        return this.$slots[`column-${column}`];
-      });
-
-      
-
+      // Obtenha as colunas com templates personalizados (slots)
       const templateColumns = Object.keys(this.$slots)
         .filter((slotName) => slotName.startsWith("column-"))
         .map((slotName) => slotName.replace("column-", ""));
-        
-      return [...new Set([...customColumns, ...templateColumns])] || allColumns;
+
+      // Filtrar colunas dos dados que têm slots definidos
+      const customColumns = allColumns.filter((column) =>
+        this.$slots[`column-${column}`]
+      );
+
+      // Combine as colunas, respeitando a ordem dos slots
+      const orderedColumns = [...templateColumns, ...customColumns.filter((col) => !templateColumns.includes(col))];
+
+      return orderedColumns.length > 0 ? orderedColumns : allColumns;
     },
     totalPages() {
       return this.filteredData.length
@@ -158,7 +163,6 @@ export default {
 </script>
   
   <style>
-  /* Estilize conforme necessário */
   .table {
     width: 100%;
     border-collapse: collapse;

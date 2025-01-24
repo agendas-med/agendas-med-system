@@ -95,6 +95,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     return anos === 1 ? `${anos} Ano` : `${anos} Anos`;
   }
 
+  const formatCurrency = (value) => {  
+    if (isNaN(value)) return "Valor inválido";
+
+    return value.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+    });
+  }
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
@@ -104,6 +113,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatTel,
       formatTelInput,
       formatDate,
-      returnAge
+      returnAge,
+      formatCurrency
   });
 });

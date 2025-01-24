@@ -18,7 +18,7 @@
             <p class="fontsize-sm">FINANCEIRO</p>
             <ul>
                 <li class="fontsize-md sidebar-text">
-                    <router-link to="/pagamentos" @click.native="$emit('closeSidebar')"><font-awesome icon="wallet" class="sidebar-icons" />Pagamentos</router-link>
+                    <router-link to="/financeiro" @click.native="$emit('closeSidebar')"><font-awesome icon="wallet" class="sidebar-icons" />Financeiro</router-link>
                 </li>
             </ul>
         </div>
