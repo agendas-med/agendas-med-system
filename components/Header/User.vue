@@ -11,7 +11,7 @@
             <div v-if="dropdownOpened" class="user-dropdown">
                 <ul>
                 <li v-on:click="toggleDropdown()">
-                    <nuxt-link to="/gerenciar/perfil">
+                    <nuxt-link to="/perfil/gerenciar">
                         Meu perfil
                     </nuxt-link>
                 </li>

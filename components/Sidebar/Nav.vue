@@ -18,7 +18,15 @@
             <p class="fontsize-sm">FINANCEIRO</p>
             <ul>
                 <li class="fontsize-md sidebar-text">
-                    <router-link to="/financeiro" @click.native="$emit('closeSidebar')"><font-awesome icon="wallet" class="sidebar-icons" />Financeiro</router-link>
+                    <router-link to="/financeiro/pagamentos" @click.native="$emit('closeSidebar')"><font-awesome icon="wallet" class="sidebar-icons" />Financeiro</router-link>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-group">
+            <p class="fontsize-sm">CONFIGURAÇÕES</p>
+            <ul>
+                <li class="fontsize-md sidebar-text">
+                    <router-link to="/configuracoes" @click.native="$emit('closeSidebar')"><font-awesome icon="gear" class="sidebar-icons" />Configurações</router-link>
                 </li>
             </ul>
         </div>

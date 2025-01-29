@@ -52,7 +52,6 @@
 </template>
 <script>
 export default {
-    props: ["event"],
     data() {
         return {
             servicos: [
@@ -67,22 +66,10 @@ export default {
                 { id: 9, nome: 'Penteado' },
                 { id: 10, nome: 'Tratamento capilar' }
             ],
-            agendamento: {
-                cliente_id: null,
-                cliente_nome: "",
-                servico: "",
-                data: "",
-                duracao: "",
-                observacoes: ""
-            },
+            agendamento: {},
             response: "",
             responseType: "",
             invalidForm: true
-        }
-    },
-    computed: {
-        agendamento: function () {
-            return reactive(this.$global.contentObject);
         }
     },
     methods: {
@@ -108,7 +95,7 @@ export default {
         }
     },
     mounted: function () {
-        this.agendamento = this.event;
+        this.agendamento = reactive(this.$global.contentObject);
     }
 }
 </script>

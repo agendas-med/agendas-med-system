@@ -29,25 +29,7 @@ export default {
                 this.$global.company = {
                     id: 1,
                     name: "Barbearia Estilo & Barba",
-                    adress: "Rua dos Cabelos, 123 - Centro, São Paulo, SP"
-                }
-
-                resolve();
-            })
-        },
-        getUser: function () {
-            return new Promise((resolve, reject) => {
-                this.$global.user = {
-                    id: 1,
-                    name: "Saymon",
-                    email: "linnubr@gmail.com",
-                    url_photo: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
-                    tel: "43996352536",
-                    cep: "83322070",
-                    adress: "Rua Brasholanda 556",
-                    city: "Pinhais",
-                    state: "PR",
-                    country: "Brasil",
+                    adress: "Rua dos Cabelos, 123 - Centro, São Paulo, SP",
                     configurations: {
                         opening_hours: [
                             {
@@ -125,6 +107,44 @@ export default {
 
                 resolve();
             })
+        },
+        getUser: function () {
+            return new Promise((resolve, reject) => {
+                this.$global.user = {
+                    id: 1,
+                    name: "Saymon",
+                    email: "linnubr@gmail.com",
+                    url_photo: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
+                    tel: "43996352536",
+                    cep: "83322070",
+                    adress: "Rua Brasholanda 556",
+                    city: "Pinhais",
+                    state: "PR",
+                    country: "Brasil"
+                }
+
+                resolve();
+            })
+        },
+        isValidRoute: function (path) {
+            let routes = [
+                "/agenda",
+                "/clientes",
+                "/relatorios",
+                "/agenda",
+                "/financeiro",
+                "/financeiro/pagamentos",
+                "/financeiro/servicos",
+                "/financeiro/metodos-pagamento",
+                "/configuracoes",
+                "/configuracoes/usuarios",
+                "/configuracoes/preferencias",
+                "/perfil",
+                "/entrar",
+                "/registro"
+            ]
+            
+            return routes.some(route => route == path);
         }
     },
     mounted: function () {
@@ -133,6 +153,10 @@ export default {
         }
     },
     async created() {
+        if (!this.isValidRoute(this.$route.path)) {
+            //window.location.href = "/entrar";
+        }
+
         this.getCompany().then(() => {
             this.getUser().then(() => {
                 setTimeout(() => {

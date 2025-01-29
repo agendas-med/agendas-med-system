@@ -17,7 +17,7 @@
               :key="column"
               @click="sortData(column)"
             >
-              <span style="text-transform: capitalize;">{{ column.replace("-", " ") }}</span>
+              <span style="text-transform: capitalize;">{{ column.replace(/-/g, " ") }}</span>
               <span v-if="sortColumn === column">
                 {{ sortDirection === 'asc' ? ' ▲' : ' ▼' }}
               </span>
@@ -26,7 +26,7 @@
         </thead>
         <tbody>
           <tr v-for="item in paginatedData" :key="item.id">
-            <td v-for="column in columnsToRender" :key="column">
+            <td v-for="column in columnsToRender" :key="column" :data-th="returnFormatedDataTh(column)">
               <!-- Renderiza o slot personalizado, se existir -->
               <slot 
                     :name="`column-${column}`" 
@@ -113,6 +113,12 @@ export default {
     },
   },
   methods: {
+    returnFormatedDataTh: function (string) {
+      string = string.replace(/-/g, " ");
+      string = this.$myFunctions.capitalize(string);
+
+      return string
+    },
     filterData() {
       if (!this.dataTable || this.dataTable.length === 0) {
         this.filteredData = [];
@@ -178,6 +184,10 @@ export default {
     border-bottom: 1px solid var(--cinza-claro);
   }
 
+  .table tr:hover {
+    background: var(--verde-claro);
+  }
+
   .table td p {
     line-height: 100%;
     margin: var(--space-1) 0;
@@ -205,6 +215,39 @@ export default {
   }
   .search-bar {
     margin-bottom: 10px;
+  }
+
+  @media (max-width: 768px) {
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      border: 2.5px solid var(--cinza-claro);
+      padding: 10px;
+    }
+
+    td {
+      display: grid;
+      grid-template-columns: 1.5fr 2fr;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      place-items: center;
+      text-align: center;
+
+      &:last-child {
+        border: none;
+      }
+    }
+
+    td::before {
+      content: attr(data-th) ": ";
+      font-weight: bold;
+      color: #000;
+      text-align: center;
+    }
   }
   </style>
   

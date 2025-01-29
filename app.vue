@@ -8,7 +8,28 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const layoutName = ['login', 'registro'].includes(route.name) ? 'login' : 'default'
+function isValidRoute (path) {
+  let routes = [
+      "/agenda",
+      "/clientes",
+      "/relatorios",
+      "/agenda",
+      "/financeiro",
+      "/financeiro/pagamentos",
+      "/financeiro/servicos",
+      "/financeiro/metodos-pagamento",
+      "/configuracoes",
+      "/configuracoes/usuarios",
+      "/configuracoes/preferencias",
+      "/perfil",
+      "/entrar",
+      "/registro"
+  ]
+  
+  return routes.some(route => route == path);
+}
+
+const layoutName = isValidRoute(route.path) ? 'default' : 'login';
 
 </script>
 

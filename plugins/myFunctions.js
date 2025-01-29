@@ -104,6 +104,29 @@ export default defineNuxtPlugin((nuxtApp) => {
     });
   }
 
+  const returnFloatNumber = (string) => {
+    let cleaned = string.toString().replace("R$ ", "").replace(",", '.');
+    let formattedNumber = parseFloat(cleaned);
+
+    return formattedNumber.toFixed(2);
+  }
+
+  const capitalize = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  const formatMinutesToTime = (minutes) => {
+      const duration = moment.duration(minutes, "minutes");
+      
+      // Calcula horas e minutos
+      const hours = Math.floor(duration.asHours());
+      const mins = duration.minutes();
+      
+      // Formata como HH:mm
+      return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}h`;
+  }
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
@@ -114,6 +137,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatTelInput,
       formatDate,
       returnAge,
-      formatCurrency
+      formatCurrency,
+      capitalize,
+      formatMinutesToTime,
+      returnFloatNumber
   });
 });

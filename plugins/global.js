@@ -6,20 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     let company = {
         id: 0,
         name: "",
-        adress: ""
-    }
-
-    let user = {
-        id: 0,
-        name: "",
-        email: "",
-        url_photo: "",
-        tel: "",
-        cep: "",
         adress: "",
-        city: "",
-        state: "",
-        country: "",
         configurations: {
             opening_hours: [
                 {
@@ -51,6 +38,19 @@ export default defineNuxtPlugin((nuxtApp) => {
                 }
             ]
         }
+    }
+
+    let user = {
+        id: 0,
+        name: "",
+        email: "",
+        url_photo: "",
+        tel: "",
+        cep: "",
+        adress: "",
+        city: "",
+        state: "",
+        country: ""
     }
   
     nuxtApp.provide('global', {

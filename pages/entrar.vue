@@ -25,7 +25,7 @@
   
   <script>
   export default {
-    layout: 'login',
+    layout: 'entrar',
     data() {
       return {
         email: "",

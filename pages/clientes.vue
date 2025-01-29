@@ -4,7 +4,7 @@
             <UtilsPageheader title="Clientes" subtitle="Veja todas as informações dos seus clientes" />
             <button type="button" v-on:click="newCustomer()" class="btn btn-primary">
                 <font-awesome icon="plus" />
-                Adicionar
+                Cadastrar cliente
             </button>
         </div>
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
@@ -27,7 +27,7 @@
             <template #column-próximo-agendamento="{ item }">
                 <p>{{ $myFunctions.formatDate(item.proximo_agendamento) }}</p>
             </template>
-            <template #column-acoes="{ item }">
+            <template #column-ações="{ item }">
                 <div class="flex space-x-2">
                     <button class="rounded-button" v-on:click="handleCreateSchedule(item)">
                         <font-awesome icon="calendar-day" class="cinza" />
@@ -39,8 +39,8 @@
             </template>
         </UtilsDataTable>
         <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this)">
-            <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent" @savedContent="$myFunctions.closeModal(this, []); goToSchedule()" />
-            <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, [], true);" />
+            <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent" @savedContent="$myFunctions.closeModal(this, [], true); goToSchedule()" />
+            <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, []);" />
         </UtilsModal>
     </section>
 </template>
@@ -100,14 +100,15 @@ export default {
             setTimeout(() => {
                 this.clientes = [
                     { id: 6, nome: 'Rina', data_nascimento: "2024-12-03", telefone: '41998564582', ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 7, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                    { id: 7, nome: 'Yuto', data_nascimento: "2024-12-03", telefone: '41998564582',ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
+                    { id: 7, nome: 'Yuto', data_nascimento: "2024-12-03", telefone: '41998564582',ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
+                    { id: 8, nome: 'Miyo', data_nascimento: "2024-12-03", telefone: '41998564582',ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
                 ]
 
                 this.loading = false;
             }, 1000)
         },
         handleCreateSchedule: function (user) {
-            user = {
+            let rowUser = {
                 cliente_id: user.id,
                 cliente_nome: user.nome,
                 servico: "",
@@ -116,7 +117,7 @@ export default {
                 observacoes: ""
             }
 
-            this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", {}, "modalContentAgenda", user);
+            this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", {}, "modalContentAgenda", rowUser);
         },
         handleEditCustomer: function (item) {
             this.$myFunctions.openModal(this, "Alterar cliente", "Salvar", "Cancelar", {}, 'modalContentClientes', item);
