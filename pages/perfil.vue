@@ -87,7 +87,7 @@ export default {
                 {
                     name: "Perfil",
                     quantity: null,
-                    route: "gerenciar",
+                    route: "",
                     default: true
                 }
             ],

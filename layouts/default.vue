@@ -125,26 +125,6 @@ export default {
 
                 resolve();
             })
-        },
-        isValidRoute: function (path) {
-            let routes = [
-                "/agenda",
-                "/clientes",
-                "/relatorios",
-                "/agenda",
-                "/financeiro",
-                "/financeiro/pagamentos",
-                "/financeiro/servicos",
-                "/financeiro/metodos-pagamento",
-                "/configuracoes",
-                "/configuracoes/usuarios",
-                "/configuracoes/preferencias",
-                "/perfil",
-                "/entrar",
-                "/registro"
-            ]
-            
-            return routes.some(route => route == path);
         }
     },
     mounted: function () {
@@ -153,9 +133,6 @@ export default {
         }
     },
     async created() {
-        if (!this.isValidRoute(this.$route.path)) {
-            //window.location.href = "/entrar";
-        }
 
         this.getCompany().then(() => {
             this.getUser().then(() => {

@@ -21,9 +21,7 @@ function isValidRoute (path) {
       "/configuracoes",
       "/configuracoes/usuarios",
       "/configuracoes/preferencias",
-      "/perfil",
-      "/entrar",
-      "/registro"
+      "/perfil"
   ]
   
   return routes.some(route => route == path);
