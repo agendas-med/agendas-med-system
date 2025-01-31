@@ -3,7 +3,7 @@
         <UtilsPageheader title="Meu perfil" subtitle="Gerencie suas informações pessoais, preferências e configurações da sua conta." />
         <UtilsTabs :tabs="tabs" @changedTab="$myFunctions.goToSubRoute(this, $event, 'perfil', tabs)" />
         <div class="profile-header flex items-center">
-            <img :src="$global.user.url_photo" class="avatar avatar-g">
+            <img :src="user.url_photo" class="avatar avatar-g">
             <div class="profile-header-informations">
                 <p class="fontsize-lg cinza">{{ user.name }}</p>
                 <p class="fontsize-sm cinza">{{ user.email }}</p>
@@ -90,22 +90,7 @@ export default {
                     route: "",
                     default: true
                 }
-            ],
-            conta: {
-                foto_perfil: "https://i.pinimg.com/736x/43/2d/70/432d70784fec86547313cb27bcdde7f7.jpg",
-                nome: "Ana Clara",
-                email: "anaclara@gmail.com"
-            },
-            form_data: {
-                crm: "",
-                tel: "",
-                cep: "",
-                num_consultorio: "",
-                cidade: "",
-                especialidade: "",
-                nome_consultorio: "",
-                endereco: ""
-            }
+            ]
         }
     },
     watch: {
@@ -131,7 +116,7 @@ export default {
     },
     methods: {
         changeProfileInformations: function () {
-            console.log(this.form_data)
+            console.log(this.user)
         },
         resetPassword: function () {
             console.log("Alterar senha");

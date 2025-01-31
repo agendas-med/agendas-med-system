@@ -11,6 +11,10 @@ export default defineNuxtConfig({
       ]
     },
   },
+  devServer: {
+    host: '0.0.0.0',
+    port: 8080 
+  },
   devtools: { enabled: false },
   css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   fontawesome: {

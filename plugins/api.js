@@ -1,0 +1,43 @@
+import axios from 'axios';
+
+export default defineNuxtPlugin((nuxtApp) => {
+    let url_api;
+
+    const dev_environment = "http://192.168.15.43:3001"; //Ambiente de desenvolvimento.
+    const test_environment = ""; //Ambiente de teste.
+    const production_environment = ""; //Ambiente de produção.
+
+    // TROCA DO AMBIENTE DA API
+    //
+    // O parâmetro que deverá ser informado será 0, 1 ou 2, sendo que:
+    // 0 - Ambiente de desenvolvimento
+    // 1 - Ambiente de teste
+    // 2 - Ambiente de produção
+    // 
+    // ==============================
+    let ambient = 0;
+    // ==============================
+    //
+
+
+    switch (ambient) {
+        case 0:
+            url_api = dev_environment;
+            break;
+        case 1: 
+            url_api = test_environment;
+            break;
+        case 2: 
+            url_api = production_environment;
+            break;
+    }
+
+    const api = axios.create({
+        baseURL: url_api
+    });
+  
+    nuxtApp.provide('base', {
+        api
+    });
+  });
+  

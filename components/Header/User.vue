@@ -32,6 +32,7 @@ export default {
     methods: {
         logout: function () {
             this.toggleDropdown();
+            this.$myFunctions.logoutUser();
         },
         toggleDropdown: function () {
             this.dropdownOpened = !this.dropdownOpened;

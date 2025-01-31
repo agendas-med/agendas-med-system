@@ -3,20 +3,20 @@
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label for="name">Nome</label>
-                <input type="text" id="name" required v-model="customer.nome">
+                <input type="text" id="name" required v-model="customer.name">
             </div>
             <div class="input-group">
                 <label for="birthday">Data de nascimento</label>
-                <input type="date" id="birthday" required v-model="customer.data_nascimento">
+                <input type="date" id="birthday" required v-model="customer.birthday">
             </div>
             <div class="input-group">
                 <label for="tel">Telefone</label>
-                <input type="text" id="tel" required v-model="customer.telefone" @input="$myFunctions.formatTelInput($event, customer.telefone)">
+                <input type="text" id="tel" required v-model="customer.tel" @input="$myFunctions.formatTelInput($event, customer.tel)">
             </div>
             <div class="input-group">
                 <label>Foto de perfil</label>
                 <div class="flex items-center mt-2">
-                    <img :src="customer.url_foto != undefined ? customer.url_foto : defaultUserImage" class="avatar avatar-g">
+                    <img :src="customer.image != undefined ? customer.image : defaultUserImage" class="avatar avatar-g">
                     <input type="file" @change="onFileChange" accept="image/*">
                 </div>
             </div>
@@ -58,7 +58,7 @@ export default {
                 const reader = new FileReader();
 
                 reader.onload = (e) => {
-                    this.customer.url_foto = e.target.result; // Define a URL base64 no estado
+                    this.customer.image = e.target.result; // Define a URL base64 no estado
                 };
 
                 reader.readAsDataURL(file); // Lê o arquivo como um Data URL (base64)
@@ -67,6 +67,9 @@ export default {
     },
     mounted: function () {
         $("#name").focus();
+        if (this.customer.tel != undefined) {
+            $("#tel").val(this.$myFunctions.formatTel(this.customer.tel));
+        }
     }
 }
 </script>

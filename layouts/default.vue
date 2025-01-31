@@ -133,12 +133,13 @@ export default {
         }
     },
     async created() {
-
-        this.getCompany().then(() => {
-            this.getUser().then(() => {
-                setTimeout(() => {
-                    this.systemLoading = false;
-                }, 500)
+        this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
+            this.getCompany().then(() => {
+                this.getUser().then(() => {
+                    setTimeout(() => {
+                        this.systemLoading = false;
+                    }, 500)
+                })
             })
         })
     }

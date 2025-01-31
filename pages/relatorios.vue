@@ -77,9 +77,6 @@ export default {
 
             if (!this.year) this.year = new Date().getFullYear();
 
-            console.log("filter week: " + this.week)
-            console.log("filter year: " + this.year)
-
             this.loading = true;
 
             setTimeout(() => {

@@ -3,11 +3,11 @@
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label>Cliente</label>
-                <UtilsAjaxAutocomplete @select="setCustomer($event)" ajaxtype="clientes" :entityid="agendamento.cliente_id" :entityname="agendamento.cliente_nome" :required="true" />
+                <UtilsAjaxAutocomplete @select="setCustomer($event)" ajaxtype="clientes" :entityid="agendamento.customer_id" :entityname="agendamento.customer_name" :required="true" />
             </div>
             <div class="input-group">
-                <label for="specialty">Serviço</label>
-                <select id="specialty" v-model="agendamento.servico" required>
+                <label for="service">Serviço</label>
+                <select id="service" v-model="agendamento.service" required>
                     <option value="">* Selecione *</option>
                     <option :value="servico.id" v-for="servico in servicos">{{ servico.nome }}</option>
                 </select>
@@ -15,11 +15,11 @@
             <div class="grid grid-cols-[2fr_1fr] gap-4">
                 <div class="input-group">
                     <label for="date">Data e horário</label>
-                    <input type="datetime-local" v-model="agendamento.data" id="date" required>
+                    <input type="datetime-local" v-model="agendamento.date" id="date" required>
                 </div>
                 <div class="input-group">
                     <label for="duration">Duração</label>
-                    <select id="duration" v-model="agendamento.duracao" required>
+                    <select id="duration" v-model="agendamento.duration" required>
                         <option value="">* Selecione *</option>
                         <option value="15">15 minutos</option>
                         <option value="30">30 minutos</option>
@@ -42,7 +42,7 @@
             </div>
             <div class="input-group">
                 <label for="observations">Observações</label>
-                <textarea id="observations" v-model="agendamento.observacoes" style="height: 101px;"></textarea>
+                <textarea id="observations" v-model="agendamento.observations" style="height: 101px;"></textarea>
             </div>
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
@@ -75,8 +75,8 @@ export default {
     methods: {
         setCustomer: function (event) {
             if (event.id != null) {
-                this.agendamento.cliente_id = event.id;
-                this.agendamento.cliente_nome = event.nome;
+                this.agendamento.customer_id = event.id;
+                this.agendamento.customer_name = event.nome;
             }
         },
         saveSchedule: function () {

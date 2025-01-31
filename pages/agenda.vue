@@ -17,7 +17,7 @@
       </div>
     </div>
     <FullCalendar ref="fullCalendar" :options="calendarOptions" v-if="!reload" />
-    <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId', 'dateString'])">
+    <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId'])">
       <ModalContentAgenda :event="selectedEvent" @savedContent="$myFunctions.closeModal(this); getEvents();" />
     </UtilsModal>
   </div>
@@ -49,12 +49,12 @@
         eventId: "",
         responsive: false,
         selectedEvent: {
-          cliente_id: null,
-          cliente_nome: "",
-          servicos: "",
-          data: "",
-          duracao: "",
-          observacoes: ""
+          customer_id: null,
+          customer_name: "",
+          service: "",
+          date: "",
+          duration: "",
+          observations: ""
         }
       }
     },
@@ -110,12 +110,12 @@
             title: "Aline - 1ª Consulta",
             start: "2024-12-02T14:30:45-03:00",
             end: "2024-12-02T14:30:45-03:00",
-            cliente_id: 0,
-            cliente_nome: "Saymon Felipe",
-            servico: "1",
-            data: "2024-12-02T14:30:45",
-            duracao: "15",
-            observacoes: "testeeee"
+            customer_id: 0,
+            customer_name: "Saymon Felipe",
+            service: "1",
+            date: "2024-12-02T14:30:45",
+            duration: "15",
+            observations: "testeeee"
           },
           {
             id: 2,
@@ -178,12 +178,12 @@
         let filteredEvents = [];
 
         this.selectedEvent = {
-          paciente_id: null,
-          paciente_nome: "",
-          especialidade: "",
-          data: e.dateStr + "T09:00:00",
-          duracao: "",
-          observacoes: ""
+          customer_id: null,
+          customer_name: "",
+          service: "",
+          date: e.dateStr + "T09:00:00",
+          duration: "",
+          observations: ""
         }
 
         for (let i = 0; i < this.calendarEvents.length; i++) {
@@ -192,7 +192,7 @@
           }
         }
 
-        this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar");
+        this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", {}, "", this.selectedEvent);
       },
       isSameDay: function (dateString, dateObj) {
           const inputDate = new Date(dateString);

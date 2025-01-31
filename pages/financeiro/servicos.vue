@@ -7,16 +7,16 @@
         <UtilsLoading :loading="loading" />
         <UtilsDataTable v-if="!loading" :dataTable="servicos" :rowsPerPage="7" table="serviço">
             <template #column-serviço="{ item }">
-                <p>{{ item.nome }}</p>
+                <p>{{ item.name }}</p>
             </template>
             <template #column-duração="{ item }">
-                <p>{{ $myFunctions.formatMinutesToTime(item.tempo_duracao) }}</p>
+                <p>{{ $myFunctions.formatMinutesToTime(item.duration) }}</p>
             </template>
             <template #column-observações="{ item }">
-                <p>{{ item.observacoes }}</p>
+                <p>{{ item.observations }}</p>
             </template>
             <template #column-valor="{ item }">
-                <p>{{ $myFunctions.formatCurrency(item.valor) }}</p>
+                <p>{{ $myFunctions.formatCurrency(item.value) }}</p>
             </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
@@ -60,27 +60,27 @@ export default {
 
             setTimeout(() => {
                 this.servicos = [
-                {
-                    id: 1,
-                    nome: "Corte de Cabelo Masculino",
-                    tempo_duracao: 30, // em minutos
-                    observacoes: "Inclui lavagem e finalização com pomada ou spray fixador.",
-                    valor: 50.00
-                },
-                {
-                    id: 2,
-                    nome: "Barba Completa",
-                    tempo_duracao: 45,
-                    observacoes: "Aparação, hidratação e toalha quente.",
-                    valor: 40.00
-                },
-                {
-                    id: 3,
-                    nome: "Corte Infantil",
-                    tempo_duracao: 25,
-                    observacoes: "Corte especial para crianças até 12 anos.",
-                    valor: 35.00
-                }
+                    {
+                        id: 1,
+                        name: "Corte de Cabelo Masculino",
+                        duration: 30, // em minutos
+                        observations: "Inclui lavagem e finalização com pomada ou spray fixador.",
+                        value: 50.00
+                    },
+                    {
+                        id: 2,
+                        name: "Barba Completa",
+                        duration: 45,
+                        observations: "Aparação, hidratação e toalha quente.",
+                        value: 40.00
+                    },
+                    {
+                        id: 3,
+                        name: "Corte Infantil",
+                        duration: 25,
+                        observations: "Corte especial para crianças até 12 anos.",
+                        value: 35.00
+                    }
                 ]
 
                 this.loading = false;

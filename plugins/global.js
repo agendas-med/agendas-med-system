@@ -52,10 +52,13 @@ export default defineNuxtPlugin((nuxtApp) => {
         state: "",
         country: ""
     }
+
+    let jwtLoaded = false;
   
     nuxtApp.provide('global', {
         contentObject,
-        company
+        company,
+        jwtLoaded
     });
   });
   

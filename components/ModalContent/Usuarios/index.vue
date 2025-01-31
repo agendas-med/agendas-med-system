@@ -3,7 +3,7 @@
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" v-model="usuario.nome" required>
+                <input type="text" id="nome" v-model="usuario.name" required>
             </div>
             <div class="input-group">
                 <label for="email">E-mail</label>
@@ -11,14 +11,14 @@
             </div>
             <div class="input-group">
                 <label for="cargo">Cargo</label>
-                <select id="cargo" v-model="usuario.cargo" required>
+                <select id="cargo" v-model="usuario.role" required>
                     <option value="1">Administrador</option>
                     <option value="2">Regular</option>
                 </select>
             </div>
-            <div class="input-group" v-if="usuario.senha_temporaria != undefined">
+            <div class="input-group" v-if="usuario.temporary_password != undefined">
                 <label for="password">Senha temporária</label>
-                <input type="text" id="password" v-model="usuario.senha_temporaria" disabled>
+                <input type="text" id="password" v-model="usuario.temporary_password" disabled>
             </div>
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
@@ -31,10 +31,10 @@ export default {
     data() {
         return {
             usuario: {
-                nome: "",
+                name: "",
                 email: "",
-                cargo: null,
-                senha_temporaria: ""
+                role: null,
+                temporary_password: ""
             },
             response: "",
             responseType: "",

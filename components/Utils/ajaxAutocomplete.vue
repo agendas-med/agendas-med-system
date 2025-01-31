@@ -4,7 +4,7 @@
         <div class="ajax-autocomplete-container">
             <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null ? '*** para todos' : ''" v-model="entity_search">
             <div class="selected-entity" v-if="entity_object.id != null">
-                {{ entity_object.nome }}
+                {{ entity_object.name }}
                 <font-awesome icon="times" v-on:click="deselectEntity()" class="cursor-pointer" />
             </div>
             <div class="entities-list" v-if="entity_search.length > 2 && !force_close">
@@ -15,10 +15,10 @@
                     <div class="entity" v-for="(entityObj, index) in entities_list" :key="index" v-on:click="selectEntity(entityObj)">
                         <div class="customers-entity" v-if="ajaxtype == 'clientes'">
                             <div class="entity-line">
-                                <p>{{ entityObj.nome }}</p>
+                                <p>{{ entityObj.name }}</p>
                             </div>
                             <div class="entity-line cinza">
-                                <p class="cinza">{{ entityObj.telefone }}</p>
+                                <p class="cinza">{{ $myFunctions.formatTel(entityObj.tel) }}</p>
                             </div>
                         </div>
                     </div>
@@ -38,9 +38,9 @@ export default {
             entity_id: null,
             entity_search: "",
             entity_object: {
-                nome: "",
+                name: "",
                 id: null,
-                telefone: ""
+                tel: ""
             },
             entities_list: [],
             force_close: false
@@ -55,7 +55,7 @@ export default {
                 this.checkValidity();
             } else {
                 this.entity_object.id = this.entityid;
-                this.entity_object.nome = this.entityname;
+                this.entity_object.name = this.entityname;
                 this.force_close = false;
                 this.checkValidity();
             }
@@ -90,7 +90,7 @@ export default {
         },
         deselectEntity: function () {
             this.entity_object = {
-                nome: "",
+                name: "",
                 id: null
             }
             this.entity_search = "";
@@ -100,7 +100,7 @@ export default {
             this.entities_list = [];
             this.force_close = true;
             this.entity_object = {
-                nome: this.entity_search,
+                name: this.entity_search,
                 id: null,
                 telefone: ""
             }
@@ -127,14 +127,14 @@ export default {
 
             this.entities_list = [
                 {
-                    nome: "Saymon",
+                    name: "Saymon",
                     id: 0,
-                    telefone: "(41) 9 9635-2536"
+                    tel: "41984093742"
                 },
                 {
-                    nome: "João",
+                    name: "João",
                     id: 1,
-                    telefone: "(99) 9 9999-9999"
+                    tel: "43987548255"
                 }
             ]
             console.log(this.entities_list)

@@ -1,13 +1,13 @@
 export default defineNuxtPlugin((nuxtApp) => {
   // Métodos de resposta
   const setResponse = (instance, msg, type) => {
-      instance.response = msg;
-      instance.responseType = type;
+    instance.response = msg;
+    instance.responseType = type;
   };
 
   const resetResponse = (instance) => {
-      instance.response = "";
-      instance.responseType = "";
+    instance.response = "";
+    instance.responseType = "";
   };
 
   //Métodos de navegação
@@ -127,6 +127,104 @@ export default defineNuxtPlugin((nuxtApp) => {
       return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}h`;
   }
 
+  //Métodos validação
+
+  const isValidRoute = (path) => {
+    let routes = [
+        "/agenda",
+        "/clientes",
+        "/relatorios",
+        "/agenda",
+        "/financeiro",
+        "/financeiro/pagamentos",
+        "/financeiro/servicos",
+        "/financeiro/metodos-pagamento",
+        "/configuracoes",
+        "/configuracoes/usuarios",
+        "/configuracoes/preferencias",
+        "/perfil"
+    ]
+    
+    return routes.some(route => route == path);
+  }
+
+  //Metodos autenticação
+  const setJwtInLocalStorage = (instance, token) => {
+    localStorage.setItem("agendaspro_jwt", token);
+    checkAndSetJwt(instance);
+  }
+
+  const getJwtInLocalStorage = () => {
+    return localStorage.getItem("agendaspro_jwt");
+  }
+
+  const removeJwtFromLocalStorage = () => {
+    localStorage.removeItem("agendaspro_jwt");
+  }
+
+  const checkAndSetJwt = (instance) => {
+    let interval = setInterval(() => {
+        let jwt = getJwtInLocalStorage();
+
+        if (jwt != null) {
+          instance.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+          instance.$global.jwtLoaded = true;
+
+          clearInterval(interval);
+        }
+    }, 100)
+  }
+
+  const checkIfUserIsAuthenticated = (instance, first = false) => {
+    return new Promise((resolve) => {
+        let pathName = window.location.pathname;
+        let jwt = "Bearer " + getJwtInLocalStorage();
+
+        if (jwt == "Bearer null") {
+          if (isValidRoute(pathName)) {
+            window.location.href ="/entrar";
+            return;
+          }
+        } else {
+            let data = {
+                token: jwt
+            }
+
+            instance.$base.api.post("/users/check_jwt", data) // Se ja estiver logado no sistema e acessar a página de login, é checkado a valia do token JWT e então redirecionado para a index.
+            .then(function (res) { 
+                setJwtInLocalStorage(instance, res.data.returnObj.newToken); // Setando o novo jwt que foi resetado
+                if (pathName == "/entrar") { // Se o usuário estiver logado e entrar em login, o mesmo é logado novamente e direcionado para a index.
+                  
+                  let loginForm = $("#login-form");
+                  loginForm.find("input").attr("disabled", "disabled");
+                  loginForm.find("button").attr("disabled", "disabled").addClass("btn-loading");
+
+                  setTimeout(() => {
+                    window.location.href ="/agenda";
+                  }, 1000);
+                }
+                resolve();
+            })
+            .catch(function () { // Caso contrário ele é deslogado e enviado para login.
+              logoutUser();
+              return;
+            })
+            .then(function () { // Chamada recursiva da função se o usuario estiver na home
+                if (isValidRoute(pathName) && first) {
+                  setTimeout(() => {
+                    checkIfUserIsAuthenticated(instance, first);
+                  }, 10 * 1000)
+                }
+            })
+        }
+    })
+  }
+
+  const logoutUser = () => {
+    removeJwtFromLocalStorage();
+    window.location.href ="/entrar";
+  }
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
@@ -140,6 +238,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatCurrency,
       capitalize,
       formatMinutesToTime,
-      returnFloatNumber
+      returnFloatNumber,
+      logoutUser,
+      checkIfUserIsAuthenticated,
+      checkAndSetJwt,
+      removeJwtFromLocalStorage,
+      getJwtInLocalStorage,
+      setJwtInLocalStorage,
+      isValidRoute
   });
 });

@@ -4,7 +4,7 @@
         <h1 class="fontsize-xl-bold preto">Entrar</h1>
         <p class="fontsize-md cinza">Faça login na sua conta do AgendasPro para acompanhar seus agendamentos.</p>
       </div>
-      <form @submit.prevent="login">
+      <form @submit.prevent="login" id="login-form">
         <div class="form-group">
           <label for="email">Seu email</label>
           <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
@@ -12,7 +12,7 @@
         <div class="form-group">
           <label for="password">Sua senha</label>
           <input type="password" v-model="password" id="password" required>
-          <UtilsSwitch label="Lembrar-me" @changedState="lembrar" style="margin-top: var(--space-3);" />
+          <UtilsSwitch v-if="showLembrar" label="Lembrar-me" @changedState="lembrar = $event" style="margin-top: var(--space-3);" />
         </div>
         <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
         <button type="submit" class="btn btn-primary">Entrar</button>
@@ -32,27 +32,51 @@
         password: "",
         response: "",
         responseType: "",
-        loading: false
+        loading: false,
+        lembrar: false,
+        showLembrar: true
       }
+    },
+    watch: {
+      email: function () {
+        if (this.email == localStorage.getItem("email")) {
+          this.showLembrar = false;
+        }
+      }
+    },
+    mounted: function () {
+      let localStorageEmail = localStorage.getItem("email");
+
+      if (localStorageEmail) this.email = localStorageEmail;
+      
+      this.$myFunctions.checkIfUserIsAuthenticated(this);
     },
     methods: {
       login: function () {
+        let self = this;
         let data = {
           email: this.email,
           password: this.password
         }
 
         this.loading = true;
-        this.$myFunctions.setResponse(this, "Falha na autenticação", "error");
+        
 
-        setTimeout(() => {
-          this.loading = false;
-        }, 5000)
+        this.$base.api.post("/users/login", data)
+        .then(function(response2){            
+          self.$myFunctions.setJwtInLocalStorage(self, response2.data.returnObj.jwtToken);
+          self.$myFunctions.setResponse(self, response2.data.message, "success");
 
-        console.log(data);
-      },
-      lembrar: function (active) {
-        console.log("lembrar email? " + active)
+          if (self.lembrar) {
+            localStorage.setItem("email", self.email);
+          }
+
+          window.location.href = "/agenda";
+        }).catch(() => {
+          self.$myFunctions.setResponse(self, "Falha na autenticação", "error");
+        }).then(() => {
+          self.loading = false;
+        })
       }
     }
   }

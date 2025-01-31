@@ -3,11 +3,11 @@
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label for="servico">Serviço</label>
-                <input type="text" id="servico" v-model="servico.nome" required>
+                <input type="text" id="servico" v-model="servico.name" required>
             </div>
             <div class="input-group">
                 <label for="duration">Duração</label>
-                <select id="duration" v-model="servico.tempo_duracao" required>
+                <select id="duration" v-model="servico.duration" required>
                     <option value="">* Selecione *</option>
                     <option value="15">15 minutos</option>
                     <option value="30">30 minutos</option>
@@ -29,11 +29,11 @@
             </div>
             <div class="input-group">
                 <label for="valor">Valor</label>
-                <UtilsCurrencyInput propPlaceholder="R$ 0,00" propName="valor_servico" propId="valor" propRequired="required" />
+                <UtilsCurrencyInput propPlaceholder="R$ 0,00" propName="value" propId="valor" propRequired="required" />
             </div>
             <div class="input-group">
                 <label for="observations">Observações</label>
-                <textarea id="observations" v-model="servico.observacoes" style="height: 101px;"></textarea>
+                <textarea id="observations" v-model="servico.observations" style="height: 101px;"></textarea>
             </div>
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
@@ -45,27 +45,17 @@
 export default {
     data() {
         return {
-            servicos: [
-                { id: 1, nome: 'Corte de cabelo' },
-                { id: 2, nome: 'Barba completa' },
-                { id: 3, nome: 'Sobrancelha' },
-                { id: 4, nome: 'Corte de cabelo + Barba' },
-                { id: 5, nome: 'Lavagem de cabelo' },
-                { id: 6, nome: 'Corte de cabelo infantil' },
-                { id: 7, nome: 'Corte de cabelo e design de barba' },
-                { id: 8, nome: 'Tinte de cabelo' },
-                { id: 9, nome: 'Penteado' },
-                { id: 10, nome: 'Tratamento capilar' }
-            ],
+            servicos: [],
             servico: {
-                nome: "",
-                duracao: null,
-                observacoes: "",
-                valor: null
+                name: "",
+                duration: null,
+                observations: "",
+                value: null
             },
             response: "",
             responseType: "",
-            invalidForm: true
+            invalidForm: true,
+            service_value: null
         }
     },
     methods: {
@@ -78,18 +68,20 @@ export default {
                 return obj;
             }, {});
 
-            let valor_servico = this.$myFunctions.returnFloatNumber(data["valor_servico"]);
+            let valor_servico = this.$myFunctions.returnFloatNumber(data["value"]);
 
-            this.servico.valor = valor_servico;
+            this.servico.value = valor_servico;
 
-            console.log(this.servico)
             this.$emit("savedContent");
         }
     },
     mounted: function () {
         this.servico = reactive(this.$global.contentObject);
 
-        $("#valor").val(this.$myFunctions.formatCurrency(this.servico.valor));
+        if (this.servico.value != null) {
+            $("#valor").val(this.$myFunctions.formatCurrency(this.servico.value));
+        }
+        
         $("#servico").focus();
     }
 }

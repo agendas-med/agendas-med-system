@@ -7,13 +7,13 @@
         <UtilsLoading :loading="loading" />
         <UtilsDataTable v-if="!loading" :dataTable="usuarios" :rowsPerPage="7" table="usuário">
             <template #column-serviço="{ item }">
-                <p>{{ item.nome }}</p>
+                <p>{{ item.name }}</p>
             </template>
             <template #column-email="{ item }">
                 <p>{{ item.email }}</p>
             </template>
             <template #column-cargo="{ item }">
-                <p>{{ item.cargo == 1 ? "Administrador" : "Regular" }}</p>
+                <p>{{ item.role == 1 ? "Administrador" : "Regular" }}</p>
             </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
@@ -59,38 +59,38 @@ export default {
                 this.usuarios = [
                     {
                         id: 1,
-                        nome: "Saymon",
+                        name: "Saymon",
                         email: "linnubr@gmail.com",
-                        cargo: 1,
-                        senha_temporaria: "a7dce39b1c85d102be12"
+                        role: 1,
+                        temporary_password: "a7dce39b1c85d102be12"
                     },
                     {
                         id: 2,
-                        nome: "Mariana",
+                        name: "Mariana",
                         email: "mariana.santos@gmail.com",
-                        cargo: 2,
-                        senha_temporaria: "8f43d1a1d43e0bcbe987"
+                        role: 2,
+                        temporary_password: "8f43d1a1d43e0bcbe987"
                     },
                     {
                         id: 3,
-                        nome: "João",
+                        name: "João",
                         email: "joao.silva@gmail.com",
-                        cargo: 1,
-                        senha_temporaria: "2ba8f385209b74b98b23"
+                        role: 1,
+                        temporary_password: "2ba8f385209b74b98b23"
                     },
                     {
                         id: 4,
-                        nome: "Camila",
+                        name: "Camila",
                         email: "camila.almeida@gmail.com",
-                        cargo: 2,
-                        senha_temporaria: "4c0a1d63d840d02f6b4f"
+                        role: 2,
+                        temporary_password: "4c0a1d63d840d02f6b4f"
                     },
                     {
                         id: 5,
-                        nome: "Ricardo",
+                        name: "Ricardo",
                         email: "ricardo.monteiro@gmail.com",
-                        cargo: 1,
-                        senha_temporaria: "3f5edca82427ed671a82"
+                        role: 1,
+                        temporary_password: "3f5edca82427ed671a82"
                     }
                 ]
 

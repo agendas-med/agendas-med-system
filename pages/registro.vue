@@ -4,7 +4,11 @@
         <h1 class="fontsize-xl-bold preto">Cadastre-se</h1>
         <p class="fontsize-md cinza">Cadastre-se no AgendasPro para começar a gerenciar o seu negócio.</p>
       </div>
-      <form @submit.prevent="login">
+      <form @submit.prevent="register">
+        <div class="form-group">
+          <label for="name">Seu nome</label>
+          <input type="text" v-model="name" id="name" required >
+        </div>
         <div class="form-group">
           <label for="email">Seu email</label>
           <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
@@ -31,6 +35,7 @@
     layout: 'login',
     data() {
       return {
+        name: "",
         email: "",
         password: "",
         repeat_password: "",
@@ -40,8 +45,13 @@
       }
     },
     methods: {
-      login: function () {
+      setTemporaryEmail: function (email) {
+        sessionStorage.setItem("temporary_email", email);
+      },
+      register: function () {
+        let self = this;
         let data = {
+          name: this.name,
           email: this.email,
           password: this.password
         }
@@ -51,14 +61,19 @@
             return;
         }
 
+        this.$myFunctions.resetResponse(this);
         this.loading = true;
-        this.$myFunctions.setResponse(this, "Erro ao cadastrar", "error");
 
-        setTimeout(() => {
-          this.loading = false;
-        }, 5000)
-
-        console.log(data);
+        this.$base.api.post("/users/register", data)
+        .then(function(response2){            
+            self.$myFunctions.setResponse(self, response2.data.message, "success");
+            self.setTemporaryEmail(response2.data.returnObj.email);
+            self.$myFunctions.logoutUser(true);
+        }).catch(() => {
+            self.$myFunctions.setResponse(self, "Ocorreu um erro ao registrar", "error");
+        }).then(() => {
+          self.loading = false;
+        })
       }
     }
   }

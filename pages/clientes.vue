@@ -12,20 +12,20 @@
         <UtilsDataTable v-if="!loading" :dataTable="clientes" :rowsPerPage="7" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
-                    <img :src="item.url_foto" class="avatar avatar-pp" alt="">
+                    <img :src="item.image" class="avatar avatar-pp" alt="">
                     <div>
-                        <p><strong>{{ item.nome }}</strong></p>
+                        <p><strong>{{ item.name }}</strong></p>
                     </div>
                 </div>
             </template>
             <template #column-telefone="{ item }">
-                <p>{{ $myFunctions.formatTel(item.telefone) }}</p>
+                <p>{{ $myFunctions.formatTel(item.tel) }}</p>
             </template>
             <template #column-último-agendamento="{ item }">
-                <p>{{ $myFunctions.formatDate(item.ultimo_agendamento) }}</p>
+                <p>{{ $myFunctions.formatDate(item.last_appointment) }}</p>
             </template>
             <template #column-próximo-agendamento="{ item }">
-                <p>{{ $myFunctions.formatDate(item.proximo_agendamento) }}</p>
+                <p>{{ $myFunctions.formatDate(item.next_appointment) }}</p>
             </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
@@ -99,9 +99,9 @@ export default {
 
             setTimeout(() => {
                 this.clientes = [
-                    { id: 6, nome: 'Rina', data_nascimento: "2024-12-03", telefone: '41998564582', ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 7, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                    { id: 7, nome: 'Yuto', data_nascimento: "2024-12-03", telefone: '41998564582',ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                    { id: 8, nome: 'Miyo', data_nascimento: "2024-12-03", telefone: '41998564582',ultimo_agendamento: "2024-12-03 15:30:00", proximo_agendamento: "2024-12-04 15:30:00", total_agendamentos: 2, url_foto: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
+                    { id: 6, name: 'Rina', birthday: "2024-12-03", tel: '41998564582', last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 7, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
+                    { id: 7, name: 'Yuto', birthday: "2024-12-03", tel: '41998564582',last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 2, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
+                    { id: 8, name: 'Miyo', birthday: "2024-12-03", tel: '41998564582',last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 2, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
                 ]
 
                 this.loading = false;
@@ -109,12 +109,12 @@ export default {
         },
         handleCreateSchedule: function (user) {
             let rowUser = {
-                cliente_id: user.id,
-                cliente_nome: user.nome,
-                servico: "",
-                data: moment().format("YYYY-MM-DD") + "T09:00:00",
-                duracao: "",
-                observacoes: ""
+                customer_id: user.id,
+                customer_name: user.name,
+                service: "",
+                date: moment().format("YYYY-MM-DD") + "T09:00:00",
+                duration: "",
+                observations: ""
             }
 
             this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", {}, "modalContentAgenda", rowUser);
