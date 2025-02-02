@@ -110,20 +110,14 @@ export default {
         },
         getUser: function () {
             return new Promise((resolve, reject) => {
-                this.$global.user = {
-                    id: 1,
-                    name: "Saymon",
-                    email: "linnubr@gmail.com",
-                    url_photo: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
-                    tel: "43996352536",
-                    cep: "83322070",
-                    adress: "Rua Brasholanda 556",
-                    city: "Pinhais",
-                    state: "PR",
-                    country: "Brasil"
-                }
-
-                resolve();
+                let self = this;
+                
+                this.$base.api.get("/users") 
+                .then(function (response) { 
+                    self.$global.user = response.data.returnObj;
+                    console.log(self.$global.user)
+                    resolve()
+                })
             })
         }
     },
@@ -133,15 +127,17 @@ export default {
         }
     },
     async created() {
-        this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
-            this.getCompany().then(() => {
-                this.getUser().then(() => {
-                    setTimeout(() => {
-                        this.systemLoading = false;
-                    }, 500)
+        this.$myFunctions.checkAndSetJwt(this).then(() => {
+            this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
+                this.getCompany().then(() => {
+                    this.getUser().then(() => {
+                        setTimeout(() => {
+                            this.systemLoading = false;
+                        }, 500)
+                    })
                 })
             })
-        })
+        });
     }
 }
 </script>

@@ -151,7 +151,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   //Metodos autenticação
   const setJwtInLocalStorage = (instance, token) => {
     localStorage.setItem("agendaspro_jwt", token);
-    checkAndSetJwt(instance);
   }
 
   const getJwtInLocalStorage = () => {
@@ -163,16 +162,19 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   const checkAndSetJwt = (instance) => {
-    let interval = setInterval(() => {
+    return new Promise((resolve) => {
+      let interval = setInterval(() => {
         let jwt = getJwtInLocalStorage();
-
+  
         if (jwt != null) {
           instance.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
           instance.$global.jwtLoaded = true;
-
+  
           clearInterval(interval);
+          resolve();
         }
-    }, 100)
+      }, 100)
+    })
   }
 
   const checkIfUserIsAuthenticated = (instance, first = false) => {
@@ -186,36 +188,36 @@ export default defineNuxtPlugin((nuxtApp) => {
             return;
           }
         } else {
-            let data = {
-                token: jwt
-            }
+          let data = {
+              token: jwt
+          }
 
-            instance.$base.api.post("/users/check_jwt", data) // Se ja estiver logado no sistema e acessar a página de login, é checkado a valia do token JWT e então redirecionado para a index.
-            .then(function (res) { 
-                setJwtInLocalStorage(instance, res.data.returnObj.newToken); // Setando o novo jwt que foi resetado
-                if (pathName == "/entrar") { // Se o usuário estiver logado e entrar em login, o mesmo é logado novamente e direcionado para a index.
-                  
-                  let loginForm = $("#login-form");
-                  loginForm.find("input").attr("disabled", "disabled");
-                  loginForm.find("button").attr("disabled", "disabled").addClass("btn-loading");
+          instance.$base.api.post("/users/check_jwt", data) // Se ja estiver logado no sistema e acessar a página de login, é checkado a valia do token JWT e então redirecionado para a index.
+          .then(function (res) { 
+              setJwtInLocalStorage(instance, res.data.returnObj.newToken); // Setando o novo jwt que foi resetado
+              if (pathName == "/entrar") { // Se o usuário estiver logado e entrar em login, o mesmo é logado novamente e direcionado para a index.
+                
+                let loginForm = $("#login-form");
+                loginForm.find("input").attr("disabled", "disabled");
+                loginForm.find("button").attr("disabled", "disabled").addClass("btn-loading");
 
-                  setTimeout(() => {
-                    window.location.href ="/agenda";
-                  }, 1000);
-                }
-                resolve();
-            })
-            .catch(function () { // Caso contrário ele é deslogado e enviado para login.
-              logoutUser();
-              return;
-            })
-            .then(function () { // Chamada recursiva da função se o usuario estiver na home
-                if (isValidRoute(pathName) && first) {
-                  setTimeout(() => {
-                    checkIfUserIsAuthenticated(instance, first);
-                  }, 10 * 1000)
-                }
-            })
+                setTimeout(() => {
+                  window.location.href ="/agenda";
+                }, 1000);
+              }
+              resolve();
+          })
+          .catch(function () { // Caso contrário ele é deslogado e enviado para login.
+            logoutUser();
+            return;
+          })
+          .then(function () { // Chamada recursiva da função se o usuario estiver na home
+              if (isValidRoute(pathName) && first) {
+                setTimeout(() => {
+                  checkIfUserIsAuthenticated(instance, first);
+                }, 10 * 1000)
+              }
+          })
         }
     })
   }
