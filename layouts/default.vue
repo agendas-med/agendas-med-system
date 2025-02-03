@@ -26,7 +26,18 @@ export default {
         },
         getCompany: function () {
             return new Promise((resolve, reject) => {
-                this.$global.company = {
+                let self = this;
+
+                self.$base.api.post("/companies", { company_id: self.$global.selectedCompany }) 
+                .then(function (response) { 
+                    Object.assign(self.$global.company, response.data.returnObj);
+
+                    if (self.$global.company.id == null) {
+                        self.$router.push("/criar-empresa");
+                    }
+                })
+
+                /*this.$global.company = {
                     id: 1,
                     name: "Barbearia Estilo & Barba",
                     adress: "Rua dos Cabelos, 123 - Centro, São Paulo, SP",
@@ -103,7 +114,7 @@ export default {
                             }
                         ]
                     }
-                }
+                }*/
 
                 resolve();
             })
@@ -114,10 +125,25 @@ export default {
                 
                 this.$base.api.get("/users") 
                 .then(function (response) { 
-                    self.$global.user = response.data.returnObj;
-                    console.log(self.$global.user)
+                    Object.assign(self.$global.user, response.data.returnObj);
+
                     resolve()
                 })
+            })
+        },
+        checkAndSetJwt: function () {
+            return new Promise((resolve) => {
+                let interval = setInterval(() => {
+                    let jwt = this.$myFunctions.getJwtInLocalStorage();
+            
+                    if (jwt != null) {
+                        this.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
+                        Object.assign(this.$global.jwtLoaded, true);
+                
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 100)
             })
         }
     },
@@ -127,10 +153,10 @@ export default {
         }
     },
     async created() {
-        this.$myFunctions.checkAndSetJwt(this).then(() => {
+        this.checkAndSetJwt(this).then(() => {
             this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
-                this.getCompany().then(() => {
-                    this.getUser().then(() => {
+                this.getUser().then(() => {
+                    this.getCompany().then(() => {
                         setTimeout(() => {
                             this.systemLoading = false;
                         }, 500)

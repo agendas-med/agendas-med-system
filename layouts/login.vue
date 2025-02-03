@@ -43,6 +43,8 @@
         width: 40vw;
         height: 100vh;
         position: absolute;
+        display: grid;
+        place-items: center;
         left: 9vw;
     }
 

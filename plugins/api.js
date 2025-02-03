@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reactive } from 'vue';
 
 export default defineNuxtPlugin((nuxtApp) => {
     let url_api;
@@ -15,7 +16,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     // 2 - Ambiente de produção
     // 
     // ==============================
-    let ambient = 0;
+    let ambient;
+    
+    if (window.location.hostname.indexOf("localhost") != -1 || window.location.hostname.indexOf("192.168") != -1) {
+        ambient = 0;
+    } else if (window.location.hostname.indexOf("dev.") != -1) {
+        ambient = 1;
+    } else {
+        ambient = 2;
+    }
     // ==============================
     //
 
@@ -32,9 +41,11 @@ export default defineNuxtPlugin((nuxtApp) => {
             break;
     }
 
-    const api = axios.create({
-        baseURL: url_api
-    });
+    const api = reactive(
+        axios.create({
+            baseURL: url_api
+        })
+    )
   
     nuxtApp.provide('base', {
         api

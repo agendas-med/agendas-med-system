@@ -15,6 +15,7 @@
                         Meu perfil
                     </nuxt-link>
                 </li>
+                <li v-on:click="changeCompany()">Trocar de empresa</li>
                 <li v-on:click="logout()">Sair</li>
                 </ul>
             </div>
@@ -36,6 +37,9 @@ export default {
         },
         toggleDropdown: function () {
             this.dropdownOpened = !this.dropdownOpened;
+        },
+        changeCompany: function () {
+            this.$router.push("/trocar-empresa");
         }
     }
 }

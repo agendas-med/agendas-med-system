@@ -161,22 +161,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     localStorage.removeItem("agendaspro_jwt");
   }
 
-  const checkAndSetJwt = (instance) => {
-    return new Promise((resolve) => {
-      let interval = setInterval(() => {
-        let jwt = getJwtInLocalStorage();
-  
-        if (jwt != null) {
-          instance.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-          instance.$global.jwtLoaded = true;
-  
-          clearInterval(interval);
-          resolve();
-        }
-      }, 100)
-    })
-  }
-
   const checkIfUserIsAuthenticated = (instance, first = false) => {
     return new Promise((resolve) => {
         let pathName = window.location.pathname;
@@ -227,6 +211,31 @@ export default defineNuxtPlugin((nuxtApp) => {
     window.location.href ="/entrar";
   }
 
+  //Métodos de retorno
+
+  const getAddressData = (cep) => {
+    return new Promise((resolve) => {
+      if (!/^\d{5}-?\d{3}$/.test(cep)) {
+        throw new Error('CEP inválido');
+      }
+  
+      fetch(`https://viacep.com.br/ws/${cep}/json/`).then((response) => {
+        if (!response.ok) {
+          throw new Error('Falha ao consultar o ViaCEP');
+        }
+    
+        response.json().then((results) => {
+          if (results.erro) {
+            throw new Error('CEP não encontrado');
+          }
+      
+          resolve(results);
+        })
+      });
+    })
+  }
+  
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
@@ -243,10 +252,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       returnFloatNumber,
       logoutUser,
       checkIfUserIsAuthenticated,
-      checkAndSetJwt,
       removeJwtFromLocalStorage,
       getJwtInLocalStorage,
       setJwtInLocalStorage,
-      isValidRoute
+      isValidRoute,
+      getAddressData
   });
 });
