@@ -19,7 +19,7 @@
                     </div>
                     <div class="input-group"> 
                         <label for="cep">CEP</label>
-                        <input type="text" id="cep" v-model="user.cep" required>
+                        <input type="text" id="cep" v-model="user.zip_code" required>
                     </div>
                     <div class="input-group"> 
                         <label for="adress">Endereço</label>
@@ -33,7 +33,7 @@
                         <label for="state">Estado</label>
                         <select id="state" v-model="user.state" required>
                             <option value="">* Selecione *</option>
-                            <option :value="state.sigla" v-for="(state, index) in $global.value.estados" :key="index">{{ state.nome }}</option>
+                            <option :value="state.sigla" v-for="(state, index) in $global.estados" :key="index">{{ state.nome }}</option>
                         </select>
                     </div>
                     <div class="input-group"> 
@@ -69,14 +69,17 @@ export default {
         }
     },
     watch: {
-        "user.cep": function () {
-            this.user.cep = this.user.cep.replace(/\D/g, '');
+        "user.zip_code": function () {
+            this.user.zip_code = this.user.zip_code.replace(/\D/g, '');
 
-            if (this.user.cep.length == 8) {
-                this.user.cep = this.user.cep.replace(/(\d{5})(\d{3})/, '$1-$2');
+            if (this.user.zip_code.length == 8) {
+                this.user.zip_code = this.user.zip_code.replace(/(\d{5})(\d{3})/, '$1-$2');
 
-                //Executa busca automatica do cep
-                console.log(this.user.cep)
+                this.$myFunctions.getAddressData(this.user.zip_code).then((results) => {
+                    this.user.address = results.logradouro;
+                    this.user.city = results.localidade;
+                    this.user.state = results.uf;
+                })
             }
         }
     },

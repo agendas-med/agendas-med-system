@@ -3,7 +3,7 @@
         <font-awesome icon="store" class="sidebar-icons" />
         <div class="connected-user-informations w-full">
             <p class="fontsize-md sidebar-text line-clamp-1">{{ $global.company.name }}</p>
-            <p class="fontsize-sm sidebar-text line-clamp-1">{{ $global.company.adress }}</p>
+            <p class="fontsize-sm sidebar-text line-clamp-1">{{ $global.company.address }}</p>
         </div>
     </div>
 </template>

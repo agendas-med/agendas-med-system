@@ -196,10 +196,6 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
     outline: 2px solid var(--verde-escuro);
   }
 
-.form-group {
-  margin: var(--space-7) 0;
-}
-
 .form-group, .input-group {
   display: flex;
   flex-direction: column;

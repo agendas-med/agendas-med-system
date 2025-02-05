@@ -18,9 +18,9 @@ export default {
                     default: true
                 },
                 {
-                    name: "Preferências",
+                    name: "Empresa",
                     quantity: null,
-                    route: "preferencias",
+                    route: "empresa",
                     default: false
                 }
             ]       

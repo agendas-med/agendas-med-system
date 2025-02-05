@@ -5,14 +5,16 @@
         <p class="fontsize-md cinza">Faça login na sua conta do AgendasPro para acompanhar seus agendamentos.</p>
       </div>
       <form @submit.prevent="login" id="login-form">
-        <div class="form-group">
-          <label for="email">Seu email</label>
-          <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
-        </div>
-        <div class="form-group">
-          <label for="password">Sua senha</label>
-          <input type="password" v-model="password" id="password" required>
-          <UtilsSwitch v-if="showLembrar" label="Lembrar-me" @changedState="lembrar = $event" style="margin-top: var(--space-3);" />
+        <div class="grid grid-cols-1 gap-4">
+          <div class="form-group">
+            <label for="email">Seu email</label>
+            <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
+          </div>
+          <div class="form-group">
+            <label for="password">Sua senha</label>
+            <input type="password" v-model="password" id="password" required>
+            <UtilsSwitch v-if="showLembrar" label="Lembrar-me" @changedState="lembrar = $event" style="margin-top: var(--space-3);" />
+          </div>
         </div>
         <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
         <button type="submit" class="btn btn-primary">Entrar</button>

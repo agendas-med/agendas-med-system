@@ -60,9 +60,17 @@ export default defineNuxtPlugin((nuxtApp) => {
         companies: []
     })
 
-    let selectedCompany = reactive(0);
+    let selectedCompany = reactive({
+        id: 0
+    });
 
-    let jwtLoaded = reactive(false);
+    let jwtLoaded = reactive({
+        loaded: false
+    });
+
+    let business_types = reactive({
+        types: []
+    })
 
     let estados = [
         { sigla: "AC", nome: "Acre" },
@@ -100,7 +108,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         jwtLoaded,
         user,
         selectedCompany,
-        estados
+        estados,
+        business_types
     });
   });
   

@@ -24,17 +24,29 @@ export default {
         toggleSidebar: function () {
             this.sidebarOpen = !this.sidebarOpen;
         },
+        returnBusinessTypes: function () {
+            let self = this;
+
+            this.$base.api.get("/companies/business_types") 
+            .then(function (response) { 
+                Object.assign(self.$global.business_types, { types: response.data.returnObj });
+            })
+        },
         getCompany: function () {
             return new Promise((resolve, reject) => {
                 let self = this;
 
-                self.$base.api.post("/companies", { company_id: self.$global.selectedCompany }) 
+                self.$base.api.post("/companies", { company_id: self.$global.selectedCompany.id }) 
                 .then(function (response) { 
                     Object.assign(self.$global.company, response.data.returnObj);
 
                     if (self.$global.company.id == null) {
                         self.$router.push("/criar-empresa");
-                    }
+                        reject();
+                    } 
+
+                    self.returnBusinessTypes();
+                    resolve();
                 })
 
                 /*this.$global.company = {
@@ -115,8 +127,6 @@ export default {
                         ]
                     }
                 }*/
-
-                resolve();
             })
         },
         getUser: function () {
@@ -127,7 +137,11 @@ export default {
                 .then(function (response) { 
                     Object.assign(self.$global.user, response.data.returnObj);
 
-                    resolve()
+                    let company_id = sessionStorage.getItem("selected_company") || response.data.returnObj.companies[0];
+
+                    Object.assign(self.$global.selectedCompany, { id: company_id });
+
+                    resolve();
                 })
             })
         },
@@ -138,7 +152,7 @@ export default {
             
                     if (jwt != null) {
                         this.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
-                        Object.assign(this.$global.jwtLoaded, true);
+                        Object.assign(this.$global.jwtLoaded, { loaded: true });
                 
                         clearInterval(interval);
                         resolve();

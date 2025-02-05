@@ -37,7 +37,7 @@ function isValidRoute(path) {
     "/financeiro/metodos-pagamento",
     "/configuracoes",
     "/configuracoes/usuarios",
-    "/configuracoes/preferencias",
+    "/configuracoes/empresa",
     "/perfil"
   ]
   

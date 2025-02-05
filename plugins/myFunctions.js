@@ -234,7 +234,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       });
     })
   }
-  
 
   nuxtApp.provide('myFunctions', {
       setResponse,

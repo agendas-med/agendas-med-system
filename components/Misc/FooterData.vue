@@ -12,17 +12,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-footer {
-    position: fixed;
-    left: 5vw;
-    bottom: 5vw;
-}
-
-@media (min-width: 1023px) {
-    footer {
-        position: fixed;
-        left: 9vw;
-    }
-}
-</style>

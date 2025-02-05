@@ -5,21 +5,23 @@
         <p class="fontsize-md cinza">Cadastre-se no AgendasPro para começar a gerenciar o seu negócio.</p>
       </div>
       <form @submit.prevent="register">
-        <div class="form-group">
-          <label for="name">Seu nome</label>
-          <input type="text" v-model="name" id="name" required >
-        </div>
-        <div class="form-group">
-          <label for="email">Seu email</label>
-          <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
-        </div>
-        <div class="form-group">
-          <label for="password">Sua senha</label>
-          <input type="password" v-model="password" id="password" required>
-        </div>
-        <div class="form-group">
-          <label for="repeat-password">Repita a senha</label>
-          <input type="password" v-model="repeat_password" id="repeat-password" required>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="form-group">
+            <label for="name">Seu nome</label>
+            <input type="text" v-model="name" id="name" required >
+          </div>
+          <div class="form-group">
+            <label for="email">Seu email</label>
+            <input type="email" v-model="email" id="email" required placeholder="usuario@dominio.com">
+          </div>
+          <div class="form-group">
+            <label for="password">Sua senha</label>
+            <input type="password" v-model="password" id="password" required>
+          </div>
+          <div class="form-group">
+            <label for="repeat-password">Repita a senha</label>
+            <input type="password" v-model="repeat_password" id="repeat-password" required>
+          </div>
         </div>
         <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
         <button type="submit" class="btn btn-primary">Registrar</button>

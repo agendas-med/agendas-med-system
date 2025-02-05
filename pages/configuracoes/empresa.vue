@@ -1,8 +1,45 @@
 <template>
     <section>
         <div class="profile-configurations">
-            <p class="fontsize-sm cinza">HORÁRIO DE ATENDIMENTO</p>
             <form @submit.prevent="changeProfileConfigurations">
+                <p class="fontsize-sm cinza mt-8">INFORMAÇÕES PRINCIPAIS</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="name" class="block">Nome</label>
+                        <input type="text" v-model="company.name" id="name" required placeholder="Ex. Cognito.inc" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div class="form-group">
+                        <label for="role" class="block">Tipo de negócio</label>
+                        <select id="role" v-model="company.business_type" required class="w-full p-2 border rounded-md">
+                            <option value="">* Selecione *</option>
+                            <option :value="type.id" v-for="(type, index) in $global.business_types.types" :key="index">{{ type.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cep" class="block">CEP</label>
+                        <input type="text" id="cep" v-model="company.cep" required class="w-full p-2 border rounded-md">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" class="block">Endereço</label>
+                        <input type="text" id="address" v-model="company.address" required class="w-full p-2 border rounded-md">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city" class="block">Cidade</label>
+                        <input type="text" id="city" v-model="company.city" required class="w-full p-2 border rounded-md">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state" class="block">Estado</label>
+                        <select id="state" v-model="company.state" required class="w-full p-2 border rounded-md">
+                        <option value="">* Selecione *</option>
+                        <option :value="state.sigla" v-for="(state, index) in $global.estados" :key="index">{{ state.nome }}</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="fontsize-sm cinza">HORÁRIO DE ATENDIMENTO</p>
                 <UtilsOpeningScheduled @changed="setNewSchedules($event, index)" :openinghour="day" v-for="(day, index) in company.configurations.opening_hours" />
                 <p class="fontsize-sm cinza mt-8">NOTIFICAÇÕES</p>
                 <div class="input-checkbox-group" v-for="notification in company.configurations.notifications" :key="notification.id">
@@ -32,6 +69,21 @@ export default {
     computed: {
         company: function () {
             return reactive(JSON.parse(JSON.stringify(this.$global.company)));
+        }
+    },
+    watch: {
+        "company.zip_code": function () {
+            this.company.zip_code = this.zip_code.replace(/\D/g, '');
+
+            if (this.company.zip_code.length == 8) {
+                this.company.zip_code = this.company.zip_code.replace(/(\d{5})(\d{3})/, '$1-$2');
+
+                this.$myFunctions.getAddressData(this.company.zip_code).then((results) => {
+                  this.company.address = results.logradouro;
+                  this.company.city = results.localidade;
+                  this.company.state = results.uf;
+                })
+            }
         }
     },
     mounted() {
@@ -67,7 +119,7 @@ export default {
         changeProfileConfigurations: function () {
             this.response = "Informações alteradas com sucesso";
             this.responseType = "success";
-            console.log(this.company.configurations)
+            console.log(this.company)
         }
     }
 }

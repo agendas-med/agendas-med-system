@@ -3,9 +3,9 @@
         <div class="flex items-center background-detail">
             <div class="authentication-container">
                 <slot></slot>
+                <MiscFooterData />
             </div>
             <img src="../assets/img/system-print.png" alt="Systema AgendasPro">
-            <MiscFooterData />
         </div>
     </div>
 </template>
@@ -52,7 +52,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        height: 100vh;
     }
 
     .btn.btn-primary {
