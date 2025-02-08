@@ -22,7 +22,7 @@
                     <font-awesome v-else icon="trash" class="vermelho-suave" v-on:click="removeHour(index)" />
                 </div>
             </div>
-            <button type="button" class="btn btn-primary float-none md:float-right" v-on:click="selectDay('button')">Salvar</button>
+            <button type="button" class="btn btn-primary float-none md:float-right" v-on:click="selectDay('button')">Incluir horário</button>
         </div>
     </div>
 </template>

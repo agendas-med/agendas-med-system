@@ -113,7 +113,7 @@ export default {
                         ],
                         notifications: [
                             {
-                                id: "scheduled_consultation",
+                                id: "scheduling",
                                 active: false
                             },
                             {

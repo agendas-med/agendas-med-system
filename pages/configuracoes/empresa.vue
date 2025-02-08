@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="profile-configurations">
-            <form @submit.prevent="changeProfileConfigurations">
+            <form @submit.prevent="changeCompanyConfigurations">
                 <p class="fontsize-sm cinza mt-8">INFORMAÇÕES PRINCIPAIS</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="form-group">
@@ -18,7 +18,7 @@
 
                     <div class="form-group">
                         <label for="cep" class="block">CEP</label>
-                        <input type="text" id="cep" v-model="company.cep" required class="w-full p-2 border rounded-md">
+                        <input type="text" id="cep" v-model="company.zip_code" required class="w-full p-2 border rounded-md">
                     </div>
 
                     <div class="form-group">
@@ -39,11 +39,11 @@
                         </select>
                     </div>
                 </div>
-                <p class="fontsize-sm cinza">HORÁRIO DE ATENDIMENTO</p>
+                <p class="fontsize-sm cinza mt-7">HORÁRIO DE ATENDIMENTO</p>
                 <UtilsOpeningScheduled @changed="setNewSchedules($event, index)" :openinghour="day" v-for="(day, index) in company.configurations.opening_hours" />
                 <p class="fontsize-sm cinza mt-8">NOTIFICAÇÕES</p>
                 <div class="input-checkbox-group" v-for="notification in company.configurations.notifications" :key="notification.id">
-                    <label :for="notification.id" class="fontsize-md preto">{{ notificationLabel(notification.id) }}</label>
+                    <label :for="notification.id" class="fontsize-md preto">{{ notification.name }}</label>
                     <input
                         type="checkbox"
                         :id="notification.id"
@@ -73,7 +73,7 @@ export default {
     },
     watch: {
         "company.zip_code": function () {
-            this.company.zip_code = this.zip_code.replace(/\D/g, '');
+            this.company.zip_code = this.company.zip_code.replace(/\D/g, '');
 
             if (this.company.zip_code.length == 8) {
                 this.company.zip_code = this.company.zip_code.replace(/(\d{5})(\d{3})/, '$1-$2');
@@ -85,8 +85,6 @@ export default {
                 })
             }
         }
-    },
-    mounted() {
     },
     beforeDestroy() {
     },
@@ -101,25 +99,22 @@ export default {
                 notification.active = value;
             }
         },
-        notificationLabel(id) {
-            switch(id) {
-                case "schedule_made":
-                    return "Agendamento realizado";
-                case "in_app_payment":
-                    return "Pagamento no App";
-                case "schedule_cancelation":
-                    return "Cancelamento de agendamento";
-                default:
-                    return "Notificação";
-            }
-        },
         setNewSchedules: function (event, index) {
             this.company.configurations.opening_hours[index] = event;
         },
-        changeProfileConfigurations: function () {
-            this.response = "Informações alteradas com sucesso";
-            this.responseType = "success";
-            console.log(this.company)
+        changeCompanyConfigurations: function () {
+            let self = this;
+
+            this.loading = true;
+
+            self.$base.api.patch("/companies", self.company)
+            .then(function(response){            
+                self.$myFunctions.setResponse(self, response.data.message, "success");
+            }).catch((error) => {
+                self.$myFunctions.setResponse(self, error.response.data, "error");
+            }).then(() => {
+                self.loading = false;
+            })
         }
     }
 }

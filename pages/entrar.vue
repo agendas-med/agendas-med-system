@@ -62,7 +62,6 @@
         }
 
         this.loading = true;
-        
 
         this.$base.api.post("/users/login", data)
         .then(function(response2){            

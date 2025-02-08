@@ -8,7 +8,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     let company = reactive({
         id: 0,
         name: "",
-        adress: "",
         zip_code: "",
         address: "",
         city: "",
@@ -27,19 +26,46 @@ export default defineNuxtPlugin((nuxtApp) => {
                             final_date: "18:00"
                         }
                     ]
+                },
+                {
+                    day: 2,
+                    hours: []
+                },
+                {
+                    day: 3,
+                    hours: []
+                },
+                {
+                    day: 4,
+                    hours: []
+                },
+                {
+                    day: 5,
+                    hours: []
+                },
+                {
+                    day: 6,
+                    hours: []
+                },
+                {
+                    day: 7,
+                    hours: []
                 }
             ],
             notifications: [
                 {
-                    id: "scheduled_consultation",
+                    code: "notificate_scheduling",
+                    name: "Agendamentos realizados",
                     active: false
                 },
                 {
-                    id: "in_app_payment",
+                    code: "notificate_in_app_payment",
+                    name: "Pagamentos in-app",
                     active: false
                 },
                 {
-                    id: "consultation_cancelation",
+                    code: "notificate_scheduling_cancelation",
+                    name: "Agendamentos cancelados",
                     active: false
                 }
             ]
