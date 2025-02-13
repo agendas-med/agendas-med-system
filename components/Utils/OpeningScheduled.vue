@@ -19,7 +19,7 @@
                 <div class="hour-buttons">
                     &nbsp;
                     <font-awesome v-if="index == (hours.length - 1)" icon="circle-plus" class="verde-escuro" v-on:click="addHour()" />
-                    <font-awesome v-else icon="trash" class="vermelho-suave" v-on:click="removeHour(index)" />
+                    <font-awesome v-else icon="trash" class="vermelho" v-on:click="removeHour(index)" />
                 </div>
             </div>
             <button type="button" class="btn btn-primary float-none md:float-right" v-on:click="selectDay('button')">Incluir horário</button>
@@ -199,7 +199,7 @@ input, button {
 }
 
 .selected-error {
-    border: 1px solid var(--vermelho-suave);
+    border: 1px solid var(--vermelho);
 }
 
 .until {

@@ -68,7 +68,7 @@ export default {
     },
     computed: {
         company: function () {
-            return reactive(JSON.parse(JSON.stringify(this.$global.company)));
+            return this.$global.company;
         }
     },
     watch: {
@@ -107,7 +107,7 @@ export default {
 
             this.loading = true;
 
-            self.$base.api.patch("/companies", self.company)
+            self.$base.api.patch("/companies/" + self.company.id, self.company)
             .then(function(response){            
                 self.$myFunctions.setResponse(self, response.data.message, "success");
             }).catch((error) => {

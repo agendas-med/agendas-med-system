@@ -32,126 +32,14 @@ export default {
                 Object.assign(self.$global.business_types, { types: response.data.returnObj });
             })
         },
-        getCompany: function () {
-            return new Promise((resolve, reject) => {
-                let self = this;
-
-                self.$base.api.post("/companies", { company_id: self.$global.selectedCompany.id }) 
-                .then(function (response) { 
-                    Object.assign(self.$global.company, response.data.returnObj);
-
-                    if (self.$global.company.id == null) {
-                        self.$router.push("/criar-empresa");
-                        reject();
-                    } 
-
-                    self.returnBusinessTypes();
-                    resolve();
-                })
-
-                /*this.$global.company = {
-                    id: 1,
-                    name: "Barbearia Estilo & Barba",
-                    adress: "Rua dos Cabelos, 123 - Centro, São Paulo, SP",
-                    configurations: {
-                        opening_hours: [
-                            {
-                                day: 1, // Domingo
-                                hours: []
-                            },
-                            {
-                                day: 2, // Segunda-feira
-                                hours: [
-                                    {
-                                        initial_date: "09:00",
-                                        final_date: "12:00"
-                                    },
-                                    {
-                                        initial_date: "13:00",
-                                        final_date: "18:00"
-                                    }
-                                ]
-                            },
-                            {
-                                day: 3, // Terça-feira
-                                hours: [] // Sem horário
-                            },
-                            {
-                                day: 4, // Quarta-feira
-                                hours: [
-                                    {
-                                        initial_date: "09:00",
-                                        final_date: "12:00"
-                                    },
-                                    {
-                                        initial_date: "13:00",
-                                        final_date: "18:00"
-                                    }
-                                ]
-                            },
-                            {
-                                day: 5, // Quinta-feira
-                                hours: [
-                                    {
-                                        initial_date: "09:00",
-                                        final_date: "12:00"
-                                    },
-                                    {
-                                        initial_date: "13:00",
-                                        final_date: "18:00"
-                                    }
-                                ]
-                            },
-                            {
-                                day: 6, // Sexta-feira
-                                hours: [] // Sem horário
-                            },
-                            {
-                                day: 7, // Sábado
-                                hours: [] // Sem horário
-                            }
-                        ],
-                        notifications: [
-                            {
-                                id: "scheduling",
-                                active: false
-                            },
-                            {
-                                id: "in_app_payment",
-                                active: true
-                            },
-                            {
-                                id: "consultation_cancelation",
-                                active: true
-                            }
-                        ]
-                    }
-                }*/
-            })
-        },
-        getUser: function () {
-            return new Promise((resolve, reject) => {
-                let self = this;
-                
-                this.$base.api.get("/users") 
-                .then(function (response) { 
-                    Object.assign(self.$global.user, response.data.returnObj);
-
-                    let company_id = sessionStorage.getItem("selected_company") || response.data.returnObj.companies[0];
-
-                    Object.assign(self.$global.selectedCompany, { id: company_id });
-
-                    resolve();
-                })
-            })
-        },
         checkAndSetJwt: function () {
             return new Promise((resolve) => {
                 let interval = setInterval(() => {
                     let jwt = this.$myFunctions.getJwtInLocalStorage();
             
                     if (jwt != null) {
-                        this.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
+                        this.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
                         Object.assign(this.$global.jwtLoaded, { loaded: true });
                 
                         clearInterval(interval);
@@ -169,8 +57,10 @@ export default {
     async created() {
         this.checkAndSetJwt(this).then(() => {
             this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
-                this.getUser().then(() => {
-                    this.getCompany().then(() => {
+                this.$myFunctions.getUser(this).then(() => {
+                    this.$myFunctions.getCompany(this).then(() => {
+                        this.returnBusinessTypes();
+                        
                         setTimeout(() => {
                             this.systemLoading = false;
                         }, 500)

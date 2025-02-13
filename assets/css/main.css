@@ -81,6 +81,10 @@ html, body, #__nuxt {
     background: var(--verde-escuro);
     color: var(--branco);
 
+    &::after {
+      border-top-color: var(--verde-escuro);
+    }
+
     &:disabled {
       background: var(--verde);
       cursor: initial;
@@ -102,6 +106,19 @@ html, body, #__nuxt {
     &.btn-cinza {
       background: var(--cinza-claro);
       color: var(--preto);
+
+      &::after {
+        border-top-color: var(--cinza);
+      }
+
+      &:disabled {
+        background: var(--cinza-claro);
+        cursor: initial;
+  
+        &:hover {
+          background: var(--cinza-claro);
+        }
+      }
     }
   
       &.btn-cinza:hover {
@@ -112,6 +129,31 @@ html, body, #__nuxt {
         outline: 2px solid var(--cinza);
       }
   
+  &.btn-red {
+    background: var(--vermelho);
+    color: var(--branco);
+
+    &::after {
+      border-top-color: var(--vermelho-claro);
+    }
+
+    &:disabled {
+      background: var(--vermelho-claro);
+      cursor: initial;
+
+      &:hover {
+        background: var(--vermelho-claro);
+      }
+    }
+  }
+
+    &.btn-red:hover {
+      background: var(--vermelho-claro);
+    }
+
+    &.btn-red:active, &.btn-red:focus {
+      outline: 2px solid var(--vermelho);
+    }
 
   &.btn-primary-alt {
     background: var(--branco);
@@ -137,6 +179,32 @@ html, body, #__nuxt {
   }
 }
 
+.rounded-btn {
+  padding: var(--space-3);
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  border: none;
+  border-radius: var(--radius-full);
+  margin: var(--space-2);
+  cursor: pointer;
+
+  &.small {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
+      max-width: 30px;
+      max-height: 30px;
+  }
+
+  & span {
+    font-size: var(--fontsize-lg);
+  }
+}
 .tag {
   background: var(--cinza-medio);
   width: fit-content;
@@ -144,7 +212,7 @@ html, body, #__nuxt {
   border-radius: var(--radius-md);
 
   &.red {
-    background: var(--vermelho-suave);
+    background: var(--vermelho);
     color: var(--branco);
   }
 
@@ -169,7 +237,6 @@ input[type="submit"] {
   height: 20px;
   border-radius: var(--radius-full);
   border: 5px solid var(--branco);
-  border-top-color: var(--verde);
   animation: spin 1s linear infinite;
   margin-left: var(--space-3);
 }
@@ -298,10 +365,14 @@ input[type="checkbox"], input[type="radio"] {
 
 @media (max-width: 768px) {
   input:not([type="checkbox"]):not([type="radio"]), textarea, select {
-    min-width: 100%;
+    
     max-width: 100%;
     margin-right: 0;
     margin-bottom: var(--space-3);
+  }
+
+  input[type="file"] {
+    min-width: initial;
   }
 }
 

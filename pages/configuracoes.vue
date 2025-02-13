@@ -22,6 +22,12 @@ export default {
                     quantity: null,
                     route: "empresa",
                     default: false
+                },
+                {
+                    name: "Cargos",
+                    quantity: null,
+                    route: "cargos",
+                    default: false
                 }
             ]       
         }

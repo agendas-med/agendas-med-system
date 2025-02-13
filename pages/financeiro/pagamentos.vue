@@ -1,7 +1,6 @@
 <template>
     <section>
-        <UtilsLoading :loading="loading" />
-        <UtilsDataTable v-if="!loading" :dataTable="pagamentos" :rowsPerPage="7" table="cliente">
+        <UtilsDataTable :loaded="!loading" :dataTable="pagamentos" :rowsPerPage="7" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
                     <img :src="item.customer_image" class="avatar avatar-pp" alt="">

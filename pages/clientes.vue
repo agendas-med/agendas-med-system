@@ -8,8 +8,7 @@
             </button>
         </div>
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
-        <UtilsLoading :loading="loading" />
-        <UtilsDataTable v-if="!loading" :dataTable="clientes" :rowsPerPage="7" table="cliente">
+        <UtilsDataTable :loaded="!loading" :dataTable="clientes" :rowsPerPage="7" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
                     <img :src="item.image" class="avatar avatar-pp" alt="">

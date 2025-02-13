@@ -9,7 +9,7 @@ export default {
             let typeClass = "verde-escuro";
 
             if (this.type == "error") {
-                typeClass = "vermelho-suave";
+                typeClass = "vermelho";
             }
 
             return typeClass;

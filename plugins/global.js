@@ -69,7 +69,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                     active: false
                 }
             ]
-        }
+        },
+        roles: []
     })
 
     let user = reactive({

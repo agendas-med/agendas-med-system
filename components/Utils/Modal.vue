@@ -7,10 +7,15 @@
                 <font-awesome icon="times" v-on:click="closeModal()" class="cursor-pointer" />
             </div>
             <div class="modal-body">
-                <slot />
+                <div v-if="title.indexOf('Excluir') == -1">
+                    <slot />
+                </div>
+                <div class="flex items-center justify-center h-full w-full" v-else>
+                    <UtilsExcludeModalContent :excludepath="excludepath + $global.contentObject.id" @excludedContent="closeModal(true)"></UtilsExcludeModalContent>
+                </div>
             </div>
             <div class="modal-footer flex justify-end">
-                <button type="button" class="btn btn-primary" id="modal-submit-button" v-if="saveButton" v-on:click="saveData()">{{ saveButton }}</button>
+                <button type="button" class="btn" :class="title.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'" id="modal-submit-button" v-if="saveButton" v-on:click="saveData()">{{ saveButton }}</button>
                 <button type="button" class="btn btn-cinza" v-if="cancelButton" v-on:click="closeModal()">{{ cancelButton }}</button>
             </div>
         </div>
@@ -18,7 +23,7 @@
 </template>
 <script>
 export default {
-    props: ["title", "saveButton", "cancelButton"],
+    props: ["title", "saveButton", "cancelButton", "excludepath"],
     data() {
         return {
             showModal: false
@@ -46,9 +51,13 @@ export default {
         }
     },
     methods: {
-        closeModal: function () {
+        closeModal: function (exclude = false) {
             this.showModal = false;
             setTimeout(() => {
+                if (exclude) {
+                    this.$emit("excluded");
+                }
+
                 this.$emit("closeModal");
             }, 400);
         },

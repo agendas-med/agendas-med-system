@@ -1,11 +1,6 @@
 <template>
     <section>
-        <button type="button" v-on:click="newUser()" class="btn btn-primary" id="new-user">
-            <font-awesome icon="plus" />
-            Novo usuário
-        </button>
-        <UtilsLoading :loading="loading" />
-        <UtilsDataTable v-if="!loading" :dataTable="usuarios" :rowsPerPage="7" table="usuário">
+        <UtilsDataTable :loaded="!loading" :dataTable="usuarios" :rowsPerPage="7" table="usuário" @handleNew="newUser" :newButton="true">
             <template #column-serviço="{ item }">
                 <p>{{ item.name }}</p>
             </template>
@@ -101,10 +96,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-#new-user {
-    position: absolute;
-    right: var(--space-6);
-    top: var(--space-6);
-}
-</style>

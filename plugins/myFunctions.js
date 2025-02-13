@@ -235,6 +235,39 @@ export default defineNuxtPlugin((nuxtApp) => {
     })
   }
 
+  const getCompany = function (instance) {
+    return new Promise((resolve, reject) => {
+      instance.$base.api.get("/companies") 
+        .then(function (response) { 
+            Object.assign(instance.$global.company, response.data.returnObj);
+
+            if (instance.$global.company.id == null) {
+              instance.$router.push("/criar-empresa");
+                reject();
+            } 
+            
+            resolve();
+        })
+    })
+  }
+
+  const getUser = function (instance) {
+    return new Promise((resolve, reject) => {
+      instance.$base.api.get("/users") 
+        .then(function (response) { 
+            Object.assign(instance.$global.user, response.data.returnObj);
+
+            let company_id = sessionStorage.getItem("selected_company") || response.data.returnObj.companies[0];
+
+            Object.assign(instance.$global.selectedCompany, { id: company_id });
+
+            instance.$base.api.defaults.headers.common['Selected-company'] = instance.$global.selectedCompany.id;
+
+            resolve();
+        })
+    })
+  }
+
   nuxtApp.provide('myFunctions', {
       setResponse,
       resetResponse,
@@ -255,6 +288,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       getJwtInLocalStorage,
       setJwtInLocalStorage,
       isValidRoute,
-      getAddressData
+      getAddressData,
+      getCompany,
+      getUser
   });
 });

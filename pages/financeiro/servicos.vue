@@ -4,8 +4,7 @@
             <font-awesome icon="plus" />
             Novo serviço
         </button>
-        <UtilsLoading :loading="loading" />
-        <UtilsDataTable v-if="!loading" :dataTable="servicos" :rowsPerPage="7" table="serviço">
+        <UtilsDataTable :loaded="!loading" :dataTable="servicos" :rowsPerPage="7" table="serviço">
             <template #column-serviço="{ item }">
                 <p>{{ item.name }}</p>
             </template>
