@@ -56,6 +56,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   //Métodos de manipulação de valores
   const formatTel = (tel) => {
+    if (tel == null) return "";
+
     const cleaned = tel.replace(/\D/g, '');
     
     if (cleaned.length === 11) {
@@ -68,6 +70,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   const formatTelInput = (event, tel) => {
+    if (tel == null) return "";
+    
     let element = event.target;
     let cleaned = tel.replace(/\D/g, '');
     

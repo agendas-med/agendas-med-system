@@ -83,7 +83,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         address: "",
         city: "",
         state: "",
-        country: "",
         companies: []
     })
 

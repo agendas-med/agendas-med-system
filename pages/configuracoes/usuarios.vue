@@ -19,7 +19,7 @@
             </template>
         </UtilsDataTable>
         <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this)">
-            <ModalContentUsuarios @savedContent="$myFunctions.closeModal(this, []); returnUsers();" />
+            <ModalContentConfigUsuarios @savedContent="$myFunctions.closeModal(this, []); returnUsers();" />
         </UtilsModal>
     </section>   
 </template>

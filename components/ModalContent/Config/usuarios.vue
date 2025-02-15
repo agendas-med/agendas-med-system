@@ -1,13 +1,9 @@
 <template>
-    <form id="informations-form" @submit.prevent="saveService()" :invalid="invalidForm">
+    <form id="informations-form" @submit.prevent="saveUser()" :invalid="invalidForm">
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" v-model="usuario.name" required>
-            </div>
-            <div class="input-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" v-model="usuario.email" required>
+                <label for="email">Usuário</label>
+                <UtilsAjaxAutocomplete @select="setUser($event)" ajaxtype="usuarios" :entityid="usuario.id" :entityname="usuario.name" :required="true" />
             </div>
             <div class="input-group">
                 <label for="cargo">Cargo</label>
@@ -31,6 +27,7 @@ export default {
     data() {
         return {
             usuario: {
+                id: null,
                 name: "",
                 email: "",
                 role: null,
@@ -42,12 +39,28 @@ export default {
         }
     },
     methods: {
-        saveService: function () {
-            this.$myFunctions.resetResponse(this);
-            this.invalidForm = false;
+        saveUser: function () {
+            let self = this;
 
-            console.log(this.usuario)
-            this.$emit("savedContent");
+            self.$myFunctions.resetResponse(this);
+            self.invalidForm = false;
+
+            if ($(".ajax-autocomplete").attr("invalid") == "true") {
+                self.$myFunctions.setResponse(self, "Campo usuário não pode ser vazio", "error");
+                self.invalidForm = true;
+
+                return;
+            }
+
+            self.$base.api.post("/companies/invite_user", self.usuario).then((response) => {
+                self.$myFunctions.setResponse(self, "Usuário convidado para a empresa com sucesso", "success");
+                self.$emit("savedContent");
+            }).catch((error) => {
+                self.$myFunctions.setResponse(self, error.response.data, "error");
+            })
+        },
+        setUser: function (event) {
+            this.usuario = {...this.usuario, email: event.name, name: event.name};
         }
     },
     mounted: function () {

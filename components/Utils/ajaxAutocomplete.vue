@@ -2,8 +2,8 @@
     <div class="ajax-autocomplete" invalid="true">
         <div class="ajax-autocomplete-wrapper" v-on:click="clearContainer()" v-if="entity_search.length > 2 && !force_close"></div>
         <div class="ajax-autocomplete-container">
-            <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null ? '*** para todos' : ''" v-model="entity_search">
-            <div class="selected-entity" v-if="entity_object.id != null">
+            <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null || entity_object.id == 0 ? '*** para todos' : ''" v-model="entity_search">
+            <div class="selected-entity" v-if="entity_object.id != null && entity_object.id != 0">
                 {{ entity_object.name }}
                 <font-awesome icon="times" v-on:click="deselectEntity()" class="cursor-pointer" />
             </div>
@@ -13,12 +13,13 @@
                 </div>
                 <div class="entities-list-inner" v-if="entity_search.length > 2 && entities_list.length > 0">
                     <div class="entity" v-for="(entityObj, index) in entities_list" :key="index" v-on:click="selectEntity(entityObj)">
-                        <div class="customers-entity" v-if="ajaxtype == 'clientes'">
-                            <div class="entity-line">
+                        <div class="customers-entity" v-if="ajaxtype == 'clientes' || ajaxtype == 'usuarios'">
+                            <div class="entity-line flex justify-between">
                                 <p>{{ entityObj.name }}</p>
+                                <p class="cinza">{{ entityObj.email }}</p>
                             </div>
                             <div class="entity-line cinza">
-                                <p class="cinza">{{ $myFunctions.formatTel(entityObj.tel) }}</p>
+                                <p class="cinza">Telefone: {{ $myFunctions.formatTel(entityObj.tel) }}</p>
                             </div>
                         </div>
                     </div>
@@ -39,16 +40,18 @@ export default {
             entity_search: "",
             entity_object: {
                 name: "",
-                id: null,
+                id: 0,
                 tel: ""
             },
             entities_list: [],
-            force_close: false
+            force_close: false,
+            empty_return: false
         }
     },
     watch: {
         entityid: function () {
             this.entity_object.id = this.entityid;
+
             if (this.entityid == null) {
                 this.entity_search = this.entityname;
                 this.force_close = true;
@@ -64,10 +67,14 @@ export default {
             if (this.entity_search.length > 2) {
                 let searchString = this.entity_search;
                 setTimeout(() => {
-                    if (this.entity_search == searchString) {
+                    if (this.entity_search == searchString && !this.empty_return) {
                         this.searchEntity();
+                    } else {
+                        this.clearContainer();
                     }
                 }, 150)
+            } else {
+                this.empty_return = false;
             }
 
             this.checkValidity();
@@ -75,7 +82,7 @@ export default {
     },
     methods: {
         checkValidity: function () {
-            if (this.entity_search.trim().length == 0 && this.entity_object.nome == "") {
+            if (this.entity_search.trim().length == 0 && (this.entity_object.name == "" || this.entity_object.name == undefined)) {
                 $(".ajax-autocomplete").attr("invalid", true);
                 this.force_close = false;
             } else {
@@ -93,6 +100,7 @@ export default {
                 name: "",
                 id: null
             }
+
             this.entity_search = "";
             this.checkValidity();
         },
@@ -101,8 +109,7 @@ export default {
             this.force_close = true;
             this.entity_object = {
                 name: this.entity_search,
-                id: null,
-                telefone: ""
+                id: null
             }
 
             this.$emit("select", this.entity_object);
@@ -115,7 +122,10 @@ export default {
 
             switch (this.ajaxtype) {
                 case "clientes":
-                    domain = "/customers/";
+                    domain = "customers";
+                    break;
+                case "usuarios":
+                    domain = "users";
                     break;
                 default: 
                     return;
@@ -124,25 +134,13 @@ export default {
             let data = {
                 search_string: this.entity_search
             }
-
-            this.entities_list = [
-                {
-                    name: "Saymon",
-                    id: 0,
-                    tel: "41984093742"
-                },
-                {
-                    name: "João",
-                    id: 1,
-                    tel: "43987548255"
-                }
-            ]
-            console.log(this.entities_list)
-            /*api.post(domain + "search", data).then((response) => {
+            
+            this.$base.api.post("/" + domain + "/find", data).then((response) => {
                 self.entities_list = response.data.returnObj;
+                self.empty_return = self.entities_list.length == 0;
             }).catch((error) => {
                 console.log(error);
-            })*/
+            })
         }
     }
 }
