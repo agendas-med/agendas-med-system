@@ -146,7 +146,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         "/configuracoes",
         "/configuracoes/usuarios",
         "/configuracoes/preferencias",
-        "/perfil"
+        "/perfil",
+        "/empresa_entrar"
     ]
     
     return routes.some(route => route == path);

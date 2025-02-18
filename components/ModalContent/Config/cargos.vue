@@ -9,8 +9,8 @@
                 <label for="permission">Permissão <font-awesome icon="circle-info" class="cinza" title="Define se o usuário possui acesso administrativo à empresa. Usuários com permissão de administrador podem gerenciar configurações e outros usuários da empresa." /></label>
                 <select id="permission" v-model="role.permission" required>
                     <option value="">* Selecione *</option>
-                    <option value="0">Não</option>
-                    <option value="1">Sim</option>
+                    <option value="0">Membro</option>
+                    <option value="1">Administrador</option>
                 </select>
             </div>
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
@@ -39,7 +39,13 @@ export default {
 
             self.$myFunctions.resetResponse(this);
 
-            self.$base.api.post("/companies/roles" + (self.isEdit ? "/" + self.role.id : ""), self.role) 
+            let data = {
+                id: self.role.id,
+                name: self.role.name,
+                permission: self.role.permission
+            }
+
+            self.$base.api.post("/companies/roles" + (self.isEdit ? "/" + self.role.id : ""), data) 
             .then(function (response) { 
                 self.$myFunctions.setResponse(self, response.data.message, "success");                
                 self.$emit("savedContent");

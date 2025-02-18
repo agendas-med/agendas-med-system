@@ -3,35 +3,29 @@
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label for="email">Usuário</label>
-                <UtilsAjaxAutocomplete @select="setUser($event)" ajaxtype="usuarios" :entityid="usuario.id" :entityname="usuario.name" :required="true" />
+                <UtilsAjaxAutocomplete @select="setUser($event)" ajaxtype="usuarios" :entityid="usuario.id" :entityname="usuario.name" :handledisabled="usuario.id != 0" :required="true" />
             </div>
             <div class="input-group">
                 <label for="cargo">Cargo</label>
                 <select id="cargo" v-model="usuario.role" required>
-                    <option value="1">Administrador</option>
-                    <option value="2">Regular</option>
+                    <option value="">* Selecione *</option>
+                    <option v-for="(role, index) in $global.company.roles" :value="role.id">{{ role.name }}</option>
                 </select>
-            </div>
-            <div class="input-group" v-if="usuario.temporary_password != undefined">
-                <label for="password">Senha temporária</label>
-                <input type="text" id="password" v-model="usuario.temporary_password" disabled>
             </div>
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
     </form>
-    
 </template>
 <script>
 export default {
     data() {
         return {
             usuario: {
-                id: null,
+                id: 0,
                 name: "",
                 email: "",
-                role: null,
-                temporary_password: ""
+                role: ""
             },
             response: "",
             responseType: "",
@@ -52,8 +46,21 @@ export default {
                 return;
             }
 
-            self.$base.api.post("/companies/invite_user", self.usuario).then((response) => {
-                self.$myFunctions.setResponse(self, "Usuário convidado para a empresa com sucesso", "success");
+            let path = "invite_user";
+
+            if (this.usuario.id != 0) {
+                path = "change_user_role";
+            }
+
+            let data = {
+                id: this.usuario.id,
+                name: this.usuario.name,
+                email: this.usuario.email,
+                role: this.usuario.role
+            }
+
+            self.$base.api.post("/companies/" + path, data).then((response) => {
+                self.$myFunctions.setResponse(self, this.usuario.id != null ? "Usuário alterado com sucesso" : "Usuário convidado para a empresa com sucesso", "success");
                 self.$emit("savedContent");
             }).catch((error) => {
                 self.$myFunctions.setResponse(self, error.response.data, "error");
@@ -64,7 +71,7 @@ export default {
         }
     },
     mounted: function () {
-        this.usuario = reactive(this.$global.contentObject);
+        this.usuario = reactive(Object.assign({}, this.$global.contentObject, this.usuario));
         $("#nome").focus();
     }
 }

@@ -2,10 +2,10 @@
     <div class="ajax-autocomplete" invalid="true">
         <div class="ajax-autocomplete-wrapper" v-on:click="clearContainer()" v-if="entity_search.length > 2 && !force_close"></div>
         <div class="ajax-autocomplete-container">
-            <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null || entity_object.id == 0 ? '*** para todos' : ''" v-model="entity_search">
+            <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null || entity_object.id == 0 ? '*** para todos' : ''" :disabled="handledisabled" v-model="entity_search">
             <div class="selected-entity" v-if="entity_object.id != null && entity_object.id != 0">
                 {{ entity_object.name }}
-                <font-awesome icon="times" v-on:click="deselectEntity()" class="cursor-pointer" />
+                <font-awesome icon="times" v-on:click="deselectEntity()" v-if="!handledisabled" class="cursor-pointer" />
             </div>
             <div class="entities-list" v-if="entity_search.length > 2 && !force_close">
                 <div class="empty-search" v-if="entity_search.length > 2 && entities_list.length == 0">
@@ -33,7 +33,7 @@
 
 export default {
     name: "ajaxAutoComplete",
-    props: ["ajaxtype", "entityid", "entityname", "required"],
+    props: ["ajaxtype", "entityid", "entityname", "required", "handledisabled"],
     data() {
         return {
             entity_id: null,
@@ -96,6 +96,8 @@ export default {
             this.$emit("select", this.entity_object);
         },
         deselectEntity: function () {
+            if (this.handledisabled) return;
+
             this.entity_object = {
                 name: "",
                 id: null

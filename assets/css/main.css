@@ -376,6 +376,10 @@ input[type="checkbox"], input[type="radio"] {
   }
 }
 
+.authentication-header {
+  margin-bottom: var(--space-7);
+}
+
 /* ANIMAÇÕES DO VUE */
 
 /* Animação de entrada e saída */

@@ -1,6 +1,6 @@
 <template>
     <section>
-        <UtilsDataTable :loaded="!loading" :dataTable="usuarios" :rowsPerPage="7" table="usuário" @handleNew="newUser" :newButton="true">
+        <UtilsDataTable :loaded="!loading" :dataTable="users" :rowsPerPage="7" table="usuário" @handleNew="newUser" :newButton="true">
             <template #column-serviço="{ item }">
                 <p>{{ item.name }}</p>
             </template>
@@ -8,7 +8,7 @@
                 <p>{{ item.email }}</p>
             </template>
             <template #column-cargo="{ item }">
-                <p>{{ item.role == 1 ? "Administrador" : "Regular" }}</p>
+                <p>{{ item.roleName }}</p>
             </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
@@ -31,7 +31,7 @@ export default {
             response: "",
             responseType: "",
             loading: true,
-            usuarios: [],
+            users: [],
             modalTitle: "",
             modalSaveButton: "",
             modalCancelButton: ""
@@ -47,51 +47,19 @@ export default {
         handleEditUser: function (item) {
             this.$myFunctions.openModal(this, "Editar usuário", "Salvar", "Cancelar", {}, "", item);
         },
-        returnUsers: function () { //Método para retornar os pagamentos
-            this.loading = true;
+        returnUsers: function () {
+            let self = this;
 
-            setTimeout(() => {
-                this.usuarios = [
-                    {
-                        id: 1,
-                        name: "Saymon",
-                        email: "linnubr@gmail.com",
-                        role: 1,
-                        temporary_password: "a7dce39b1c85d102be12"
-                    },
-                    {
-                        id: 2,
-                        name: "Mariana",
-                        email: "mariana.santos@gmail.com",
-                        role: 2,
-                        temporary_password: "8f43d1a1d43e0bcbe987"
-                    },
-                    {
-                        id: 3,
-                        name: "João",
-                        email: "joao.silva@gmail.com",
-                        role: 1,
-                        temporary_password: "2ba8f385209b74b98b23"
-                    },
-                    {
-                        id: 4,
-                        name: "Camila",
-                        email: "camila.almeida@gmail.com",
-                        role: 2,
-                        temporary_password: "4c0a1d63d840d02f6b4f"
-                    },
-                    {
-                        id: 5,
-                        name: "Ricardo",
-                        email: "ricardo.monteiro@gmail.com",
-                        role: 1,
-                        temporary_password: "3f5edca82427ed671a82"
-                    }
-                ]
-
-
-                this.loading = false;
-            }, 500)
+            self.loading = true;
+            
+            self.$base.api.get("/companies/return_users", self.usuario).then((response) => {
+                self.users = response.data.returnObj;
+                self.$emit("savedContent");
+            }).catch((error) => {
+                console.log(error.response.data)
+            }).then(() => {
+                self.loading = false;
+            })
         }
     }
 }
