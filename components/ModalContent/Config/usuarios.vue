@@ -38,7 +38,7 @@ export default {
 
             self.$myFunctions.resetResponse(this);
             self.invalidForm = false;
-            
+
             if ($(".ajax-autocomplete").attr("invalid") == "true") {
                 self.$myFunctions.setResponse(self, "Campo usuário não pode ser vazio", "error");
                 self.invalidForm = true;
@@ -71,8 +71,11 @@ export default {
         }
     },
     mounted: function () {
-        this.usuario = reactive(Object.assign({}, this.$global.contentObject, this.usuario));
-        $("#nome").focus();
+        nextTick(() => {
+            this.usuario = reactive(Object.assign(this.usuario, this.$global.contentObject));
+            
+            $("#nome").focus();
+        })
     }
 }
 </script>
