@@ -9,7 +9,15 @@
         </div>
     </div>
 </template>
-  
+<script>
+export default {
+    mounted: function () {
+        this.$myFunctions.checkAndSetJwt(this).then(() => {
+            this.$myFunctions.returnBusinessTypes(this);
+        });
+    }
+}
+</script>
 <style>
     .authentication-page {
         background-image: linear-gradient(to bottom right, #FFFFFF, #F5F9FD);

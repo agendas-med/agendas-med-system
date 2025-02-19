@@ -36,13 +36,15 @@ export default {
                     this.showModal = true;
 
                     $("#submit-button").off("click").on("click", () => {
-                        let informationsForm = $("#informations-form");
+                        setTimeout(() => {
+                            let informationsForm = $("#informations-form");
                         
-                        if (informationsForm.find(":invalid").length > 0 || informationsForm.attr("invalid") == "true") {
-                            $("#modal-submit-button").removeAttr("disabled").removeClass("btn-loading");
-                        }
+                            if (informationsForm.attr("invalid") == "true") {
+                                $("#modal-submit-button").removeAttr("disabled").removeClass("btn-loading");
+                            }
+                        }, 100)
                     })
-                }, 50)
+                }, 100)
             } else {
                 setTimeout(() => {
                     this.showModal = false;

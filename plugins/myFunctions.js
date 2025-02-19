@@ -213,10 +213,63 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const logoutUser = () => {
     removeJwtFromLocalStorage();
+    
     window.location.href ="/entrar";
   }
 
+  const enterCompanyWithToken = (instance, token) => {
+    return new Promise((resolve, reject) => {
+      instance.$base.api.post("/companies/enter_company", { token: token }).then(() => {
+        resolve();
+      }).catch((error) => {
+        reject(error);
+      })
+    })
+  }
+
+  const checkAndSetJwt = (instance) => {
+    return new Promise((resolve) => {
+      let interval = setInterval(() => {
+          let jwt = getJwtInLocalStorage();
+  
+          if (jwt != null) {
+            instance.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
+              Object.assign(instance.$global.jwtLoaded, { loaded: true });
+      
+              clearInterval(interval);
+              resolve();
+          }
+      }, 100)
+    })
+  }
+
+  const initSystem = (instance) => {
+    return new Promise((resolve) => {
+      checkAndSetJwt(instance).then(() => {
+        checkIfUserIsAuthenticated(instance, true).then(() => {
+          getUser(instance).then(() => {
+            getCompany(instance).then(() => {
+              returnBusinessTypes(instance).then(() => {
+                resolve();
+              });
+            })
+          })
+        })
+      });
+    })
+  }
+
   //Métodos de retorno
+
+  const returnBusinessTypes = (instance) => {
+    return new Promise((resolve) => {
+      instance.$base.api.get("/companies/business_types") .then(function (response) { 
+        Object.assign(instance.$global.business_types, { types: response.data.returnObj });
+        resolve();
+      })
+    })
+  }
 
   const getAddressData = (cep) => {
     return new Promise((resolve) => {
@@ -288,6 +341,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatMinutesToTime,
       returnFloatNumber,
       logoutUser,
+      initSystem,
+      checkAndSetJwt,
+      returnBusinessTypes,
+      enterCompanyWithToken,
       checkIfUserIsAuthenticated,
       removeJwtFromLocalStorage,
       getJwtInLocalStorage,

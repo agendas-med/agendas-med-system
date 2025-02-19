@@ -24,30 +24,6 @@ export default {
         toggleSidebar: function () {
             this.sidebarOpen = !this.sidebarOpen;
         },
-        returnBusinessTypes: function () {
-            let self = this;
-
-            this.$base.api.get("/companies/business_types") 
-            .then(function (response) { 
-                Object.assign(self.$global.business_types, { types: response.data.returnObj });
-            })
-        },
-        checkAndSetJwt: function () {
-            return new Promise((resolve) => {
-                let interval = setInterval(() => {
-                    let jwt = this.$myFunctions.getJwtInLocalStorage();
-            
-                    if (jwt != null) {
-                        this.$base.api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-
-                        Object.assign(this.$global.jwtLoaded, { loaded: true });
-                
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 100)
-            })
-        }
     },
     mounted: function () {
         window.onresize = () => {
@@ -55,18 +31,10 @@ export default {
         }
     },
     async created() {
-        this.checkAndSetJwt(this).then(() => {
-            this.$myFunctions.checkIfUserIsAuthenticated(this, true).then(() => {
-                this.$myFunctions.getUser(this).then(() => {
-                    this.$myFunctions.getCompany(this).then(() => {
-                        this.returnBusinessTypes();
-                        
-                        setTimeout(() => {
-                            this.systemLoading = false;
-                        }, 500)
-                    })
-                })
-            })
+        this.$myFunctions.initSystem(this).then(() => {
+            setTimeout(() => {
+                this.systemLoading = false;
+            }, 500)
         });
     }
 }

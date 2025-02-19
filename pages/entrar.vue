@@ -13,6 +13,7 @@
           <div class="form-group">
             <label for="password">Sua senha</label>
             <input type="password" v-model="password" id="password" required>
+            <span class="mt-3">Ainda não tem uma conta? <a class="cursor-pointer underline" v-on:click="$router.push('/registro')">Registre-se</a></span>
             <UtilsSwitch v-if="showLembrar" label="Lembrar-me" @changedState="lembrar = $event" style="margin-top: var(--space-3);" />
           </div>
         </div>
@@ -43,6 +44,8 @@
       email: function () {
         if (this.email == localStorage.getItem("email")) {
           this.showLembrar = false;
+        } else {
+          this.showLembrar = true;
         }
       }
     },

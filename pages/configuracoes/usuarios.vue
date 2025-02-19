@@ -1,8 +1,11 @@
 <template>
     <section>
         <UtilsDataTable :loaded="!loading" :dataTable="users" :rowsPerPage="7" table="usuário" @handleNew="newUser" :newButton="true">
-            <template #column-serviço="{ item }">
+            <template #column-nome="{ item }">
                 <p>{{ item.name }}</p>
+            </template>
+            <template #column-status="{ item }">
+                <p>{{ item.status }}</p>
             </template>
             <template #column-email="{ item }">
                 <p>{{ item.email }}</p>
