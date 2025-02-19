@@ -14,7 +14,7 @@
                 <p>{{ item.roleName }}</p>
             </template>
             <template #column-ações="{ item }">
-                <div class="flex space-x-2" v-if="item.id != $global.user.id">
+                <div class="flex space-x-2" v-if="item.id != null && item.id != $global.user.id">
                     <button class="rounded-button" v-on:click="handleEditUser(item)">
                         <font-awesome icon="user-pen" class="cinza" />
                     </button>
