@@ -1,14 +1,8 @@
 <template>
     <section>
-        <div class="flex items-center justify-between">
-            <UtilsPageheader title="Clientes" subtitle="Veja todas as informações dos seus clientes" />
-            <button type="button" v-on:click="newCustomer()" class="btn btn-primary">
-                <font-awesome icon="plus" />
-                Cadastrar cliente
-            </button>
-        </div>
+        <UtilsPageheader title="Clientes" subtitle="Veja todas as informações dos seus clientes" />
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
-        <UtilsDataTable :loaded="!loading" :dataTable="clientes" :rowsPerPage="7" table="cliente">
+        <UtilsDataTable :loaded="!loading" :dataTable="clientes" :rowsPerPage="7" :newButton="true" @handleNew="newCustomer" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
                     <img :src="item.image" class="avatar avatar-pp" alt="">
@@ -31,15 +25,18 @@
                     <button class="rounded-button" v-on:click="handleCreateSchedule(item)">
                         <font-awesome icon="calendar-day" class="cinza" />
                     </button>
+                    <button class="rounded-button" v-on:click="handleDeleteCustomer(item)">
+                        <font-awesome icon="trash" class="vermelho" />
+                    </button>
                     <button class="rounded-button" v-on:click="handleEditCustomer(item)">
                         <font-awesome icon="user-pen" class="cinza" />
                     </button>
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this)">
+        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" excludepath="/customers/" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this); returnCustomers()">
             <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent" @savedContent="$myFunctions.closeModal(this, [], true); goToSchedule()" />
-            <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, []);" />
+            <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, []); returnCustomers()" />
         </UtilsModal>
     </section>
 </template>
@@ -55,12 +52,12 @@ export default {
                     default: true
                 },
                 {
-                    name: "Não fidelizados",
+                    name: "Já agendaram",
                     quantity: 24,
                     default: false
                 },
                 {
-                    name: "Fidelizados",
+                    name: "Nunca agendaram",
                     quantity: 1,
                     default: false
                 }
@@ -93,10 +90,14 @@ export default {
             this.returnCustomers(type);
         },
         returnCustomers: function (type = "") {
-            //Chamada para api passando o tipo de clientes que tem que retornar
-            this.loading = true;
+            let self = this;
 
-            setTimeout(() => {
+            this.$base.api.get("/customers").then(function(response){            
+                self.clientes = response.data.returnObj;
+                self.loading = false;
+            })
+
+            /*setTimeout(() => {
                 this.clientes = [
                     { id: 6, name: 'Rina', birthday: "2024-12-03", tel: '41998564582', last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 7, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
                     { id: 7, name: 'Yuto', birthday: "2024-12-03", tel: '41998564582',last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 2, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
@@ -104,7 +105,7 @@ export default {
                 ]
 
                 this.loading = false;
-            }, 1000)
+            }, 1000)*/
         },
         handleCreateSchedule: function (user) {
             let rowUser = {
@@ -125,6 +126,9 @@ export default {
             setTimeout(() => {
                 this.$router.push("/agenda");
             }, 400)
+        },
+        handleDeleteCustomer: function (item) {
+            this.$myFunctions.openModal(this, "Excluir cliente", "Excluir", "Cancelar", {}, "", item);
         },
         newCustomer: function () {
             this.$myFunctions.openModal(this, "Cadastrar cliente", "Cadastrar", "Cancelar", {}, "modalContentClientes");

@@ -2,15 +2,15 @@
   <div class="datatable" :style="dataTable.length == 0 && loaded ? 'border: 1px solid var(--cinza-claro); margin-top: var(--space-3);' : ''">
     <div class="datatable-content">
       <!-- Search/Filter -->
-      <div class="datatable-header flex items-center justify-between">
+      <div class="datatable-header flex items-center justify-between" v-if="loaded">
         <UtilsInputSearch
           :search="searchQuery"
           @model="searchQuery = $event"
           @input="filterData"
           :table="table"
-           v-if="loaded && dataTable.length > 0"
+           v-if="dataTable.length > 0"
         />
-        <button type="button" v-on:click="$emit('handleNew')" class="btn btn-primary" :class="loaded && dataTable.length > 0 ? '' : 'mt-4 mx-auto'">
+        <button v-if="newButton" type="button" v-on:click="$emit('handleNew')" class="btn btn-primary" :class="loaded && dataTable.length > 0 ? '' : 'mt-4 mx-auto'">
             <font-awesome icon="plus" />
             Cadastrar {{ table }}
         </button>

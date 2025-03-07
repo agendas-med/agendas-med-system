@@ -40,16 +40,30 @@ export default {
     },
     computed: {
         customer: function () {
-            return reactive(this.$global.contentObject);
+            let customer = this.$global.contentObject;
+            customer.birthday = this.$myFunctions.formatDateFromDB(customer.birthday || "");
+
+            return reactive(customer);
         }
     },
     methods: {
         saveCustomer: function () {
-            this.$myFunctions.resetResponse(this);
-            this.invalidForm = false;
+            let self = this;
 
-            console.log(this.customer)
-            this.$emit("savedContent");
+            self.$myFunctions.resetResponse(this);
+            self.invalidForm = false;
+
+            self.customer.tel = this.$myFunctions.returnCleanNumber(self.customer.tel);
+
+            if (self.customer.id) {
+                self.$base.api.patch("/customers/" + self.customer.id, self.customer).then(function () {            
+                    self.$emit("savedContent");
+                })
+            } else {
+                self.$base.api.post("/customers", self.customer).then(function () {            
+                    self.$emit("savedContent");
+                })
+            }
         },
         onFileChange(event) {
             const file = event.target.files[0]; // Obtém o arquivo selecionado

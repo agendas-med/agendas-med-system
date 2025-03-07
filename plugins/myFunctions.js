@@ -69,6 +69,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     return tel;
   }
 
+  const returnCleanNumber = (tel) => {
+    if (tel == null) return "";
+
+    const cleaned = tel.replace(/\D/g, '');
+    
+    return cleaned;
+  }
+
   const formatTelInput = (event, tel) => {
     if (tel == null) return "";
     
@@ -86,6 +94,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const formatDate = (date) => {
     return date.trim() != "" ? moment(date).format("DD/MM/YYYY") : "";
+  }
+
+  const formatDateFromDB = (date) => {
+    return date.trim() != "" ? moment(date).format("YYYY-MM-DD") : "";
   }
 
   const returnAge = (birthday) => {  
@@ -333,8 +345,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       openModal,
       closeModal,
       formatTel,
+      returnCleanNumber,
       formatTelInput,
       formatDate,
+      formatDateFromDB,
       returnAge,
       formatCurrency,
       capitalize,
