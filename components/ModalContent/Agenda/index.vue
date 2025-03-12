@@ -76,7 +76,7 @@ export default {
         setCustomer: function (event) {
             if (event.id != null) {
                 this.agendamento.customer_id = event.id;
-                this.agendamento.customer_name = event.nome;
+                this.agendamento.customer_name = event.name;
             }
         },
         saveSchedule: function () {
@@ -90,8 +90,48 @@ export default {
                 return;
             }
 
-            console.log(this.agendamento)
-            this.$emit("savedContent");
+            let promise;
+
+            if (this.agendamento.id) {
+                promise = this.updateSchedule();
+            } else {
+                promise = this.createSchedule();
+            }
+
+            promise
+                .then(() => {
+                    this.$emit("savedContent");
+                })
+                .catch((error) => {
+                    this.$myFunctions.setResponse(this, "Erro ao salvar agendamento", "error");
+                    console.error(error);
+                });
+        },
+        createSchedule() {
+            return new Promise((resolve, reject) => {
+                this.$base.api.post("/appointments", this.agendamento)
+                    .then(() => {
+                        this.$myFunctions.setResponse(this, "Agendamento criado com sucesso!", "success");
+                        resolve();
+                    })
+                    .catch((error) => {
+                        this.$myFunctions.setResponse(this, "Erro ao criar agendamento", "error");
+                        reject(error);
+                    });
+            });
+        },
+        updateSchedule() {
+            return new Promise((resolve, reject) => {
+                this.$base.api.patch(`/appointments/${this.agendamento.id}`, this.agendamento)
+                    .then(() => {
+                        this.$myFunctions.setResponse(this, "Agendamento atualizado com sucesso!", "success");
+                        resolve();
+                    })
+                    .catch((error) => {
+                        this.$myFunctions.setResponse(this, "Erro ao atualizar agendamento", "error");
+                        reject(error);
+                    });
+            });
         }
     },
     mounted: function () {

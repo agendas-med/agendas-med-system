@@ -104,7 +104,17 @@
     },
     methods: {
       getEvents: function () {
-        this.calendarEvents = [
+        this.$base.api.get("/appointments")
+            .then((response) => {
+                if (response.data && response.data.data) {
+                    this.calendarEvents = response.data.returnObj;
+                }
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar os agendamentos:", error);
+            });
+
+        /*this.calendarEvents = [
           {
             id: 1,
             title: "Aline - 1ª Consulta",
@@ -135,7 +145,7 @@
             start: "2024-11-15T09:30:15-03:00",
             end: "2024-11-15T10:00:15-03:00"
           }
-        ]
+        ]*/
 
         for (let i = 0; i < this.calendarEvents.length; i++) {
           this.calendarEvents[i]["displayEventEnd"] = true;
@@ -169,7 +179,23 @@
         this.updateThisEvent(event);
       },
       updateThisEvent: function (event) {
-        console.log(event)
+        const updatedEvent = {
+            customer_id: event.customer_id,
+            customer_name: event.customer_name,
+            date: event.start, // start é o novo date
+            duration: event.duration,
+            observations: event.observations,
+            service: event.service
+        };
+
+        this.$base.api.patch(`/appointments/${event.id}`, updatedEvent)
+            .then(() => {
+                console.log("Agendamento atualizado com sucesso!");
+                this.getEvents(); // Atualiza a lista de eventos
+            })
+            .catch((error) => {
+                console.error("Erro ao atualizar o agendamento:", error);
+            });
       },
       getApi: function () {
         this.calendarApi = this.$refs.fullCalendar.getApi()

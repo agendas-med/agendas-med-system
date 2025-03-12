@@ -5,7 +5,7 @@
         <UtilsDataTable :loaded="!loading" :dataTable="clientes" :rowsPerPage="7" :newButton="true" @handleNew="newCustomer" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
-                    <img :src="item.image" class="avatar avatar-pp" alt="">
+                    <img :teste="item.image" :src="item.image == '' ? defaultUserImage : item.image" class="avatar avatar-pp">
                     <div>
                         <p><strong>{{ item.name }}</strong></p>
                     </div>
@@ -42,9 +42,12 @@
 </template>
 
 <script>
+import defaultUserImage from '@/assets/img/default-user-image.png';
+
 export default {
     data() {
         return {
+            defaultUserImage: defaultUserImage,
             tabs: [
                 {
                     name: "Todos os clientes",
