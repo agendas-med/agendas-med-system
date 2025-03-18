@@ -39,6 +39,7 @@ function isValidRoute(path) {
     "/configuracoes/usuarios",
     "/configuracoes/empresa",
     "/configuracoes/cargos",
+    "/configuracoes/servicos",
     "/perfil"
   ]
   

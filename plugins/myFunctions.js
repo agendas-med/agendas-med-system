@@ -92,6 +92,19 @@ export default defineNuxtPlugin((nuxtApp) => {
     element.value = cleaned;
   }
 
+  const inputMoneyCheck = function (event) {
+      var valor = event.target.value.replace(/\D/g, '');
+      var valorNumerico = parseInt(valor) / 100;
+      var valorFormatado = valorNumerico.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+      });
+
+      event.target.value = valorFormatado;
+
+      event.target.setSelectionRange(valorFormatado.length, valorFormatado.length);
+  }
+
   const formatDate = (date) => {
     return date.trim() != "" ? moment(date).format("DD/MM/YYYY") : "";
   }
@@ -121,7 +134,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   const returnFloatNumber = (string) => {
-    let cleaned = string.toString().replace("R$ ", "").replace(",", '.');
+    let cleaned = string.toString().replace(/R\$\s?/g, "").replace(",", ".");
     let formattedNumber = parseFloat(cleaned);
 
     return formattedNumber.toFixed(2);
@@ -143,6 +156,15 @@ export default defineNuxtPlugin((nuxtApp) => {
       return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}h`;
   }
 
+  const formatDuration = (minutes) => {
+    if (!minutes || isNaN(minutes)) return "00:00"; // Retorna um valor padrão caso seja inválido
+
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+
+    return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+  };
+
   //Métodos validação
 
   const isValidRoute = (path) => {
@@ -157,7 +179,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         "/financeiro/metodos-pagamento",
         "/configuracoes",
         "/configuracoes/usuarios",
-        "/configuracoes/preferencias",
+        "/configuracoes/empresa",
+        "/configuracoes/cargos",
+        "/configuracoes/servicos",
         "/perfil",
         "/empresa_entrar"
     ]
@@ -351,6 +375,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatDateFromDB,
       returnAge,
       formatCurrency,
+      formatDuration,
+      inputMoneyCheck,
       capitalize,
       formatMinutesToTime,
       returnFloatNumber,

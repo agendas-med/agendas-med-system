@@ -21,22 +21,9 @@
                     <label for="duration">Duração</label>
                     <select id="duration" v-model="agendamento.duration" required>
                         <option value="">* Selecione *</option>
-                        <option value="15">15 minutos</option>
-                        <option value="30">30 minutos</option>
-                        <option value="45">45 minutos</option>
-                        <option value="60">1 hora</option>
-                        <option value="75">1 hora e 15 minutos</option>
-                        <option value="90">1 hora e 30 minutos</option>
-                        <option value="105">1 hora e 45 minutos</option>
-                        <option value="120">2 horas</option>
-                        <option value="135">2 horas e 15 minutos</option>
-                        <option value="150">2 horas e 30 minutos</option>
-                        <option value="165">2 horas e 45 minutos</option>
-                        <option value="180">3 horas</option>
-                        <option value="195">3 horas e 15 minutos</option>
-                        <option value="210">3 horas e 30 minutos</option>
-                        <option value="225">3 horas e 45 minutos</option>
-                        <option value="240">4 horas</option>
+                        <option v-for="option in $global.durations" :key="option.value" :value="option.value">
+                        {{ option.label }}
+                        </option>
                     </select>
                 </div>
             </div>

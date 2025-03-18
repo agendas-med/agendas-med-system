@@ -70,7 +70,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                 }
             ]
         },
-        roles: []
+        roles: [],
+        services: []
     })
 
     let user = reactive({
@@ -97,6 +98,25 @@ export default defineNuxtPlugin((nuxtApp) => {
     let business_types = reactive({
         types: []
     })
+
+    let durations = [
+        { value: 15, label: "15 minutos" },
+        { value: 30, label: "30 minutos" },
+        { value: 45, label: "45 minutos" },
+        { value: 60, label: "1 hora" },
+        { value: 75, label: "1 hora e 15 minutos" },
+        { value: 90, label: "1 hora e 30 minutos" },
+        { value: 105, label: "1 hora e 45 minutos" },
+        { value: 120, label: "2 horas" },
+        { value: 135, label: "2 horas e 15 minutos" },
+        { value: 150, label: "2 horas e 30 minutos" },
+        { value: 165, label: "2 horas e 45 minutos" },
+        { value: 180, label: "3 horas" },
+        { value: 195, label: "3 horas e 15 minutos" },
+        { value: 210, label: "3 horas e 30 minutos" },
+        { value: 225, label: "3 horas e 45 minutos" },
+        { value: 240, label: "4 horas" }
+    ]
 
     let estados = [
         { sigla: "AC", nome: "Acre" },
@@ -135,7 +155,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         user,
         selectedCompany,
         estados,
-        business_types
+        business_types,
+        durations
     });
   });
   
