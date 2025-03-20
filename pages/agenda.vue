@@ -106,46 +106,11 @@
       getEvents: function () {
         this.$base.api.get("/appointments")
             .then((response) => {
-                if (response.data && response.data.data) {
-                    this.calendarEvents = response.data.returnObj;
-                }
+              this.calendarEvents = response.data.returnObj;
             })
             .catch((error) => {
                 console.error("Erro ao buscar os agendamentos:", error);
             });
-
-        /*this.calendarEvents = [
-          {
-            id: 1,
-            title: "Aline - 1ª Consulta",
-            start: "2024-12-02T14:30:45-03:00",
-            end: "2024-12-02T14:30:45-03:00",
-            customer_id: 0,
-            customer_name: "Saymon Felipe",
-            service: "1",
-            date: "2024-12-02T14:30:45",
-            duration: "15",
-            observations: "testeeee"
-          },
-          {
-            id: 2,
-            title: "Ana - 1ª Consulta",
-            start: "2024-11-12T18:30:15-03:00",
-            end: "2024-11-12T19:30:15-03:00"
-          },
-          {
-            id: 3,
-            title: "Marcelo - 1ª Consulta",
-            start: "2024-11-12T10:00:15-03:00",
-            end: "2024-11-12T10:30:15-03:00"
-          },
-          {
-            id: 4,
-            title: "Aline - Re-consulta",
-            start: "2024-11-15T09:30:15-03:00",
-            end: "2024-11-15T10:00:15-03:00"
-          }
-        ]*/
 
         for (let i = 0; i < this.calendarEvents.length; i++) {
           this.calendarEvents[i]["displayEventEnd"] = true;
@@ -154,7 +119,7 @@
       eventClick: function (info) {
         this.selectedEvent = this.calendarEvents.filter(event => event.id == info.event.id)[0];
         
-        this.$myFunctions.openModal(this, "Alterar agendamento", "Salvar", "Cancelar");
+        this.$myFunctions.openModal(this, "Alterar agendamento", "Salvar", "Cancelar", {}, "", this.selectedEvent);
       },
       handleEventResize: function (info) {
         if (!confirm("Tem certeza que deseja alterar o agendamento?")) {
@@ -182,15 +147,14 @@
         const updatedEvent = {
             customer_id: event.customer_id,
             customer_name: event.customer_name,
-            date: event.start, // start é o novo date
-            duration: event.duration,
+            date: moment(event.start).format("YYYY-MM-DD HH:mm:ss"), // start é o novo date
+            duration: event.duration.toString(),
             observations: event.observations,
-            service: event.service
+            service: event.service_id
         };
 
         this.$base.api.patch(`/appointments/${event.id}`, updatedEvent)
             .then(() => {
-                console.log("Agendamento atualizado com sucesso!");
                 this.getEvents(); // Atualiza a lista de eventos
             })
             .catch((error) => {

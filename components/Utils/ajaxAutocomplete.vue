@@ -48,6 +48,15 @@ export default {
             empty_return: false
         }
     },
+    mounted: function () {
+        if (this.entityid != null && this.entityname != "") {
+            this.entity_object.name = this.entityname;
+            this.entity_object.id = this.entityid;
+
+            $(".ajax-autocomplete").attr("invalid", false);
+            this.selectEntity(this.entity_object);
+        }
+    },
     watch: {
         entityid: function () {
             this.entity_object.id = this.entityid;

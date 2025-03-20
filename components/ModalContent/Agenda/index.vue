@@ -9,7 +9,7 @@
                 <label for="service">Serviço</label>
                 <select id="service" v-model="agendamento.service" required>
                     <option value="">* Selecione *</option>
-                    <option :value="servico.id" v-for="servico in servicos">{{ servico.nome }}</option>
+                    <option :value="servico.id" v-for="servico in servicos">{{ servico.name }}</option>
                 </select>
             </div>
             <div class="grid grid-cols-[2fr_1fr] gap-4">
@@ -41,22 +41,32 @@
 export default {
     data() {
         return {
-            servicos: [
-                { id: 1, nome: 'Corte de cabelo' },
-                { id: 2, nome: 'Barba completa' },
-                { id: 3, nome: 'Sobrancelha' },
-                { id: 4, nome: 'Corte de cabelo + Barba' },
-                { id: 5, nome: 'Lavagem de cabelo' },
-                { id: 6, nome: 'Corte de cabelo infantil' },
-                { id: 7, nome: 'Corte de cabelo e design de barba' },
-                { id: 8, nome: 'Tinte de cabelo' },
-                { id: 9, nome: 'Penteado' },
-                { id: 10, nome: 'Tratamento capilar' }
-            ],
-            agendamento: {},
             response: "",
             responseType: "",
             invalidForm: true
+        }
+    },
+    watch: {
+        "agendamento.service": function () {
+            let selectedService = this.servicos.filter((service) => { return service.id == this.agendamento.service });
+
+            if (selectedService.length > 0) {
+                this.agendamento.duration = selectedService[0].duration;
+            }
+        }
+    },
+    computed: {
+        servicos: function () {
+            return this.$global.company.services;
+        },
+        agendamento: function () {
+            let agendamento;
+
+            agendamento = reactive(this.$global.contentObject);
+            agendamento.date = moment(agendamento.date).format("YYYY-MM-DD HH:mm:ss");
+            agendamento["service"] = agendamento.service_id || "";
+
+            return agendamento;
         }
     },
     methods: {
@@ -67,9 +77,9 @@ export default {
             }
         },
         saveSchedule: function () {
+            let promise;
             this.$myFunctions.resetResponse(this);
             this.invalidForm = false;
-
             if ($(".ajax-autocomplete").attr("invalid") == "true") {
                 this.$myFunctions.setResponse(this, "Campo cliente não pode ser vazio", "error");
                 this.invalidForm = true;
@@ -77,52 +87,61 @@ export default {
                 return;
             }
 
-            let promise;
+            if (this.agendamento.customer_id == null) {
+                this.$myFunctions.setResponse(this, "Cliente não cadastrado", "error");
+                this.invalidForm = true;
 
-            if (this.agendamento.id) {
-                promise = this.updateSchedule();
-            } else {
-                promise = this.createSchedule();
+                return;
             }
 
-            promise
-                .then(() => {
-                    this.$emit("savedContent");
-                })
-                .catch((error) => {
-                    this.$myFunctions.setResponse(this, "Erro ao salvar agendamento", "error");
-                    console.error(error);
-                });
+            this.agendamento.duration = this.agendamento.duration.toString();
+
+            let data = {
+                customer_id: this.agendamento.customer_id, 
+                customer_name: this.agendamento.customer_name, 
+                date: this.agendamento.date, 
+                duration: this.agendamento.duration, 
+                observations: this.agendamento.observations, 
+                service: this.agendamento.service
+            }
+
+            if (this.agendamento.id) {
+                promise = this.updateSchedule(data);
+            } else {
+                promise = this.createSchedule(data);
+            }
+
+            promise.then(() => {
+                this.$emit("savedContent");
+            }).catch((error) => {
+                this.invalidForm = true;
+                this.$myFunctions.setResponse(this, error.response.data, "error");
+            });
         },
-        createSchedule() {
+        createSchedule(data) {
             return new Promise((resolve, reject) => {
-                this.$base.api.post("/appointments", this.agendamento)
+                this.$base.api.post("/appointments", data)
                     .then(() => {
                         this.$myFunctions.setResponse(this, "Agendamento criado com sucesso!", "success");
                         resolve();
                     })
                     .catch((error) => {
-                        this.$myFunctions.setResponse(this, "Erro ao criar agendamento", "error");
                         reject(error);
                     });
             });
         },
-        updateSchedule() {
+        updateSchedule(data) {
             return new Promise((resolve, reject) => {
-                this.$base.api.patch(`/appointments/${this.agendamento.id}`, this.agendamento)
+                this.$base.api.patch(`/appointments/${this.agendamento.id}`, data)
                     .then(() => {
                         this.$myFunctions.setResponse(this, "Agendamento atualizado com sucesso!", "success");
                         resolve();
                     })
                     .catch((error) => {
-                        this.$myFunctions.setResponse(this, "Erro ao atualizar agendamento", "error");
                         reject(error);
                     });
             });
         }
-    },
-    mounted: function () {
-        this.agendamento = reactive(this.$global.contentObject);
     }
 }
 </script>

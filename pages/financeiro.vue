@@ -18,12 +18,6 @@ export default {
                     default: true
                 },
                 {
-                    name: "Serviços",
-                    quantity: null,
-                    default: false,
-                    route: "servicos",
-                },
-                {
                     name: "Métodos de pagamento",
                     quantity: null,
                     default: false,
