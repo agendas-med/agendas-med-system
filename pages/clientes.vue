@@ -2,7 +2,7 @@
     <section>
         <UtilsPageheader title="Clientes" subtitle="Veja todas as informações dos seus clientes" />
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
-        <UtilsDataTable :loaded="!loading" :dataTable="clientes" :rowsPerPage="7" :newButton="true" @handleNew="newCustomer" table="cliente">
+        <UtilsDataTable :loaded="!loading" :dataTable="filteredClientes" :rowsPerPage="7" :newButton="true" @handleNew="newCustomer" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
                     <img :teste="item.image" :src="item.image == '' ? defaultUserImage : item.image" class="avatar avatar-pp">
@@ -51,17 +51,17 @@ export default {
             tabs: [
                 {
                     name: "Todos os clientes",
-                    quantity: 25,
+                    quantity: null,
                     default: true
                 },
                 {
                     name: "Já agendaram",
-                    quantity: 24,
+                    quantity: null,
                     default: false
                 },
                 {
                     name: "Nunca agendaram",
-                    quantity: 1,
+                    quantity: null,
                     default: false
                 }
             ],
@@ -71,44 +71,37 @@ export default {
             modalCancelButton: "",
             modalContentAgenda: false,
             modalContentClientes: false,
-            clientes: []
+            clientes: [],
+            filteredClientes: []
         }
+    },
+    mounted: function () {
+        this.returnCustomers();
     },
     methods: {
         changeCustomers: function (event) {
-            let type = "";
+            if (this.clientes.length == 0) return;
 
             switch (event) {
-                case 0:
-                    type = "todos";
+                case 0: //todos
+                    this.filteredClientes = this.clientes;
                     break;
-                case 1:
-                    type = "nao-fidelizados";
+                case 1: //fidelizados
+                    this.filteredClientes = this.clientes.filter((cliente) => { return cliente.last_appointment != "" || cliente.next_appointment != "" });
                     break;
-                case 2:
-                    type = "fidelizados";
+                case 2: //nao-fidelizados
+                    this.filteredClientes = this.clientes.filter((cliente) => { return cliente.last_appointment == "" && cliente.next_appointment == "" });
                     break;
             }
-
-            this.returnCustomers(type);
         },
-        returnCustomers: function (type = "") {
+        returnCustomers: function () {
             let self = this;
 
             this.$base.api.get("/customers").then(function(response){            
                 self.clientes = response.data.returnObj;
+                self.filteredClientes = response.data.returnObj;
                 self.loading = false;
             })
-
-            /*setTimeout(() => {
-                this.clientes = [
-                    { id: 6, name: 'Rina', birthday: "2024-12-03", tel: '41998564582', last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 7, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                    { id: 7, name: 'Yuto', birthday: "2024-12-03", tel: '41998564582',last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 2, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" },
-                    { id: 8, name: 'Miyo', birthday: "2024-12-03", tel: '41998564582',last_appointment: "2024-12-03 15:30:00", next_appointment: "2024-12-04 15:30:00", all_appointments: 2, image: "https://img.freepik.com/fotos-premium/uma-filmagem-em-baixo-angulo-kawaii-anime-girl-waifu-otaku_854727-5740.jpg" }
-                ]
-
-                this.loading = false;
-            }, 1000)*/
         },
         handleCreateSchedule: function (user) {
             let rowUser = {

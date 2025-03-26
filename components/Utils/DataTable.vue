@@ -59,7 +59,11 @@
         <button @click="prevPage" class="btn rounded-btn small" :disabled="currentPage === 1">
           <font-awesome icon="backward-step" class="cinza" />
         </button>
-        <span>Página <strong>{{ currentPage }}</strong> de {{ totalPages }}</span>
+        <div class="datatable-informations">
+          <span>Página <strong>{{ currentPage }}</strong> de {{ totalPages }}</span>
+          <span v-if="totalPages > 1">Mostrando <strong>{{ rowsPerPage }}</strong> de {{ dataTable.length }} {{ dataTable.length > 1 ? "itens" : "item" }}</span>
+        </div>
+        
         <button @click="nextPage" class="btn rounded-btn small" :disabled="currentPage === totalPages">
           <font-awesome icon="forward-step" class="cinza" />
         </button>
@@ -268,6 +272,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.datatable-informations {
+  display: grid;
+  place-items: center;
 }
 
 .pagination button {

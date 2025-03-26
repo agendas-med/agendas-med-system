@@ -16,6 +16,11 @@
         </button>
       </div>
     </div>
+    <div class="legendas">
+      <div class="agendado">Agendado</div>
+      <div class="iniciado">Iniciado</div>
+      <div class="realizado">Realizado</div>
+    </div>
     <FullCalendar ref="fullCalendar" :options="calendarOptions" v-if="!reload" />
     <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId'])">
       <ModalContentAgenda :event="selectedEvent" @savedContent="$myFunctions.closeModal(this); getEvents();" />
@@ -107,14 +112,15 @@
         this.$base.api.get("/appointments")
             .then((response) => {
               this.calendarEvents = response.data.returnObj;
+              
+              for (let i = 0; i < this.calendarEvents.length; i++) {
+                this.calendarEvents[i]["displayEventEnd"] = true;
+                this.calendarEvents[i]["color"] = this.calendarEvents[i].status == "agendado" ? "var(--amarelo)" : this.calendarEvents[i].status == "iniciado" ? "var(--azul)" : "var(--verde)";
+              }
             })
             .catch((error) => {
                 console.error("Erro ao buscar os agendamentos:", error);
             });
-
-        for (let i = 0; i < this.calendarEvents.length; i++) {
-          this.calendarEvents[i]["displayEventEnd"] = true;
-        }
       },
       eventClick: function (info) {
         this.selectedEvent = this.calendarEvents.filter(event => event.id == info.event.id)[0];
@@ -245,6 +251,46 @@
   border: 1px solid var(--cinza-medio);
 }
 
+.legendas {
+  position: absolute;
+  right: var(--space-7);
+  top: 10.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+
+  & div {
+    padding-left: 2rem;
+    display: inline-block;
+    position: relative;
+  }
+}
+
+.agendado::after, .iniciado::after, .realizado::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cinza-medio);
+  position: absolute;
+  left: .7rem;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.agendado::after {
+  background: var(--amarelo);
+}
+
+.iniciado::after {
+  background: var(--azul);
+}
+
+.realizado::after {
+  background: var(--verde);
+}
+
 .calendar-header {
   margin-top: var(--space-5);
 }
@@ -274,4 +320,10 @@
         border-radius: 30px;
         transition: all 0.4s;
     }
+
+@media (max-width: 768px) {
+  .legendas {
+    display: none;
+  }
+}
 </style>

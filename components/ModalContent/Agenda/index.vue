@@ -28,6 +28,15 @@
                 </div>
             </div>
             <div class="input-group">
+                <label for="status">Status</label>
+                <select id="status" v-model="agendamento.status" required>
+                    <option value="">* Selecione *</option>
+                    <option value="agendado">Agendado</option>
+                    <option value="iniciado">Iniciado</option>
+                    <option value="realizado">Realizado</option>
+                </select>
+            </div>
+            <div class="input-group">
                 <label for="observations">Observações</label>
                 <textarea id="observations" v-model="agendamento.observations" style="height: 101px;"></textarea>
             </div>
@@ -65,6 +74,7 @@ export default {
             agendamento = reactive(this.$global.contentObject);
             agendamento.date = moment(agendamento.date).format("YYYY-MM-DD HH:mm:ss");
             agendamento["service"] = agendamento.service_id || "";
+            agendamento.status = agendamento.status || "agendado";
 
             return agendamento;
         }
@@ -102,7 +112,8 @@ export default {
                 date: this.agendamento.date, 
                 duration: this.agendamento.duration, 
                 observations: this.agendamento.observations, 
-                service: this.agendamento.service
+                service: this.agendamento.service,
+                status: this.agendamento.status
             }
 
             if (this.agendamento.id) {
