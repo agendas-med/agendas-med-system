@@ -46,53 +46,21 @@ export default {
     methods: {
         chooseTagClass: function (status) {
             switch (status) {
-                case "ATRASADO":
+                case "Atrasado":
                     return "red";
-                case "EM ABERTO":
+                case "Em Aberto":
                     return "yellow";
-                case "PAGO":
+                case "Pago":
                     return "green";
             }
         },
         returnPayments: function () { //Método para retornar os pagamentos
-            this.loading = true;
+            let self = this;
 
-            setTimeout(() => {
-                this.pagamentos = [
-                    {
-                        id: 0,
-                        customer_id: 1,
-                        customer_name: "Saymon",
-                        customer_image: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
-                        customer_tel: '41998564582', 
-                        due_date: "2024-12-03 15:30:00",
-                        status: "ATRASADO",
-                        value: 250.55
-                    },
-                    {
-                        id: 1,
-                        cliente_id: 1,
-                        customer_name: "Saymon",
-                        customer_image: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
-                        customer_tel: '41998564582', 
-                        due_date: "2024-12-03 15:30:00",
-                        status: "PAGO",
-                        value: 200.41
-                    },
-                    {
-                        id: 2,
-                        customer_id: 1,
-                        customer_name: "Saymon",
-                        customer_image: "https://cademint-test.s3.amazonaws.com/2024-09-04T02_10_20.206Z126018478_1648490771979717_7245151950313189709_o.jpg",
-                        customer_tel: '41998564582', 
-                        due_date: "2024-12-03 15:30:00",
-                        status: "EM ABERTO",
-                        value: 250.55
-                    }
-                ]
-
-                this.loading = false;
-            }, 500)
+            this.$base.api.get("/financial").then(function(response){            
+                self.pagamentos = response.data.returnObj;
+                self.loading = false;
+            })
         }
     }
 }

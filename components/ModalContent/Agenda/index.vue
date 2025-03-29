@@ -34,6 +34,7 @@
                     <option value="agendado">Agendado</option>
                     <option value="iniciado">Iniciado</option>
                     <option value="realizado">Realizado</option>
+                    <option value="cancelado">Cancelado</option>
                 </select>
             </div>
             <div class="input-group">

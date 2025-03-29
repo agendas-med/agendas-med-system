@@ -20,6 +20,7 @@
       <div class="agendado">Agendado</div>
       <div class="iniciado">Iniciado</div>
       <div class="realizado">Realizado</div>
+      <div class="cancelado">Cancelado</div>
     </div>
     <FullCalendar ref="fullCalendar" :options="calendarOptions" v-if="!reload" />
     <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId'])">
@@ -115,7 +116,7 @@
               
               for (let i = 0; i < this.calendarEvents.length; i++) {
                 this.calendarEvents[i]["displayEventEnd"] = true;
-                this.calendarEvents[i]["color"] = this.calendarEvents[i].status == "agendado" ? "var(--amarelo)" : this.calendarEvents[i].status == "iniciado" ? "var(--azul)" : "var(--verde)";
+                this.calendarEvents[i]["color"] = this.calendarEvents[i].status == "agendado" ? "var(--amarelo)" : this.calendarEvents[i].status == "iniciado" ? "var(--azul)" : this.calendarEvents[i].status == "cancelado" ? "var(--vermelho)" : "var(--verde)";
               }
             })
             .catch((error) => {
@@ -266,7 +267,7 @@
   }
 }
 
-.agendado::after, .iniciado::after, .realizado::after {
+.agendado::after, .iniciado::after, .realizado::after, .cancelado::after {
   content: "";
   width: 10px;
   height: 10px;
@@ -289,6 +290,10 @@
 
 .realizado::after {
   background: var(--verde);
+}
+
+.cancelado::after {
+  background: var(--vermelho);
 }
 
 .calendar-header {
