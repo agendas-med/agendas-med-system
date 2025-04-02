@@ -30,6 +30,7 @@
 </template>
 <script>
 export default {
+    emits: ["savedContent"],
     data() {
         return {
             response: "",

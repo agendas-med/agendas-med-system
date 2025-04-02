@@ -32,6 +32,11 @@
         </div>
     </nav>
 </template>
+<script>
+export default {
+    emits: ["closeSidebar"]
+}
+</script>
 <style scoped>
     .nav-group {
         margin-bottom: var(--space-8);

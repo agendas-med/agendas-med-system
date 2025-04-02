@@ -10,6 +10,7 @@
   
   <script>
   export default {
+    emits: ["changedState"],
     props: ["label", "type", "isactive"],
     data() {
       return {

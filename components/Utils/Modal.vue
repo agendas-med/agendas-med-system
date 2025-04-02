@@ -23,6 +23,7 @@
 </template>
 <script>
 export default {
+    emits: ["excluded", "closeModal"],
     props: ["title", "saveButton", "cancelButton", "excludepath"],
     data() {
         return {
@@ -95,6 +96,7 @@ export default {
 
 .show {
     & .modal-container {
+        overflow: hidden;
         transform: translateY(0);
         opacity: 1;
     }

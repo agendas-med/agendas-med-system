@@ -7,10 +7,7 @@
             </div>
             <div class="input-group">
                 <label for="service">Serviço</label>
-                <select id="service" v-model="agendamento.service" required>
-                    <option value="">* Selecione *</option>
-                    <option :value="servico.id" v-for="servico in servicos">{{ servico.name }}</option>
-                </select>
+                <UtilsMultiselect :selectedOptions="agendamento.services" @updateSelectedOptions="agendamento.services = $event" :options="servicos" :required="true"></UtilsMultiselect>
             </div>
             <div class="grid grid-cols-[2fr_1fr] gap-4">
                 <div class="input-group">
@@ -21,7 +18,7 @@
                     <label for="duration">Duração</label>
                     <select id="duration" v-model="agendamento.duration" required>
                         <option value="">* Selecione *</option>
-                        <option v-for="option in $global.durations" :key="option.value" :value="option.value">
+                        <option v-for="option in durations" :key="option.value" :value="option.value">
                         {{ option.label }}
                         </option>
                     </select>
@@ -49,20 +46,46 @@
 </template>
 <script>
 export default {
+    emits: ["savedContent"],
     data() {
         return {
             response: "",
             responseType: "",
-            invalidForm: true
+            invalidForm: true,
+            durations: JSON.parse(JSON.stringify(this.$global.durations))
         }
     },
     watch: {
-        "agendamento.service": function () {
-            let selectedService = this.servicos.filter((service) => { return service.id == this.agendamento.service });
+        'agendamento.services': {
+            handler(newValue, oldValue) {
+                let selectedServices = this.servicos.filter((service) => {
+                    return this.agendamento.services.some(agService => agService.id === service.id);
+                });
 
-            if (selectedService.length > 0) {
-                this.agendamento.duration = selectedService[0].duration;
-            }
+                let durationSum = 0;
+
+                for (let i = 0; i < selectedServices.length; i++) {
+                    let currentService = selectedServices[i];
+
+                    durationSum += parseInt(currentService.duration);
+                }
+
+                if (!this.durations.some(duration => duration.value == durationSum)) {
+                    this.durations.push({
+                        value: durationSum,
+                        label: this.formatDuration(durationSum)
+                    });
+
+                    this.durations.sort((a, b) => a.value - b.value);
+                }
+
+                if (selectedServices.length > 0) {
+                    this.agendamento.duration = durationSum;
+                } else {
+                    this.agendamento.duration = "";
+                }
+            },
+            deep: true 
         }
     },
     computed: {
@@ -74,13 +97,24 @@ export default {
 
             agendamento = reactive(this.$global.contentObject);
             agendamento.date = moment(agendamento.date).format("YYYY-MM-DD HH:mm:ss");
-            agendamento["service"] = agendamento.service_id || "";
             agendamento.status = agendamento.status || "agendado";
 
             return agendamento;
         }
     },
     methods: {
+        formatDuration(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const remainingMinutes = minutes % 60;
+
+            if (hours > 0 && remainingMinutes > 0) {
+            return `${hours} hora${hours > 1 ? 's' : ''} e ${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}`;
+            } else if (hours > 0) {
+            return `${hours} hora${hours > 1 ? 's' : ''}`;
+            } else {
+            return `${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}`;
+            }
+        },
         setCustomer: function (event) {
             if (event.id != null) {
                 this.agendamento.customer_id = event.id;
@@ -91,11 +125,14 @@ export default {
             let promise;
             this.$myFunctions.resetResponse(this);
             this.invalidForm = false;
-            if ($(".ajax-autocomplete").attr("invalid") == "true") {
-                this.$myFunctions.setResponse(this, "Campo cliente não pode ser vazio", "error");
+            if ($(".custom-invalid[invalid='true']").length) {
+                $(".custom-invalid[invalid='true']").addClass("invalid");
+                this.$myFunctions.setResponse(this, "Campos não podem ser vazios", "error");
                 this.invalidForm = true;
 
                 return;
+            } else {
+                $(".custom-invalid[invalid='true']").removeClass("invalid");
             }
 
             if (this.agendamento.customer_id == null) {
@@ -113,7 +150,7 @@ export default {
                 date: this.agendamento.date, 
                 duration: this.agendamento.duration, 
                 observations: this.agendamento.observations, 
-                service: this.agendamento.service,
+                services: this.agendamento.services,
                 status: this.agendamento.status
             }
 

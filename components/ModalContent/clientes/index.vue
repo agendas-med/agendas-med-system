@@ -30,6 +30,7 @@
 import defaultUserImage from '@/assets/img/default-user-image.png';
 
 export default {
+    emits: ["savedContent"],
     data() {
         return {
             response: "",

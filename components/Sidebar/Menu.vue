@@ -7,6 +7,11 @@
         <SidebarNav @closeSidebar="$emit('closeSidebar')" />
     </aside>
 </template>
+<script>
+export default {
+    emits: ["closeSidebar"]
+}
+</script>
 <style scoped>
 .sidebar-container {
     padding: var(--space-10) var(--space-6);

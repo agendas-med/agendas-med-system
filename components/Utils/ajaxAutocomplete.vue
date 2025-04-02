@@ -1,5 +1,5 @@
 <template>
-    <div class="ajax-autocomplete" invalid="true">
+    <div class="ajax-autocomplete custom-invalid" invalid="true">
         <div class="ajax-autocomplete-wrapper" v-on:click="clearContainer()" v-if="entity_search.length > 2 && !force_close"></div>
         <div class="ajax-autocomplete-container">
             <input type="text" id="ajax-autocomplete-input" :placeholder="entity_object.id == null || entity_object.id == 0 ? '*** para todos' : ''" :disabled="handledisabled" v-model="entity_search">
@@ -32,6 +32,7 @@
 //import api from "../configs/api";
 
 export default {
+    emits: ["select"],
     name: "ajaxAutoComplete",
     props: ["ajaxtype", "entityid", "entityname", "required", "handledisabled"],
     data() {
@@ -54,6 +55,7 @@ export default {
             this.entity_object.id = this.entityid;
 
             $(".ajax-autocomplete").attr("invalid", false);
+            $(".ajax-autocomplete").removeClass("invalid");
             this.selectEntity(this.entity_object);
         }
     },
@@ -95,6 +97,7 @@ export default {
                 $(".ajax-autocomplete").attr("invalid", true);
                 this.force_close = false;
             } else {
+                $(".ajax-autocomplete").removeClass("invalid");
                 $(".ajax-autocomplete").attr("invalid", false);
             }
         },

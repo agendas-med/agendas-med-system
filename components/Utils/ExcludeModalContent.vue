@@ -13,6 +13,7 @@
 </template>
 <script>
 export default {
+    emit: ["excludedContent"],
     props: ["excludepath"],
     data() {
         return {

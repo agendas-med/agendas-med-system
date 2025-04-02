@@ -3,6 +3,7 @@
 </template>
 <script>
 export default {
+    emits: ["input", "model"],
     props: ["table", "search"],
     data() {
         return {

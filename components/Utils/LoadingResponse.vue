@@ -6,6 +6,7 @@
 </template>
 <script>
 export default {
+    emits: ["eraseError"],
     props: ["msg", "type", "loading", "styletype"]
 }
 </script>

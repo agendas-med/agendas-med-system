@@ -28,6 +28,7 @@
 </template>
 <script>
 export default {
+    emits: ["changed"],
     props: ["openinghour"],
     data() {
         return {

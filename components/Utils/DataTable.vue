@@ -75,6 +75,7 @@
 <script>
 
 export default {
+  emits: ["handleNew"],
   props: {
     dataTable: {
       type: Array,

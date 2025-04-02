@@ -11,6 +11,7 @@
 </template>
 <script>
 export default {
+    emits: ["changedTab"],
     props: ['tabs'],
     data() {
         return {

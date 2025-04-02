@@ -3,6 +3,7 @@
 </template>
 <script>
 export default {
+    emits: ["eraseError"],
     props: ["msg", "type"],
     computed: {
         typeClass: function () {

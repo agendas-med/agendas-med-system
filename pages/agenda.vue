@@ -57,7 +57,7 @@
         selectedEvent: {
           customer_id: null,
           customer_name: "",
-          service: "",
+          services: [],
           date: "",
           duration: "",
           observations: ""
@@ -80,7 +80,6 @@
           height: "calc(100vh - 218px)",
           editable: true,
           eventDrop: this.handleEventDrop,
-          eventDragStart: this.handleEventDragStart,
           eventResize: this.handleEventResize,
           titleFormat: {
             hour12: false,
@@ -145,6 +144,7 @@
       },
       changeEventById: function (eventId, info) {
         let event = this.calendarEvents.find(event => event.id == eventId);
+        
         event.start = info.event.startStr;
         event.end = info.event.endStr;
 
@@ -157,7 +157,8 @@
             date: moment(event.start).format("YYYY-MM-DD HH:mm:ss"), // start é o novo date
             duration: event.duration.toString(),
             observations: event.observations,
-            service: event.service_id
+            services: event.services,
+            status: event.status
         };
 
         this.$base.api.patch(`/appointments/${event.id}`, updatedEvent)
@@ -177,7 +178,7 @@
         this.selectedEvent = {
           customer_id: null,
           customer_name: "",
-          service: "",
+          services: [],
           date: e.dateStr + "T09:00:00",
           duration: "",
           observations: ""

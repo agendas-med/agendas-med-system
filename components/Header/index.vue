@@ -6,6 +6,11 @@
         <HeaderUser />
     </header>
 </template>
+<script>
+export default {
+    emits: ["toggleMenu"]
+}
+</script>
 <style scoped>
     header {
         padding: 0 var(--space-6);

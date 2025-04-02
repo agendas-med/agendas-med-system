@@ -100,9 +100,6 @@
           self.loading = false;
         })
       }
-    },
-    mounted: function () {
-      console.log(this.$global.user)
     }
   }
   </script>

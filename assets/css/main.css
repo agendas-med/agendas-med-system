@@ -251,15 +251,16 @@ input[type="submit"] {
   }
 }
 
-input:not([type="checkbox"]):not([type="radio"]), textarea, select {
+input:not([type="checkbox"]):not([type="radio"]), textarea, select, .input {
   max-width: 300px;
   padding: var(--space-3);
   border-radius: var(--radius-md);
   border: 1px solid var(--cinza-medio);
   margin-right: var(--space-3);
+  position: relative;
 }
 
-  input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, select:focus {
+  input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, select:focus, .input.focus {
     outline: 2px solid var(--verde-escuro);
   }
 
@@ -269,11 +270,15 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
   width: 100%;
 }
 
-  .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group select, .input-group input:not([type="checkbox"]):not([type="radio"]), .input-group select, .input-group textarea {
+  .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group .input, .form-group select, .input-group input:not([type="checkbox"]):not([type="radio"]), .input-group select, .input-group textarea, .input-group .input {
     max-width: 100%;
     width: 100%;
     height: 44px;
     margin: 0;
+  }
+
+  .form-group select[multiple], .input-group select[multiple] {
+    height: 100px !important;
   }
 
   .input-group textarea {
@@ -374,6 +379,11 @@ input[type="checkbox"], input[type="radio"] {
   input[type="file"] {
     min-width: initial;
   }
+}
+
+.custom-invalid.invalid {
+  border: 1px solid var(--vermelho);
+  border-radius: var(--radius-md);
 }
 
 .authentication-header {

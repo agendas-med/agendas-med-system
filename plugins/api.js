@@ -41,11 +41,9 @@ export default defineNuxtPlugin((nuxtApp) => {
             break;
     }
 
-    const api = reactive(
-        axios.create({
-            baseURL: url_api
-        })
-    )
+    const api = axios.create({
+        baseURL: url_api
+    })
   
     nuxtApp.provide('base', {
         api

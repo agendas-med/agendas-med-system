@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   fontawesome: {
     icons: {
       solid: ['face-smile', 'child', 'archive', 'envelope', 'pen-clip', 'circle', 'comment', 'times', 'store', 'calendar-day', 'user-group', 
-        'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right',
+        'chart-simple', 'wallet', 'bars', 'angle-down','search', 'filter', 'arrow-down-wide-short', 'trash', 'circle-plus', 'user-lock', 'angle-left', 'angle-right', 'angle-down',
         'backward-step', 'forward-step', 'plus', 'user-pen', 'gear', 'pen', 'circle-info', 'trash-can'],
       regular: ['comment', 'face-smile'],
       brands: ['twitter'],
