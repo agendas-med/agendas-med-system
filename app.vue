@@ -40,7 +40,8 @@ function isValidRoute(path) {
     "/configuracoes/empresa",
     "/configuracoes/cargos",
     "/configuracoes/servicos",
-    "/perfil"
+    "/perfil",
+    "/checkin"
   ]
   
   return routes.some(route => route == path);

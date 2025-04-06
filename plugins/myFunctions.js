@@ -126,6 +126,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     return date.trim() != "" ? moment(date).format("DD/MM/YYYY") : "";
   }
 
+  const formatHour = (date) => {
+    return date.trim() != "" ? moment(date).format("HH:mm") : "";
+  }
+
   const formatDateFromDB = (date) => {
     return date.trim() != "" ? moment(date).format("YYYY-MM-DD") : "";
   }
@@ -402,6 +406,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatTelInput,
       formatCpfInput,
       formatDate,
+      formatHour,
       formatDateFromDB,
       formatCpfFromDB,
       returnAge,
