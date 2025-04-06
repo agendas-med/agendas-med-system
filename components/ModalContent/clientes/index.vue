@@ -6,6 +6,10 @@
                 <input type="text" id="name" required v-model="customer.name">
             </div>
             <div class="input-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" required v-model="customer.cpf" @input="$myFunctions.formatCpfInput($event, customer.cpf)">
+            </div>
+            <div class="input-group">
                 <label for="birthday">Data de nascimento</label>
                 <input type="date" id="birthday" required v-model="customer.birthday">
             </div>
@@ -43,6 +47,7 @@ export default {
         customer: function () {
             let customer = this.$global.contentObject;
             customer.birthday = this.$myFunctions.formatDateFromDB(customer.birthday || "");
+            customer.cpf = this.$myFunctions.formatCpfFromDB(customer.cpf || "");
 
             return reactive(customer);
         }
@@ -55,6 +60,7 @@ export default {
             self.invalidForm = false;
 
             self.customer.tel = this.$myFunctions.returnCleanNumber(self.customer.tel);
+            self.customer.cpf = this.$myFunctions.returnCleanNumber(self.customer.cpf);
 
             if (self.customer.id) {
                 self.$base.api.patch("/customers/" + self.customer.id, self.customer).then(function () {            

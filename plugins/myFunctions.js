@@ -69,10 +69,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     return tel;
   }
 
-  const returnCleanNumber = (tel) => {
-    if (tel == null) return "";
+  const returnCleanNumber = (number) => {
+    if (number == null) return "";
 
-    const cleaned = tel.replace(/\D/g, '');
+    const cleaned = number.replace(/\D/g, '');
     
     return cleaned;
   }
@@ -89,6 +89,23 @@ export default defineNuxtPlugin((nuxtApp) => {
       cleaned = cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
     }
     
+    element.value = cleaned;
+  }
+
+  const formatCpfInput = (event, cpf) => {
+    if (cpf == null) return "";
+  
+    let element = event.target;
+    let cleaned = cpf.replace(/\D/g, '');
+  
+    if (cleaned.length > 11) {
+      cleaned = cleaned.substring(0, 11);
+    }
+  
+    if (cleaned.length === 11) {
+      cleaned = cleaned.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+  
     element.value = cleaned;
   }
 
@@ -111,6 +128,18 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const formatDateFromDB = (date) => {
     return date.trim() != "" ? moment(date).format("YYYY-MM-DD") : "";
+  }
+
+  const formatCpfFromDB = (cpf) => {
+    if (cpf == null) return "";
+
+    const cleaned = cpf.replace(/\D/g, '');
+    
+    if (cleaned.length === 11) {
+        return cleaned.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+    
+    return cpf;
   }
 
   const returnAge = (birthday) => {  
@@ -371,8 +400,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatTel,
       returnCleanNumber,
       formatTelInput,
+      formatCpfInput,
       formatDate,
       formatDateFromDB,
+      formatCpfFromDB,
       returnAge,
       formatCurrency,
       formatDuration,
