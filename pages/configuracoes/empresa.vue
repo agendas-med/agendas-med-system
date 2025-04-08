@@ -41,16 +41,6 @@
                 </div>
                 <p class="fontsize-sm cinza mt-7">HORÁRIO DE ATENDIMENTO</p>
                 <UtilsOpeningScheduled @changed="setNewSchedules($event, index)" :openinghour="day" v-for="(day, index) in company.configurations.opening_hours" />
-                <p class="fontsize-sm cinza mt-8">NOTIFICAÇÕES</p>
-                <div class="input-checkbox-group" v-for="notification in company.configurations.notifications" :key="notification.id">
-                    <label :for="notification.id" class="fontsize-md preto">{{ notification.name }}</label>
-                    <input
-                        type="checkbox"
-                        :id="notification.id"
-                        :checked="getNotificationActive(notification.id)"
-                        @change="setNotificationActive(notification.id, $event.target.checked)"
-                    >
-                </div>
                 <button type="submit" class="btn btn-primary mt-8">Salvar informações</button>
                 <UtilsLoadingResponse :msg="response" :type="responseType" :loading="false" @eraseError="$myFunctions.resetResponse(this)" />
             </form>

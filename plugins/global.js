@@ -51,23 +51,6 @@ export default defineNuxtPlugin((nuxtApp) => {
                     day: 7,
                     hours: []
                 }
-            ],
-            notifications: [
-                {
-                    code: "notificate_scheduling",
-                    name: "Agendamentos realizados",
-                    active: false
-                },
-                {
-                    code: "notificate_in_app_payment",
-                    name: "Pagamentos in-app",
-                    active: false
-                },
-                {
-                    code: "notificate_scheduling_cancelation",
-                    name: "Agendamentos cancelados",
-                    active: false
-                }
             ]
         },
         roles: [],

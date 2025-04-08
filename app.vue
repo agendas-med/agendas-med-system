@@ -40,6 +40,7 @@ function isValidRoute(path) {
     "/configuracoes/empresa",
     "/configuracoes/cargos",
     "/configuracoes/servicos",
+    "/configuracoes/preferencias",
     "/perfil",
     "/checkin"
   ]

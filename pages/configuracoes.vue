@@ -34,6 +34,12 @@ export default {
                     quantity: null,
                     route: "servicos",
                     default: false
+                },
+                {
+                    name: "Preferências",
+                    quantity: null,
+                    route: "preferencias",
+                    default: false
                 }
             ]       
         }
