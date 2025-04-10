@@ -151,11 +151,27 @@
         this.updateThisEvent(event);
       },
       updateThisEvent: function (event) {
+        const start = moment(event.start);
+        const end = moment(event.end);
+
+        // Diferença entre start e end em minutos
+        const calculatedDuration = end.diff(start, "minutes");
+
+        // Soma das durations dos serviços
+        const totalServiceDuration = event.services.reduce((total, service) => {
+            return total + parseInt(service.duration || 0);
+        }, 0);
+
+        // Define a duração final, obedecendo a lógica desejada
+        const finalDuration = (calculatedDuration < totalServiceDuration)
+            ? totalServiceDuration
+            : calculatedDuration;
+
         const updatedEvent = {
             customer_id: event.customer_id,
             customer_name: event.customer_name,
-            date: moment(event.start).format("YYYY-MM-DD HH:mm:ss"), // start é o novo date
-            duration: event.duration.toString(),
+            date: start.format("YYYY-MM-DD HH:mm:ss"),
+            duration: finalDuration.toString(),
             observations: event.observations,
             services: event.services,
             status: event.status

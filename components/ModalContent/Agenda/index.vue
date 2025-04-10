@@ -80,7 +80,9 @@ export default {
                 }
 
                 if (selectedServices.length > 0) {
-                    this.agendamento.duration = durationSum;
+                    if (this.agendamento.duration < durationSum) {
+                        this.agendamento.duration = durationSum;
+                    }
                 } else {
                     this.agendamento.duration = "";
                 }

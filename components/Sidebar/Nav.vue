@@ -53,7 +53,7 @@ export default {
     ul li {
         border-radius: var(--radius-md);
         cursor: pointer;
-        margin: var(--space-1) 0;
+        margin: var(--space-2) 0;
         transition: background 0.4s;
     }   
 
@@ -62,7 +62,8 @@ export default {
             padding-left: var(--space-6);
             width: 100%;
             height: 100%;
-            display: inline-block;
+            display: flex;
+            align-items: center;
         }
 
         ul li:hover {
