@@ -72,6 +72,7 @@ export default {
             this.returnChart(this.type);
         },
         returnChart: function (type = "", dateRange = "") {
+            let self = this;
             //Chamada para api passando o tipo de gráfico que tem que retornar
             //dateRange para enviar para o servidor
 
@@ -79,8 +80,7 @@ export default {
 
             this.loading = true;
 
-            setTimeout(() => {
-                if (type == "faturamento") {
+            if (type == "faturamento") {
                     this.data = {
                         chartData: {
                             labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -105,29 +105,24 @@ export default {
                         title: "Faturamento"
                     }
                 } else {
-                    this.data = {
-                        chartData: {
-                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                            datasets: [
-                                {
-                                    label: 'Atendimentos em 2024',
-                                    data: [120, 150, 180, 130, 170, 190, 220, 210, 160, 180, 240, 250],
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    fill: true,
-                                    tension: 0.3,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                                },
-                            ]
-                        },
-                        type: "line",
-                        title: "Atendimentos realizados"
+                    let data = {
+                        type: this.dateRange,
+                        date: this.dateRange == "anual" ? this.year : this.week
                     }
-                }
 
-                this.loading = false;
-            }, 1000)
+                    self.$base.api.post("/reports", data) 
+                    .then(function (response) { 
+                        console.log(response.data.returnObj)
+                        self.data =  {
+                            chartData: response.data.returnObj,
+                            type: "line",
+                            title: "Atendimentos realizados"
+                        }            
+                        self.loading = false;
+                    }).catch((error) => {
+                        console.log(error)
+                    })
+                }
         },
         updateChartRange() {
             this.returnChart(this.type, this.dateRange);

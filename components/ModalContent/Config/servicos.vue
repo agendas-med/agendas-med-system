@@ -10,6 +10,10 @@
                 <input type="text" id="value" required @input="$myFunctions.inputMoneyCheck($event)">
             </div>
             <div class="input-group">
+                <label for="cost">Custo (Despesa)</label>
+                <input type="text" id="cost" required @input="$myFunctions.inputMoneyCheck($event)">
+            </div>
+            <div class="input-group">
                 <label for="duration">Duração</label>
                 <select id="duration" v-model="service.duration" required>
                     <option value="">* Selecione *</option>
@@ -40,7 +44,7 @@ export default {
     },
     computed: {
         service: function () {
-            return this.isEdit ? reactive(this.$global.contentObject) : reactive({ name: "", value: 0, observations: "", duration: "" });
+            return this.isEdit ? reactive(this.$global.contentObject) : reactive({ name: "", value: 0, cost: 0, observations: "", duration: "" });
         }
     },
     methods: {
@@ -52,6 +56,7 @@ export default {
             let data = {
                 name: self.service.name,
                 value: self.$myFunctions.returnFloatNumber($("#value").val()),
+                cost: self.$myFunctions.returnFloatNumber($("#cost").val()),
                 observations: self.service.observations,
                 duration: self.service.duration
             }
@@ -68,6 +73,7 @@ export default {
     mounted: function () {
         $("#name").focus();
         $("#value").val(this.$myFunctions.formatCurrency(this.service.value));
+        $("#cost").val(this.$myFunctions.formatCurrency(this.service.cost));
     }
 }
 </script>
