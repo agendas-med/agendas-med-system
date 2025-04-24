@@ -14,7 +14,7 @@
             </div>
             <div class="chart-container">
                 <UtilsLoading :loading="loading" />
-                <Chart v-if="!loading" :chartData="data.chartData" :chartType="data.type" :chartTitle="data.title" />
+                <Chart v-if="!loading" :chartData="data.chartData" :chartType="data.type" :chartTitle="data.title" :type="data.labelType" />
             </div>
         </div>
     </section>
@@ -73,56 +73,43 @@ export default {
         },
         returnChart: function (type = "", dateRange = "") {
             let self = this;
-            //Chamada para api passando o tipo de gráfico que tem que retornar
-            //dateRange para enviar para o servidor
 
             if (!this.year) this.year = new Date().getFullYear();
 
             this.loading = true;
 
-            if (type == "faturamento") {
-                    this.data = {
-                        chartData: {
-                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                            datasets: [
-                                {
-                                    label: 'Receitas',
-                                    data: [5000, 7000, 8000, 4000, 6000, 7500, 9000, 8500, 7000, 6500, 6000, 9500],
-                                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1,
-                                },
-                                {
-                                    label: 'Despesas',
-                                    data: [3000, 5000, 4000, 3500, 4500, 5500, 7000, 6000, 5000, 5500, 4500, 6000],
-                                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                    borderColor: 'rgba(255, 99, 132, 1)',
-                                    borderWidth: 1,
-                                }
-                            ],
-                        },
-                        type: "bar",
-                        title: "Faturamento"
-                    }
-                } else {
-                    let data = {
-                        type: this.dateRange,
-                        date: this.dateRange == "anual" ? this.year : this.week
-                    }
+            let data = {
+                type: this.dateRange,
+                date: this.dateRange == "anual" ? this.year : this.week
+            }
 
-                    self.$base.api.post("/reports", data) 
-                    .then(function (response) { 
-                        console.log(response.data.returnObj)
-                        self.data =  {
-                            chartData: response.data.returnObj,
-                            type: "line",
-                            title: "Atendimentos realizados"
-                        }            
-                        self.loading = false;
-                    }).catch((error) => {
-                        console.log(error)
-                    })
-                }
+            if (type == "faturamento") {
+                self.$base.api.post("/reports/invoicing", data) 
+                .then(function (response) { 
+                    self.data =  {
+                        chartData: response.data.returnObj,
+                        type: "bar",
+                        title: "Faturamento",
+                        labelType: "currency"
+                    }            
+                    self.loading = false;
+                }).catch((error) => {
+                    console.log(error)
+                })
+            } else {
+                self.$base.api.post("/reports/appointments", data) 
+                .then(function (response) { 
+                    self.data =  {
+                        chartData: response.data.returnObj,
+                        type: "line",
+                        title: "Atendimentos realizados",
+                        labelType: "number"
+                    }            
+                    self.loading = false;
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
         },
         updateChartRange() {
             this.returnChart(this.type, this.dateRange);

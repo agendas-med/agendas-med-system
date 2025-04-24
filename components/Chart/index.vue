@@ -23,11 +23,27 @@ export default defineComponent({
       type: String,
       required: false,
       default: ""
+    },
+    type: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
     const canvas = ref(null);
     let chartInstance = null;
+
+    const returnChartFormattedType = (value) => {
+      let chartLabelType;
+
+      if (props.type == "currency") {
+        chartLabelType = `R$ ${value.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}`;
+      } else {
+        chartLabelType = value;
+      }
+
+      return chartLabelType;
+    }
 
     const renderChart = () => {
       if (chartInstance) {
@@ -51,10 +67,23 @@ export default defineComponent({
                 size: 20, // Aumenta o tamanho do título
               }
             },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  let value = context.raw || 0;
+                  return returnChartFormattedType(value);
+                }
+              }
+            }
           },
           scales: {
             y: {
               beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return returnChartFormattedType(value);
+                }
+              }
             },
           },
         },
