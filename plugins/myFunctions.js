@@ -286,9 +286,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     window.location.href ="/entrar";
   }
 
-  const enterCompanyWithToken = (instance, token) => {
+  const enterCompanyWithToken = (instance, token, email) => {
     return new Promise((resolve, reject) => {
-      instance.$base.api.post("/companies/enter_company", { token: token }).then(() => {
+      instance.$base.api.post("/companies/enter_company", { token: token, email: email }).then(() => {
         resolve();
       }).catch((error) => {
         reject(error);

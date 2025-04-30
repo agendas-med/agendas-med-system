@@ -14,7 +14,6 @@
     layout: 'empresa_entrar',
     data() {
       return {
-        companyName: "",
         haveAccount: false,
         token: "",
         response: "",
@@ -31,19 +30,19 @@
           this.loading = true;
 
           if (this.token != null) {
-            this.$myFunctions.enterCompanyWithToken(this, this.token).then(() => {
+            this.$myFunctions.enterCompanyWithToken(this, this.token, this.email).then(() => {
               self.loading = false;
               this.$myFunctions.logoutUser();
             });
           }
         } else {
-          window.location.href = "/registro?token=" + this.token;
+          window.location.href = "/registro?token=" + this.token + "&email=" + this.email;
         }
       },
       checkIfUserHaveAccount: function () {
         let self = this;
 
-        self.$base.api.post("/companies/find_user_by_token", { token: this.token }).then((response) => {
+        self.$base.api.post("/companies/find_user_by_token", { token: this.token, email: this.email }).then((response) => {
           self.haveAccount = response.data.returnObj;
         }).catch((error) => {
           self.invalid = true;
@@ -56,9 +55,8 @@
     mounted: function () {
       let url = new URLSearchParams(window.location.search);
 
-      this.companyName = decodeURIComponent(url.get("empresa"));
-      this.haveAccount = url.get("account") == 1 ? true : false;
       this.token = url.get("token");
+      this.email = url.get("email");
 
       this.checkIfUserHaveAccount();
     }

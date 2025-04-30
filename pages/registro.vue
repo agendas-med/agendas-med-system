@@ -8,7 +8,7 @@
         <div class="grid grid-cols-1 gap-4">
           <div class="form-group">
             <label for="name">Seu nome</label>
-            <input type="text" v-model="name" id="name" required >
+            <input type="text" v-model="name" id="name" required>
           </div>
           <div class="form-group">
             <label for="email">Seu email</label>
@@ -70,7 +70,7 @@
         this.$base.api.post("/users/register", data)
         .then(function(response2){            
           if (self.token != null) {
-            self.$myFunctions.enterCompanyWithToken(self, self.token);
+            self.$myFunctions.enterCompanyWithToken(self, self.token, data.email);
           }
 
           self.$myFunctions.setResponse(self, response2.data.message, "success");
@@ -87,6 +87,11 @@
       let url = new URLSearchParams(window.location.search);
 
       this.token = url.get("token");
+      this.email = url.get("email");
+
+      if (this.token && this.email) {
+        $("#email").attr("disabled", "disabled");
+      }
     }
   }
   </script>
