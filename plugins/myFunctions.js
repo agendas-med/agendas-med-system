@@ -380,7 +380,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const getUser = function (instance) {
     return new Promise((resolve, reject) => {
-      instance.$base.api.get("/users") 
+      instance.$base.api.get("/users", { headers: { "Selected-company": sessionStorage.getItem("selected_company") } }) 
         .then(function (response) { 
             Object.assign(instance.$global.user, response.data.returnObj);
 
@@ -393,6 +393,10 @@ export default defineNuxtPlugin((nuxtApp) => {
             resolve();
         })
     })
+  }
+
+  const hasPermission = function (instance) {
+    return instance.$global.user.permission == 1;
   }
 
   nuxtApp.provide('myFunctions', {
@@ -428,6 +432,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       isValidRoute,
       getAddressData,
       getCompany,
-      getUser
+      getUser,
+      hasPermission
   });
 });

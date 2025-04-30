@@ -5,7 +5,6 @@
         <NuxtPage/>
     </section>
 </template>
-
 <script>
 export default {
     data() {
@@ -24,6 +23,11 @@ export default {
                     route: "metodos-pagamento",
                 }
             ]       
+        }
+    },
+    mounted: function () {
+        if (!this.$myFunctions.hasPermission(this)) {
+            this.$router.push("/entrar");
         }
     }
 }

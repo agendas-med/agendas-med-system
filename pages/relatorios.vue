@@ -114,6 +114,11 @@ export default {
         updateChartRange() {
             this.returnChart(this.type, this.dateRange);
         }
+    },
+    mounted: function () {
+        if (!this.$myFunctions.hasPermission(this)) {
+            this.$router.push("/entrar");
+        }
     }
 }
 </script>

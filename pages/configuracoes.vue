@@ -43,6 +43,11 @@ export default {
                 }
             ]       
         }
+    },
+    mounted: function () {
+        if (!this.$myFunctions.hasPermission(this)) {
+            this.$router.push("/entrar");
+        }
     }
 }
 </script>
