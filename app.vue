@@ -17,8 +17,6 @@ const layoutName = ref(getLayoutName(route.path))
 function getLayoutName(path) {
   if (isValidRoute(path)) {
     return 'default'
-  } else if (isCleanPage(path)) {
-    return 'cleanPage'
   } else {
     return 'login'
   }
@@ -33,7 +31,6 @@ function isValidRoute(path) {
     "/agenda",
     "/financeiro",
     "/financeiro/pagamentos",
-    "/financeiro/servicos",
     "/financeiro/metodos-pagamento",
     "/configuracoes",
     "/configuracoes/usuarios",
@@ -43,15 +40,6 @@ function isValidRoute(path) {
     "/configuracoes/preferencias",
     "/perfil",
     "/checkin"
-  ]
-  
-  return routes.some(route => route == path);
-}
-
-// Função que verifica se a página deve ter um layout limpo
-function isCleanPage(path) {
-  let routes = [
-    "/trocar-empresa"
   ]
   
   return routes.some(route => route == path);

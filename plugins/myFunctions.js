@@ -375,16 +375,20 @@ export default defineNuxtPlugin((nuxtApp) => {
             
             resolve();
         })
+        .catch(() => {
+          localStorage.removeItem("selected_company");
+          location.reload();
+        })
     })
   }
 
   const getUser = function (instance) {
     return new Promise((resolve, reject) => {
-      instance.$base.api.get("/users", { headers: { "Selected-company": sessionStorage.getItem("selected_company") } }) 
+      instance.$base.api.get("/users", { headers: { "Selected-company": localStorage.getItem("selected_company") } }) 
         .then(function (response) { 
             Object.assign(instance.$global.user, response.data.returnObj);
 
-            let company_id = sessionStorage.getItem("selected_company") || response.data.returnObj.companies[0];
+            let company_id = localStorage.getItem("selected_company") || response.data.returnObj.companies[0];
 
             Object.assign(instance.$global.selectedCompany, { id: company_id });
 
