@@ -63,7 +63,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         email: "",
         url_photo: "",
         tel: "",
-        cep: "",
+        zip_code: "",
         address: "",
         city: "",
         state: "",

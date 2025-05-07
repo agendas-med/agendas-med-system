@@ -36,10 +36,7 @@
                             <option :value="state.sigla" v-for="(state, index) in $global.estados" :key="index">{{ state.nome }}</option>
                         </select>
                     </div>
-                    <div class="input-group"> 
-                        <label for="country">País</label>
-                        <input type="text" id="country" v-model="user.country" required>
-                    </div>
+                    <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
                     <div class="input-group">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
@@ -65,7 +62,10 @@ export default {
                     route: "",
                     default: true
                 }
-            ]
+            ],
+            response: "",
+            loading: false,
+            responseType: ""
         }
     },
     watch: {
@@ -94,7 +94,28 @@ export default {
     },
     methods: {
         changeProfileInformations: function () {
-            console.log(this.user)
+            let self = this;
+
+            let data = {
+                address: this.user.address,
+                zip_code: this.user.zip_code,
+                city: this.user.city,
+                state: this.user.state,
+                tel: this.user.tel
+            }
+
+            this.$myFunctions.resetResponse(this);
+            this.loading = true;
+
+            this.$base.api.post("/users/change-profile", data)
+            .then(function(response){            
+                self.$myFunctions.setResponse(self, response.data.message, "success");        
+            }).catch(() => {
+                self.$myFunctions.setResponse(self, "Ocorreu um erro ao salvar as informações", "error");
+            }).then(() => {
+                self.loading = false;
+                self.$myFunctions.getUser();
+            })
         },
         resetPassword: function () {
             console.log("Alterar senha");
