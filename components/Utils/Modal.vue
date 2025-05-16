@@ -1,17 +1,20 @@
 <template>
     <div class="modal flex items-center justify-center" v-if="title != ''" :class="showModal ? 'show' : ''">
         <div class="modal-wrapper" v-on:click="closeModal()"></div>
-        <div class="modal-container">
+        <div class="modal-container" :style="title.indexOf('Confirmar') != -1 ? 'height: 35vh;': ''">
             <div class="modal-header flex justify-between items-center">
                 <p class="fontsize-lg preto">{{ title }}</p>
                 <font-awesome icon="times" v-on:click="closeModal()" class="cursor-pointer" />
             </div>
             <div class="modal-body">
-                <div v-if="title.indexOf('Excluir') == -1">
+                <div v-if="title.indexOf('Excluir') == -1 && title.indexOf('Confirmar') == -1">
                     <slot />
                 </div>
-                <div class="flex items-center justify-center h-full w-full" v-else>
+                <div class="flex items-center justify-center h-full w-full" v-if="title.indexOf('Excluir') != -1">
                     <UtilsExcludeModalContent :excludepath="excludepath + $global.contentObject.id" @excludedContent="closeModal(true)"></UtilsExcludeModalContent>
+                </div>
+                <div class="flex items-center justify-center h-full w-full" v-if="title.indexOf('Confirmar') != -1">
+                    <UtilsConfirmModalContent @confirmed="closeModal(true); callbackConfirm();" :internalTitle="internalTitle"></UtilsConfirmModalContent>
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
@@ -23,8 +26,8 @@
 </template>
 <script>
 export default {
-    emits: ["excluded", "closeModal"],
-    props: ["title", "saveButton", "cancelButton", "excludepath"],
+    emits: ["excluded", "closeModal", "confirm"],
+    props: ["title", "saveButton", "cancelButton", "excludepath", "internalTitle"],
     data() {
         return {
             showModal: false
@@ -54,6 +57,9 @@ export default {
         }
     },
     methods: {
+        callbackConfirm: function () {
+            this.$emit("confirm");
+        },
         closeModal: function (exclude = false) {
             this.showModal = false;
             setTimeout(() => {

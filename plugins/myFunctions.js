@@ -21,16 +21,22 @@ export default defineNuxtPlugin((nuxtApp) => {
     instance.modalSaveButton = saveButton;
     instance.modalCancelButton = cancelButton;
 
-    if (contentObject) instance.$global.contentObject = JSON.parse(JSON.stringify(contentObject));
+    if (contentObject) {
+      instance.$global.contentObject = JSON.parse(JSON.stringify(contentObject));
+
+      if ('internalTitle' in instance.$global.contentObject) {
+        instance.internalTitle = instance.$global.contentObject.internalTitle;
+      }
+    }
 
     for (const [key, value] of Object.entries(props)) {
       instance[key] = value;
     }
 
-    if (modalContentVariable != "") {
+    if (modalContentVariable !== "") {
       instance[modalContentVariable] = true;
     }
-  }
+  };
 
   const closeModal = (instance, props = [], reload = false) => {
     instance.modalTitle = "";

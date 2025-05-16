@@ -1,7 +1,6 @@
 <template>
     <section>
         <UtilsPageheader title="Meu perfil" subtitle="Gerencie suas informações pessoais, preferências e configurações da sua conta." />
-        <UtilsTabs :tabs="tabs" @changedTab="$myFunctions.goToSubRoute(this, $event, 'perfil', tabs)" />
         <div class="profile-header flex items-center">
             <img :src="user.url_photo" class="avatar avatar-g">
             <div class="profile-header-informations">
@@ -43,10 +42,11 @@
                 </div>
             </form>
             <p class="fontsize-sm cinza mt-10">SEGURANÇA DA CONTA</p>
-            <button type="button" class="btn btn-primary-alt my-4" v-on:click="resetPassword()">
+            <button type="button" class="btn btn-primary-alt my-4" v-on:click="handleResetPassword()">
                 <font-awesome icon="user-lock" />
                 Redefinir senha
             </button>
+            <UtilsModal v-show="modalTitle" :internalTitle="internalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @confirm="resetPassword()" @closeModal="$myFunctions.closeModal(this)"></UtilsModal>
         </div>
     </section>   
 </template>
@@ -55,17 +55,13 @@
 export default {
     data() {
         return {
-            tabs: [
-                {
-                    name: "Perfil",
-                    quantity: null,
-                    route: "",
-                    default: true
-                }
-            ],
             response: "",
             loading: false,
-            responseType: ""
+            responseType: "",
+            modalTitle: "",
+            modalSaveButton: "",
+            modalCancelButton: "",
+            internalTitle: ""
         }
     },
     watch: {
@@ -93,6 +89,16 @@ export default {
     beforeDestroy() {
     },
     methods: {
+        resetPassword: function () {
+            let self = this;
+
+            self.loading = true;
+
+            this.$base.api.get("/users/request-reset-password").then(function(response){            
+                self.$myFunctions.setResponse(self, response.data.message, "success");   
+                self.loading = false;
+            })
+        },
         changeProfileInformations: function () {
             let self = this;
 
@@ -117,8 +123,8 @@ export default {
                 self.$myFunctions.getUser();
             })
         },
-        resetPassword: function () {
-            console.log("Alterar senha");
+        handleResetPassword: function () {
+            this.$myFunctions.openModal(this, "Confirmar ação?", "Confirmar", "Cancelar", {}, "", { internalTitle: "Tem certeza que deseja solicitar a redefinição de senha?" });
         }
     }
 }
