@@ -13,7 +13,10 @@
           <div class="form-group">
             <label for="password">Sua senha</label>
             <input type="password" v-model="password" id="password" required>
-            <span class="mt-3">Ainda não tem uma conta? <a class="cursor-pointer underline" v-on:click="$router.push('/registro')">Registre-se</a></span>
+            <div class="login-utils mt-3">
+              <span>Ainda não tem uma conta? <a class="cursor-pointer underline" v-on:click="$router.push('/registro')">Registre-se</a></span>
+              <router-link to="/recuperar-senha">Esqueci minha senha</router-link>
+            </div>
             <UtilsSwitch v-if="showLembrar" label="Lembrar-me" @changedState="lembrar = $event" style="margin-top: var(--space-3);" />
           </div>
         </div>
@@ -85,3 +88,14 @@
     }
   }
   </script>
+  <style scoped>
+  .login-utils {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & a {
+      text-decoration: underline;
+    }
+  }
+</style>

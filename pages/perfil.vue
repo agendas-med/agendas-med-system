@@ -94,7 +94,7 @@ export default {
 
             self.loading = true;
 
-            this.$base.api.get("/users/request-reset-password").then(function(response){            
+            this.$base.api.post("/users/request-reset-password", { email: self.$global.user.email }).then(function(response){            
                 self.$myFunctions.setResponse(self, response.data.message, "success");   
                 self.loading = false;
             })

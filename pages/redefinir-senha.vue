@@ -74,7 +74,7 @@
 
           setTimeout(() => {
             window.location.href = "/login";
-          }, 3000)
+          }, 2000)
         }).catch((error) => {
           self.$myFunctions.setResponse(self, "Ocorreu um erro ao alterar a senha", "error");
         })
