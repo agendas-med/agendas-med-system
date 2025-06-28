@@ -26,10 +26,12 @@
       <div class="or-separator">
         <span class="fontsize-sm preto">ou</span>
       </div>
+      <GoogleAuth></GoogleAuth>
     </div>
   </template>
   
   <script>
+
   export default {
     layout: 'entrar',
     data() {
