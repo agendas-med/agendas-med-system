@@ -30,6 +30,7 @@
       <div class="or-separator">
         <span class="fontsize-sm preto">ou</span>
       </div>
+      <GoogleAuth text="Registrar com o Google" @response="handleGoogleResponse($event)"></GoogleAuth>
     </div>
   </template>
   
@@ -48,6 +49,9 @@
       }
     },
     methods: {
+      handleGoogleResponse: function (response) {
+        this.$myFunctions.setResponse(self, response.msg, response.type);
+      },
       setTemporaryEmail: function (email) {
         sessionStorage.setItem("temporary_email", email);
       },

@@ -53,7 +53,12 @@ export default {
         position: absolute;
         display: grid;
         place-items: center;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         left: 9vw;
+        overflow-y: auto;
+        padding: var(--space-5) 0;
     }
 
     .authentication-page-internal {

@@ -14,7 +14,6 @@ export default {
 </script>
 <style scoped>
 footer {
-    position: absolute;
-    bottom: 3rem;
+    margin: var(--space-10) 0;
 }
 </style>

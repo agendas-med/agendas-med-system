@@ -2,22 +2,15 @@
     <GoogleLogin :callback="handleLoginSuccess">
         <button class="google-btn">
             <img src="../../assets/img/google-logo.png">
-            Login com Google
+            {{ text }}
         </button>
     </GoogleLogin>
-    <UtilsLoadingResponse :msg="response" :type="responseType" :loading="loading" @eraseError="$myFunctions.resetResponse(this)" />
 </template>
 <script>
 import { GoogleLogin } from 'vue3-google-login';
 
 export default {
-    data() {
-        return {
-            response: "",
-            responseType: "",
-            loading: false
-        }
-    },
+    props: ["text"],
     components: {
         GoogleLogin
     },
@@ -26,13 +19,13 @@ export default {
             let self = this;
 
             self.$base.api.post("users/google-login", { token: response.code }).then((results) => {
-                self.$myFunctions.setResponse(self, "Usuário autenticado com sucesso", "success");
+                self.$emit("response", { msg: "Usuário autenticado com sucesso", type: "success" });
 
                 self.$myFunctions.setJwtInLocalStorage(self, results.data.returnObj.token);
 
                 window.location.href = "/agenda";
             }).catch((error) => {
-                self.$myFunctions.setResponse(self, error.response.data, "error");
+                self.$emit("response", { msg: error.response.data, type: "error" });
             })
         }
     }

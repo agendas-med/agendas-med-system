@@ -26,7 +26,7 @@
       <div class="or-separator">
         <span class="fontsize-sm preto">ou</span>
       </div>
-      <GoogleAuth></GoogleAuth>
+      <GoogleAuth text="Entrar com o Google" @response="handleGoogleResponse($event)"></GoogleAuth>
     </div>
   </template>
   
@@ -62,6 +62,9 @@
       this.$myFunctions.checkIfUserIsAuthenticated(this);
     },
     methods: {
+      handleGoogleResponse: function (response) {
+        this.$myFunctions.setResponse(self, response.msg, response.type);
+      },
       login: function () {
         let self = this;
         let data = {
