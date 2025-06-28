@@ -374,16 +374,14 @@ export default defineNuxtPlugin((nuxtApp) => {
         .then(function (response) { 
             Object.assign(instance.$global.company, response.data.returnObj);
 
-            if (instance.$global.company.id == null) {
-              instance.$router.push("/criar-empresa");
-                reject();
-            } 
-            
             resolve();
         })
-        .catch(() => {
-          localStorage.removeItem("selected_company");
-          location.reload();
+        .catch((error) => {}).then(() => {
+            if (!instance.$global.company.id) {
+              localStorage.removeItem("selected_company");
+              instance.$router.push("/criar-empresa");
+              reject();
+            } 
         })
     })
   }

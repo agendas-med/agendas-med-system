@@ -4,8 +4,8 @@ import { reactive } from 'vue';
 export default defineNuxtPlugin((nuxtApp) => {
     let url_api;
 
-    const dev_environment = "http://192.168.15.43:3001"; //Ambiente de desenvolvimento.
-    const test_environment = ""; //Ambiente de teste.
+    const dev_environment = "http://192.168.15.8:3001"; //Ambiente de desenvolvimento.
+    const test_environment = "https://coretest-agendaspro-a30ea1e41da6.herokuapp.com"; //Ambiente de teste.
     const production_environment = ""; //Ambiente de produção.
 
     // TROCA DO AMBIENTE DA API
