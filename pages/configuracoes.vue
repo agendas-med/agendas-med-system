@@ -35,6 +35,12 @@ export default {
                     route: "servicos",
                     default: false
                 },
+                {                
+                    name: "Produtos",
+                    quantity: null,
+                    route: "produtos",
+                    default: false
+                },
                 {
                     name: "Preferências",
                     quantity: null,

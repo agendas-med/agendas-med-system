@@ -221,6 +221,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         "/configuracoes/empresa",
         "/configuracoes/cargos",
         "/configuracoes/servicos",
+        "/configuracoes/produtos",
         "/perfil",
         "/empresa_entrar"
     ]

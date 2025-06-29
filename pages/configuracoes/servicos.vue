@@ -13,6 +13,9 @@
             <template #column-valor="{ item }">
                 <p>{{ $myFunctions.formatCurrency(item.value) }}</p>
             </template>
+            <template #column-custo="{ item }">
+                <p>{{ $myFunctions.formatCurrency(item.cost) }}</p>
+            </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
                     <button class="rounded-button" v-on:click="handleEditService(item)">

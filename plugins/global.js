@@ -54,7 +54,8 @@ export default defineNuxtPlugin((nuxtApp) => {
             ]
         },
         roles: [],
-        services: []
+        services: [],
+        products: []
     })
 
     let user = reactive({
