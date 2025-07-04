@@ -126,16 +126,8 @@ export default {
         saveSchedule: function () {
             let promise;
             this.$myFunctions.resetResponse(this);
-            this.invalidForm = false;
-            if ($(".custom-invalid[invalid='true']").length) {
-                $(".custom-invalid[invalid='true']").addClass("invalid");
-                this.$myFunctions.setResponse(this, "Campos não podem ser vazios", "error");
-                this.invalidForm = true;
 
-                return;
-            } else {
-                $(".custom-invalid[invalid='true']").removeClass("invalid");
-            }
+            if (!this.$myFunctions.formCustomValidate(this)) return;
 
             if (this.agendamento.customer_id == null) {
                 this.$myFunctions.setResponse(this, "Cliente não cadastrado", "error");

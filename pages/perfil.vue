@@ -46,7 +46,7 @@
                 <font-awesome icon="user-lock" />
                 Redefinir senha
             </button>
-            <UtilsModal v-show="modalTitle" :internalTitle="internalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @confirm="resetPassword()" @closeModal="$myFunctions.closeModal(this)"></UtilsModal>
+            <UtilsModal @confirm="resetPassword()" @closeModal="$myFunctions.closeModal(this)"></UtilsModal>
         </div>
     </section>   
 </template>
@@ -58,9 +58,6 @@ export default {
             response: "",
             loading: false,
             responseType: "",
-            modalTitle: "",
-            modalSaveButton: "",
-            modalCancelButton: "",
             internalTitle: ""
         }
     },

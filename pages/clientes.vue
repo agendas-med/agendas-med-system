@@ -34,7 +34,7 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" excludepath="/customers/" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this); returnCustomers()">
+        <UtilsModal excludepath="/customers/" @closeModal="$myFunctions.closeModal(this); returnCustomers()">
             <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent" @savedContent="$myFunctions.closeModal(this, [], true); goToSchedule()" />
             <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, []); returnCustomers()" />
         </UtilsModal>
@@ -66,9 +66,6 @@ export default {
                 }
             ],
             loading: true,
-            modalTitle: "",
-            modalSaveButton: "",
-            modalCancelButton: "",
             modalContentAgenda: false,
             modalContentClientes: false,
             clientes: [],

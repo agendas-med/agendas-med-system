@@ -17,15 +17,15 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   //Métodos de modal
   const openModal = (instance, title, saveButton, cancelButton, props = {}, modalContentVariable = "", contentObject = null) => {
-    instance.modalTitle = title;
-    instance.modalSaveButton = saveButton;
-    instance.modalCancelButton = cancelButton;
+    instance.$global.modalUtils.modalTitle = title;
+    instance.$global.modalUtils.modalSaveButton = saveButton;
+    instance.$global.modalUtils.modalCancelButton = cancelButton;
 
     if (contentObject) {
       instance.$global.contentObject = JSON.parse(JSON.stringify(contentObject));
 
       if ('internalTitle' in instance.$global.contentObject) {
-        instance.internalTitle = instance.$global.contentObject.internalTitle;
+        instance.$global.modalUtils.internalTitle = instance.$global.contentObject.internalTitle;
       }
     }
 
@@ -39,9 +39,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   const closeModal = (instance, props = [], reload = false) => {
-    instance.modalTitle = "";
-    instance.modalSaveButton = "";
-    instance.modalCancelButton = "";
+    instance.$global.modalUtils.modalTitle = "";
+    instance.$global.modalUtils.modalSaveButton = "";
+    instance.$global.modalUtils.modalCancelButton = "";
 
     for (let i = 0; i < props.length; i++) { 
       instance[props[i]] = "";
@@ -209,6 +209,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const isValidRoute = (path) => {
     let routes = [
         "/agenda",
+        "/vendas",
         "/clientes",
         "/relatorios",
         "/agenda",
@@ -227,6 +228,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     ]
     
     return routes.some(route => route == path);
+  }
+
+  const formCustomValidate = (instance) => {
+    if ($(".custom-invalid[invalid='true']").length) {
+      $(".custom-invalid[invalid='true']").addClass("invalid");
+      instance.$myFunctions.setResponse(instance, "Campos não podem ser vazios", "error");
+      instance.$global.screenUtils.invalidForm = true;
+
+      return false;
+    } else {
+      $(".custom-invalid[invalid='true']").removeClass("invalid");
+      instance.$global.screenUtils.invalidForm = false;
+
+      return true;
+    }
   }
 
   //Metodos autenticação
@@ -442,6 +458,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       getAddressData,
       getCompany,
       getUser,
-      hasPermission
+      hasPermission,
+      formCustomValidate
   });
 });

@@ -7,6 +7,9 @@
                     <router-link to="/agenda" @click.native="$emit('closeSidebar')"><font-awesome icon="calendar-day" class="sidebar-icons" />Agenda</router-link>
                 </li>
                 <li class="fontsize-md sidebar-text">
+                    <router-link to="/vendas" @click.native="$emit('closeSidebar')"><font-awesome icon="bag-shopping" class="sidebar-icons" />Vendas</router-link>
+                </li>
+                <li class="fontsize-md sidebar-text">
                     <router-link to="/clientes" @click.native="$emit('closeSidebar')"><font-awesome icon="user-group" class="sidebar-icons" />Clientes</router-link>
                 </li>
                 <li class="fontsize-md sidebar-text" v-if="this.$myFunctions.hasPermission(this)">

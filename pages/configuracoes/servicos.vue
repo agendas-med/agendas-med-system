@@ -27,7 +27,7 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" excludepath="/companies/services/" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
+        <UtilsModal excludepath="/companies/services/" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
             <ModalContentConfigServicos @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
         </UtilsModal>
     </section>   
@@ -38,10 +38,7 @@ export default {
     data() {
         return {
             response: "",
-            responseType: "",
-            modalTitle: "",
-            modalSaveButton: "",
-            modalCancelButton: ""
+            responseType: ""
         }
     },
     computed: {

@@ -26,6 +26,7 @@ function getLayoutName(path) {
 function isValidRoute(path) {
   let routes = [
     "/agenda",
+    "/vendas",
     "/clientes",
     "/relatorios",
     "/agenda",

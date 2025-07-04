@@ -71,6 +71,17 @@ export default defineNuxtPlugin((nuxtApp) => {
         companies: []
     })
 
+    let modalUtils = reactive({
+        modalTitle: "",
+        modalSaveButton: "",
+        modalCancelButton: "",
+        internalTitle: ""
+    })
+
+    let screenUtils = reactive({
+        invalidForm: false
+    })
+
     let selectedCompany = reactive({
         id: 0
     });
@@ -140,7 +151,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         selectedCompany,
         estados,
         business_types,
-        durations
+        durations,
+        modalUtils,
+        screenUtils
     });
   });
   

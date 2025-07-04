@@ -24,21 +24,17 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" excludepath="/companies/products/" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
+        <UtilsModal excludepath="/companies/products/" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
             <ModalContentConfigProdutos @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
         </UtilsModal>
     </section>   
 </template>
-
 <script>
 export default {
     data() {
         return {
             response: "",
-            responseType: "",
-            modalTitle: "",
-            modalSaveButton: "",
-            modalCancelButton: ""
+            responseType: ""
         }
     },
     computed: {

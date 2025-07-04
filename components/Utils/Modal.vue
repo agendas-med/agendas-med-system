@@ -1,25 +1,25 @@
 <template>
-    <div class="modal flex items-center justify-center" v-if="title != ''" :class="showModal ? 'show' : ''">
+    <div class="modal flex items-center justify-center" v-if="$global.modalUtils.modalTitle != ''" :class="showModal ? 'show' : ''">
         <div class="modal-wrapper" v-on:click="closeModal()"></div>
-        <div class="modal-container" :style="title.indexOf('Confirmar') != -1 ? 'height: 35vh;': ''">
+        <div class="modal-container" :style="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1 ? 'height: 35vh;': ''">
             <div class="modal-header flex justify-between items-center">
-                <p class="fontsize-lg preto">{{ title }}</p>
+                <p class="fontsize-lg preto">{{ $global.modalUtils.modalTitle }}</p>
                 <font-awesome icon="times" v-on:click="closeModal()" class="cursor-pointer" />
             </div>
             <div class="modal-body">
-                <div v-if="title.indexOf('Excluir') == -1 && title.indexOf('Confirmar') == -1">
+                <div v-if="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 && $global.modalUtils.modalTitle.indexOf('Confirmar') == -1">
                     <slot />
                 </div>
-                <div class="flex items-center justify-center h-full w-full" v-if="title.indexOf('Excluir') != -1">
+                <div class="flex items-center justify-center h-full w-full" v-if="$global.modalUtils.modalTitle.indexOf('Excluir') != -1">
                     <UtilsExcludeModalContent :excludepath="excludepath + $global.contentObject.id" @excludedContent="closeModal(true)"></UtilsExcludeModalContent>
                 </div>
-                <div class="flex items-center justify-center h-full w-full" v-if="title.indexOf('Confirmar') != -1">
-                    <UtilsConfirmModalContent @confirmed="closeModal(true); callbackConfirm();" :internalTitle="internalTitle"></UtilsConfirmModalContent>
+                <div class="flex items-center justify-center h-full w-full" v-if="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1">
+                    <UtilsConfirmModalContent @confirmed="closeModal(true); callbackConfirm();" :internalTitle="$global.modalUtils.internalTitle"></UtilsConfirmModalContent>
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
-                <button type="button" class="btn" :class="title.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'" id="modal-submit-button" v-if="saveButton" v-on:click="saveData()">{{ saveButton }}</button>
-                <button type="button" class="btn btn-cinza" v-if="cancelButton" v-on:click="closeModal()">{{ cancelButton }}</button>
+                <button type="button" class="btn" :class="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'" id="modal-submit-button" v-if="$global.modalUtils.modalSaveButton" v-on:click="saveData()">{{ $global.modalUtils.modalSaveButton }}</button>
+                <button type="button" class="btn btn-cinza" v-if="$global.modalUtils.modalCancelButton" v-on:click="closeModal()">{{ $global.modalUtils.modalCancelButton }}</button>
             </div>
         </div>
     </div>
@@ -27,15 +27,15 @@
 <script>
 export default {
     emits: ["excluded", "closeModal", "confirm"],
-    props: ["title", "saveButton", "cancelButton", "excludepath", "internalTitle"],
+    props: ["excludepath"],
     data() {
         return {
             showModal: false
         }
     },
     watch: {
-        title: function () {
-            if (this.title != "") {
+        "$global.modalUtils.modalTitle": function () {
+            if (this.$global.modalUtils.modalTitle != "") {
                 setTimeout(() => {
                     this.showModal = true;
 
@@ -75,6 +75,9 @@ export default {
 
             $("#submit-button").click();
         }
+    },
+    beforeUnmount: function () {
+        this.$emit("closeModal");
     }
 }
 </script>

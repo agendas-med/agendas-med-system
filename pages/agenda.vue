@@ -23,7 +23,7 @@
       <div class="cancelado">Cancelado</div>
     </div>
     <FullCalendar ref="fullCalendar" :options="calendarOptions" v-if="!reload" />
-    <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this, ['eventId'])">
+    <UtilsModal @closeModal="$myFunctions.closeModal(this, ['eventId'])">
       <ModalContentAgenda :event="selectedEvent" @savedContent="$myFunctions.closeModal(this); getEvents();" />
     </UtilsModal>
   </div>
@@ -49,9 +49,6 @@
         calendarApi: null,
         calendarEvents: [],
         draggingEventId: "",
-        modalTitle: "",
-        modalSaveButton: "",
-        modalCancelButton: "",
         eventId: "",
         responsive: false,
         selectedEvent: {

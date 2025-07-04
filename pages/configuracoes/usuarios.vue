@@ -24,7 +24,7 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal v-show="modalTitle" :title="modalTitle" :saveButton="modalSaveButton" excludepath="/companies/remove_user/" :cancelButton="modalCancelButton" @closeModal="$myFunctions.closeModal(this); returnUsers();">
+        <UtilsModal excludepath="/companies/remove_user/" @closeModal="$myFunctions.closeModal(this); returnUsers();">
             <ModalContentConfigUsuarios @savedContent="$myFunctions.closeModal(this, []); returnUsers();" />
         </UtilsModal>
     </section>   
@@ -38,10 +38,7 @@ export default {
             response: "",
             responseType: "",
             loading: true,
-            users: [],
-            modalTitle: "",
-            modalSaveButton: "",
-            modalCancelButton: ""
+            users: []
         }
     },
     mounted() {
