@@ -13,6 +13,9 @@
             <template #column-custo="{ item }">
                 <p>{{ $myFunctions.formatCurrency(item.cost) }}</p>
             </template>
+            <template #column-unidade-de-medida="{ item }">
+                <p>{{ item.unit_of_measure_name }} ({{ item.unit_of_measure_abbreviation }})</p>
+            </template>
             <template #column-ações="{ item }">
                 <div class="flex space-x-2">
                     <button class="rounded-button" v-on:click="handleEditProduct(item)">

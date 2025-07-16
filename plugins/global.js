@@ -58,6 +58,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         products: []
     })
 
+    let unitsOfMeasurement = [];
+
     let user = reactive({
         id: 0,
         name: "",
@@ -144,6 +146,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     ];
   
     nuxtApp.provide('global', {
+        unitsOfMeasurement,
         contentObject,
         company,
         jwtLoaded,

@@ -6,12 +6,19 @@
                 <input type="text" id="name" required v-model="product.name">
             </div>
             <div class="input-group">
-                <label for="value">Valor</label>
+                <label for="value">Valor de venda</label>
                 <input type="text" id="value" required @input="$myFunctions.inputMoneyCheck($event)">
             </div>
             <div class="input-group">
                 <label for="cost">Custo (Despesa)</label>
                 <input type="text" id="cost" required @input="$myFunctions.inputMoneyCheck($event)">
+            </div>
+            <div class="input-group">
+                <label for="unit_of_measure">Unidade de medida</label>
+                <select id="unit_of_measure" v-model="product.unit_of_measure" required>
+                    <option value="0">* Selecione *</option>
+                    <option :value="unit.id" v-for="(unit, index) in $global.unitsOfMeasurement" :key="index">{{ unit.name }} ({{ unit.abbreviation }})</option>
+                </select>
             </div>
             <div class="input-group">
                 <label for="description">Descrição</label>
@@ -35,7 +42,7 @@ export default {
     },
     computed: {
         product: function () {
-            return this.isEdit ? reactive(this.$global.contentObject) : reactive({ name: "", value: 0, cost: 0, description: "" });
+            return this.isEdit ? reactive(this.$global.contentObject) : reactive({ name: "", value: 0, cost: 0, description: "", unit_of_measure: 0 });
         }
     },
     methods: {
@@ -48,7 +55,8 @@ export default {
                 name: self.product.name,
                 value: self.$myFunctions.returnFloatNumber($("#value").val()),
                 cost: self.$myFunctions.returnFloatNumber($("#cost").val()),
-                description: self.product.description
+                description: self.product.description,
+                unit_of_measure: self.product.unit_of_measure
             }
 
             self.$base.api.post("/companies/products" + (self.isEdit ? "/" + self.product.id : ""), data) 

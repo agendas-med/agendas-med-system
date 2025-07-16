@@ -340,11 +340,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     return new Promise((resolve) => {
       checkAndSetJwt(instance).then(() => {
         checkIfUserIsAuthenticated(instance, true).then(() => {
-          getUser(instance).then(() => {
-            getCompany(instance).then(() => {
-              returnBusinessTypes(instance).then(() => {
-                resolve();
-              });
+          getUnitsOfMeasurement(instance).then(() => {
+            getUser(instance).then(() => {
+              getCompany(instance).then(() => {
+                returnBusinessTypes(instance).then(() => {
+                  resolve();
+                });
+              })
             })
           })
         })
@@ -420,6 +422,17 @@ export default defineNuxtPlugin((nuxtApp) => {
     })
   }
 
+  const getUnitsOfMeasurement = function (instance) {
+    return new Promise((resolve) => {
+      instance.$base.api.get("/utils/units_of_measurement") 
+      .then(function (response) { 
+        instance.$global.unitsOfMeasurement = response.data.returnObj;
+
+        resolve();
+      })
+    })
+  }
+
   const hasPermission = function (instance) {
     return instance.$global.user.permission == 1;
   }
@@ -459,6 +472,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       getCompany,
       getUser,
       hasPermission,
-      formCustomValidate
+      formCustomValidate,
+      getUnitsOfMeasurement
   });
 });
