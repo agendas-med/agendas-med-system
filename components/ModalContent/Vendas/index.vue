@@ -16,8 +16,38 @@
                 </div>
             </div>
             <div class="input-group">
-                <label>Produtos</label>
-                <UtilsMultiselect :selectedOptions="sale.products" @updateSelectedOptions="sale.products = $event" :options="$global.company.products" :required="true"></UtilsMultiselect>
+                <div class="dual-input half confirm-button">
+                    <div class="input-group">
+                        <label for="product">Adicione um produto</label>
+                        <select v-model="idProductToAdd">
+                            <option value="">* Selecione *</option>
+                            <option :value="product.id" v-for="(product, index) in $global.company.products">{{ product.name }}</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="quantity">Quantidade</label>
+                        <input type="number" v-model="quantityProductToAdd">
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="addProduct()">Adicionar</button>
+                </div>
+                <UtilsDataTable :loaded="true" :dataTable="sale.products" :rowsPerPage="2" table="produto" @handleNew="" :newButton="false">
+                    <template #column-id="{ item }">
+                        <p>{{ item.id }}</p>
+                    </template>
+                    <template #column-nome="{ item }">
+                        <p>{{ item.name }}</p>
+                    </template>
+                    <template #column-quantidade="{ item }">
+                        <p>{{ item.quantity }}</p>
+                    </template>
+                    <template #column-ações="{ item }">
+                        <div class="flex space-x-2">
+                            <button class="rounded-button" v-on:click="handleDeleteProduct(item)">
+                                <font-awesome icon="trash" class="vermelho" />
+                            </button>
+                        </div>
+                    </template>
+                </UtilsDataTable>
             </div>
             <div class="input-group">
                 <label for="status">Status</label>
@@ -41,7 +71,9 @@ export default {
         return {
             response: "",
             responseType: "",
-            invalidForm: true
+            invalidForm: true,
+            idProductToAdd: "",
+            quantityProductToAdd: 0
         }
     },
     computed: {
@@ -67,6 +99,23 @@ export default {
         }
     },
     methods: {
+        addProduct: function () {
+            if (this.idProductToAdd != "" && this.quantityProductToAdd != 0) {
+                let indexTargetProduct = this.$global.company.products.findIndex(product => product.id == this.idProductToAdd);
+                let targetProduct = this.$global.company.products[indexTargetProduct];
+
+                targetProduct.quantity = this.quantityProductToAdd;
+
+                this.sale.products.push(targetProduct);
+                this.idProductToAdd = "";
+                this.quantityProductToAdd = 0;
+            }
+        },
+        handleDeleteProduct: function (product) {
+            let productIndex = this.sale.products.findIndex(item => item.id == product.id);
+
+            this.sale.products.splice(productIndex, 1);
+        },
         setUser: function (event) {
             this.sale.customer_id = event.id;
             this.sale.customer_name = event.name;
@@ -82,13 +131,15 @@ export default {
                 company_id: this.sale.company_id,
                 customer_id: this.sale.customer_id,
                 appointment_id: this.sale.appointment_id,
+                status: this.sale.status,
                 products: this.sale.products.map((product) => {
                     return {
                         id: product.id,
                         name: product.name,
                         value: product.value,
                         description: product.description,
-                        cost: product.cost
+                        cost: product.cost,
+                        quantity: product.quantity
                     }
                 })
             }
@@ -105,7 +156,7 @@ export default {
         }
     },
     mounted: function () {
-        
+        console.log(this.sale)
     }
 }
 </script>
