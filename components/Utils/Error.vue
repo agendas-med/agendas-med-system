@@ -16,7 +16,8 @@ export default {
             return typeClass;
         }
     },
-    mounted: function () {
+    mounted: function () {       
+
         setTimeout(() => {
             this.$emit("eraseError");
         }, 5000)

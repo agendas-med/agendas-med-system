@@ -22,6 +22,9 @@
     <template #column-status="{ item }">
       <UtilsBadge class="text-center" :background="item.status == 'realizada' ? 'var(--verde)' : item.status == 'em_aberto' ? 'var(--amarelo)' : 'var(--vermelho)'" :text="returnSaleStatus(item.status)" />
     </template>
+    <template #column-data="{ item }">
+      <p>{{ $myFunctions.formatDate(item.create_date) }}</p>
+    </template>
     <template #column-ações="{ item }">
         <div class="flex space-x-2">
             <button class="rounded-button" v-on:click="handleDeleteSale(item)">

@@ -224,7 +224,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         "/configuracoes/servicos",
         "/configuracoes/produtos",
         "/perfil",
-        "/empresa_entrar"
+        "/empresa_entrar",
+        "/estoque"
     ]
     
     return routes.some(route => route == path);

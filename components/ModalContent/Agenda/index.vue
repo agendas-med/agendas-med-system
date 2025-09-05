@@ -169,6 +169,8 @@ export default {
                         resolve();
                     })
                     .catch((error) => {
+                        document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
+
                         reject(error);
                     });
             });

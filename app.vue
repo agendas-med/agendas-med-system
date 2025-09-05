@@ -41,7 +41,9 @@ function isValidRoute(path) {
     "/configuracoes/produtos",
     "/configuracoes/preferencias",
     "/perfil",
-    "/checkin"
+    "/empresa_entrar",
+    "/checkin",
+    "/estoque"
   ]
   
   return routes.some(route => route == path);

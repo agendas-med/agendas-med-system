@@ -21,7 +21,7 @@
                         <label for="product">Adicione um produto</label>
                         <select v-model="idProductToAdd">
                             <option value="">* Selecione *</option>
-                            <option :value="product.id" v-for="(product, index) in $global.company.products">{{ product.name }}</option>
+                            <option :value="product.id" v-for="(product, index) in $global.company.products">{{ product.name }} ({{ product.available_quantity > 0 ? "Disponível" : "Indisponível" }})</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -104,6 +104,12 @@ export default {
                 let indexTargetProduct = this.$global.company.products.findIndex(product => product.id == this.idProductToAdd);
                 let targetProduct = this.$global.company.products[indexTargetProduct];
 
+                if (targetProduct.available_quantity <= 0) {
+                    this.$myFunctions.setResponse(this, "Produto indisponível!", "error");
+                    document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
+                    return
+                }
+
                 targetProduct.quantity = this.quantityProductToAdd;
 
                 this.sale.products.push(targetProduct);
@@ -127,36 +133,49 @@ export default {
 
             if (!this.$myFunctions.formCustomValidate(this)) return; 
 
+            let saleProducts = this.sale.products.map((product) => {
+                return {
+                    id: product.id,
+                    name: product.name,
+                    value: product.value,
+                    description: product.description,
+                    cost: product.cost,
+                    quantity: product.quantity,
+                    available_quantity: product.available_quantity
+                }
+            })
+
+            let someUnavailable = saleProducts.some(product => product.available_quantity <= 0);
+
+            if (this.sale.status == "realizada" && someUnavailable) {
+                this.$myFunctions.setResponse(this, "Impossível concluir a venda, existem produtos indisponíveis!", "error");
+                document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+
             let sale = {
                 company_id: this.sale.company_id,
                 customer_id: this.sale.customer_id,
                 appointment_id: this.sale.appointment_id,
                 status: this.sale.status,
-                products: this.sale.products.map((product) => {
-                    return {
-                        id: product.id,
-                        name: product.name,
-                        value: product.value,
-                        description: product.description,
-                        cost: product.cost,
-                        quantity: product.quantity
-                    }
-                })
+                products: saleProducts
             }
 
             if (self.sale.id) {
-                self.$base.api.patch("/sales/" + self.sale.id, sale).then(function () {            
+                self.$base.api.patch("/sales/" + self.sale.id, sale).then(function () {    
+                    self.$myFunctions.getCompany(self);        
                     self.$emit("savedContent");
                 })
             } else {
-                self.$base.api.post("/sales", sale).then(function () {            
+                self.$base.api.post("/sales", sale).then(function () {   
+                    self.$myFunctions.getCompany(self);         
                     self.$emit("savedContent");
                 })
             }
         }
     },
     mounted: function () {
-        console.log(this.sale)
+        
     }
 }
 </script>

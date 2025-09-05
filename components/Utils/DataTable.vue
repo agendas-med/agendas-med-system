@@ -12,7 +12,9 @@
         />
         <button v-if="newButton" type="button" v-on:click="$emit('handleNew')" class="btn btn-primary" :class="loaded && dataTable.length > 0 ? '' : 'mt-4 mx-auto'">
             <font-awesome icon="plus" />
-            Cadastrar {{ table }}
+            {{ 
+              newButtonText ? newButtonText : ("Cadastrar " + table)
+            }}
         </button>
       </div>
 
@@ -84,6 +86,10 @@ export default {
     table: {
       type: String,
       required: true
+    },
+    newButtonText: {
+      type: String,
+      required: false
     },
     rowsPerPage: {
       type: Number,

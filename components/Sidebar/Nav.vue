@@ -16,6 +16,9 @@
                     <router-link to="/relatorios" @click.native="$emit('closeSidebar')"><font-awesome icon="chart-simple" class="sidebar-icons" />Relatórios</router-link>
                 </li>
                 <li class="fontsize-md sidebar-text">
+                    <router-link to="/estoque" @click.native="$emit('closeSidebar')"><font-awesome icon="dolly" class="sidebar-icons" />Estoque</router-link>
+                </li>
+                <li class="fontsize-md sidebar-text">
                     <router-link to="/checkin" @click.native="$emit('closeSidebar')"><font-awesome icon="circle-check" class="sidebar-icons" />Check-in</router-link>
                 </li>
             </ul>
