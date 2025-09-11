@@ -204,6 +204,17 @@ export default defineNuxtPlugin((nuxtApp) => {
     return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
   };
 
+  const sanitizeHtml = (str) => {
+    if (str.trim() == "") return "";
+    
+    const allowedTags = ['b', 'i', 'p', 'br'];
+    const regex = new RegExp(`<\/?(?!${allowedTags.join('|')})[^>]*>`, 'gi');
+    const withBreaks = str.replace(/\n/g, '<br>');
+    const sanitized = withBreaks.replace(regex, '');
+
+    return sanitized;
+  }
+
   //Métodos validação
 
   const isValidRoute = (path) => {
@@ -453,6 +464,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       formatDateFromDB,
       formatCpfFromDB,
       returnAge,
+      sanitizeHtml,
       formatCurrency,
       formatDuration,
       inputMoneyCheck,

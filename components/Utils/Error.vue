@@ -1,5 +1,5 @@
 <template>
-    <p class="fontsize-md text-center" :class="typeClass" v-if="msg != ''">{{ msg }}</p>
+    <p class="fontsize-md text-center" :class="typeClass" v-if="msg != ''" v-html="$myFunctions.sanitizeHtml(msg)"></p>
 </template>
 <script>
 export default {
