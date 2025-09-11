@@ -165,11 +165,17 @@ export default {
                 self.$base.api.patch("/sales/" + self.sale.id, sale).then(function () {    
                     self.$myFunctions.getCompany(self);        
                     self.$emit("savedContent");
+                }).catch((error) => {
+                    this.$myFunctions.setResponse(this, error.response.data, "error");
+                    document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
                 })
             } else {
                 self.$base.api.post("/sales", sale).then(function () {   
                     self.$myFunctions.getCompany(self);         
                     self.$emit("savedContent");
+                }).catch((error) => {
+                    this.$myFunctions.setResponse(this, error.response.data, "error");
+                    document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
                 })
             }
         }
