@@ -129,6 +129,28 @@ html, body, #__nuxt {
       &.btn-cinza:active, &.btn-cinza:focus {
         outline: 2px solid var(--cinza);
       }
+
+  &.btn-blue {
+    background: var(--azul);
+    color: var(--branco);
+
+    &:disabled {
+      background: var(--azul-claro);
+      cursor: initial;
+
+      &:hover {
+        background: var(--azul-claro);
+      }
+    }
+
+    &:hover {
+      background: var(--azul-escuro);
+    }
+
+    &:active, &:focus {
+      outline: 2px solid var(--azul);
+    }
+  }
   
   &.btn-red {
     background: var(--vermelho);
@@ -246,6 +268,11 @@ html, body, #__nuxt {
       height: 44px !important;
     }
   }
+}
+
+.inline-error {
+  font-size: 12.96px;
+  color: var(--vermelho);
 }
 
 input[type="submit"] {
@@ -425,4 +452,57 @@ input[type="checkbox"], input[type="radio"] {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* COMPONENTES GLOBAIS */
+
+.small-modal {
+  background: var(--branco);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  width: 100dvw;
+  height: calc(100dvh - 60px);
+  max-width: 300px;
+  max-height: 400px;
+  transition: all 0.4s ease-in-out;
+  z-index: -1;
+  transform: translateY(-15px);
+  opacity: 0;
+  border: 1px solid var(--cinza-claro);
+  box-shadow: var(--boxshadow-regular);
+
+  &::before {
+    content: attr(data-title);
+    font-size: 17.28px;
+    font-weight: bold;
+  }
+  
+  & form {
+    width: 100%;
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  &.show {
+    z-index: 4;
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.payment-modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: 3;
 }
