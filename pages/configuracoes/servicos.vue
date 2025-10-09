@@ -1,6 +1,7 @@
 <template>
     <section>
-        <UtilsDataTable :loaded="true" :dataTable="services" :rowsPerPage="7" table="serviço" @handleNew="newService" :newButton="true">
+        <UtilsDataTable :loaded="true" :dataTable="services" :rowsPerPage="7" table="serviço" @handleNew="newService"
+            :newButton="true">
             <template #column-nome="{ item }">
                 <p>{{ item.name }}</p>
             </template>
@@ -27,10 +28,12 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal excludepath="/companies/services/" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
-            <ModalContentConfigServicos @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
+        <UtilsModal excludepath="/companies/services/" @closeModal="$myFunctions.closeModal(this);"
+            @excluded="$myFunctions.getCompany(this)">
+            <ModalContentConfigServicos
+                @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
         </UtilsModal>
-    </section>   
+    </section>
 </template>
 
 <script>
@@ -44,17 +47,34 @@ export default {
     computed: {
         services: function () {
             return this.$global.company.services;
-        }   
+        }
     },
     methods: {
         newService: function () {
-            this.$myFunctions.openModal(this, "Cadastrar serviço", "Criar", "Cancelar");
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Cadastrar serviço",
+                saveButton: "Criar",
+                cancelButton: "Cancelar"
+            });
         },
         handleEditService: function (item) {
-            this.$myFunctions.openModal(this, "Editar serviço", "Salvar", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Editar serviço",
+                saveButton: "Salvar",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         },
         handleDeleteService: function (item) {
-            this.$myFunctions.openModal(this, "Excluir serviço", "Excluir", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Excluir serviço",
+                saveButton: "Excluir",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         }
     }
 }

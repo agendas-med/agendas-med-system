@@ -2,7 +2,8 @@
     <section>
         <UtilsPageheader title="Estoque" subtitle="Gerencie os produtos em estoque" />
         <br>
-        <UtilsDataTable :loaded="!loading" :dataTable="estoque" :rowsPerPage="7" table="produto" newButtonText="Inserir movimentação" @handleNew="newMovement" :newButton="true">
+        <UtilsDataTable :loaded="!loading" :dataTable="estoque" :rowsPerPage="7" table="produto"
+            newButtonText="Inserir movimentação" @handleNew="newMovement" :newButton="true">
             <template #column-produto="{ item }">
                 <p>{{ $myFunctions.formatTel(item.produto) }}</p>
             </template>
@@ -33,7 +34,12 @@ export default {
     },
     methods: {
         newMovement: function () {
-            this.$myFunctions.openModal(this, "Inserir movimentação", "Inserir", "Cancelar");
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Inserir movimentação",
+                saveButton: "Inserir",
+                cancelButton: "Cancelar"
+            });
         },
         chooseTagClass: function (status) {
             switch (status) {
@@ -46,7 +52,7 @@ export default {
         returnStock: function () {
             let self = this;
 
-            this.$base.api.get("/stock").then(function(response){            
+            this.$base.api.get("/stock").then(function (response) {
                 self.estoque = response.data.returnObj;
                 self.loading = false;
             })
@@ -54,6 +60,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

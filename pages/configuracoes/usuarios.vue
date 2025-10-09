@@ -1,6 +1,7 @@
 <template>
     <section>
-        <UtilsDataTable :loaded="!loading" :dataTable="users" :rowsPerPage="7" table="usuário" @handleNew="newUser" :newButton="true">
+        <UtilsDataTable :loaded="!loading" :dataTable="users" :rowsPerPage="7" table="usuário" @handleNew="newUser"
+            :newButton="true">
             <template #column-nome="{ item }">
                 <p>{{ item.name }}</p>
             </template>
@@ -27,7 +28,7 @@
         <UtilsModal excludepath="/companies/remove_user/" @closeModal="$myFunctions.closeModal(this); returnUsers();">
             <ModalContentConfigUsuarios @savedContent="$myFunctions.closeModal(this, []); returnUsers();" />
         </UtilsModal>
-    </section>   
+    </section>
 </template>
 
 <script>
@@ -46,19 +47,36 @@ export default {
     },
     methods: {
         newUser: function () {
-            this.$myFunctions.openModal(this, "Cadastrar usuário", "Criar", "Cancelar");
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Cadastrar usuário",
+                saveButton: "Criar",
+                cancelButton: "Cancelar"
+            });
         },
         handleEditUser: function (item) {
-            this.$myFunctions.openModal(this, "Editar usuário", "Salvar", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Editar usuário",
+                saveButton: "Salvar",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         },
         handleExcludeUser: function (item) {
-            this.$myFunctions.openModal(this, "Excluir usuário", "Excluir", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Excluir usuário",
+                saveButton: "Excluir",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         },
         returnUsers: function () {
             let self = this;
 
             self.loading = true;
-            
+
             self.$base.api.get("/companies/return_users", self.usuario).then((response) => {
                 self.users = response.data.returnObj;
                 self.$emit("savedContent");

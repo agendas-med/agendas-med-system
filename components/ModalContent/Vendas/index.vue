@@ -1,5 +1,5 @@
 <template>
-    <form id="informations-form" @submit.prevent="saveSale()" :invalid="invalidForm">
+    <form id="informations-form" @submit.prevent="saveSale" :invalid="invalidForm">
         <div class="edit-event grid grid-cols-1 gap-4">
             <div class="input-group">
                 <label>Cliente</label>
@@ -132,6 +132,7 @@
             <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
+        <input type="submit" id="submit-button2" />
     </form>
     <div class="payment-modal-wrapper" v-if="showPaymentModal" v-on:click="showPaymentModal = !showPaymentModal"></div>
     <div class="small-modal" :class="{'show': showPaymentModal}" data-title="Adicionar pagamento">
@@ -141,8 +142,8 @@
                 <select id="payment_type" required v-model="paymentType">
                     <option value="">* Selecione *</option>
                     <option value="pix">Pix</option>
-                    <option value="cartao_debito">Cartão de Débito</option>
-                    <option value="cartao_credito">Cartão de Crédito</option>
+                    <option value="cartao_debito" v-if="false">Cartão de Débito</option>
+                    <option value="cartao_credito" v-if="false">Cartão de Crédito</option>
                     <option value="dinheiro">Dinheiro</option>
                 </select>
             </div>
@@ -247,14 +248,15 @@ export default {
             }
 
             self.$base.api.post("/sales/insert_payment", payment).then(() => {    
-                self.$myFunctions.getCompany(self);        
-                self.$emit("savedContent");
+                self.$myFunctions.getCompany(self); 
+                self.sale.payments.push(payment);       
+                self.showPaymentModal = false;
             }).catch((error) => {
                 this.$myFunctions.setResponse(this, error.response.data, "error");
                 document.querySelector(".loading-response").scrollIntoView({ behavior: "smooth" });
             })
         },
-        saveSale: function () {
+        saveSale: function (event) {
             let self = this;
 
             self.$myFunctions.resetResponse(this);
@@ -290,8 +292,9 @@ export default {
             }
 
             if (self.sale.id) {
-                self.$base.api.patch("/sales/" + self.sale.id, sale).then(function () {    
-                    self.$myFunctions.getCompany(self);        
+                self.$base.api.patch("/sales/" + self.sale.id + (event.submitter.id == "submit-button2" ? "?finish=true" : ""), sale).then(function () {    
+                    self.$myFunctions.getCompany(self);     
+                     
                     self.$emit("savedContent");
                 }).catch((error) => {
                     this.$myFunctions.setResponse(this, error.response.data, "error");

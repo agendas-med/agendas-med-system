@@ -1,6 +1,7 @@
 <template>
     <section>
-        <UtilsDataTable :loaded="true" :dataTable="products" :rowsPerPage="7" table="produto" @handleNew="newProduct" :newButton="true">
+        <UtilsDataTable :loaded="true" :dataTable="products" :rowsPerPage="7" table="produto" @handleNew="newProduct"
+            :newButton="true">
             <template #column-nome="{ item }">
                 <p>{{ item.name }}</p>
             </template>
@@ -27,10 +28,12 @@
                 </div>
             </template>
         </UtilsDataTable>
-        <UtilsModal excludepath="/companies/products/" @closeModal="$myFunctions.closeModal(this);" @excluded="$myFunctions.getCompany(this)">
-            <ModalContentConfigProdutos @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
+        <UtilsModal excludepath="/companies/products/" @closeModal="$myFunctions.closeModal(this);"
+            @excluded="$myFunctions.getCompany(this)">
+            <ModalContentConfigProdutos
+                @savedContent="$myFunctions.closeModal(this, []); $myFunctions.getCompany(this)" />
         </UtilsModal>
-    </section>   
+    </section>
 </template>
 <script>
 export default {
@@ -43,17 +46,34 @@ export default {
     computed: {
         products: function () {
             return this.$global.company.products;
-        }   
+        }
     },
     methods: {
         newProduct: function () {
-            this.$myFunctions.openModal(this, "Cadastrar produto", "Criar", "Cancelar");
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Cadastrar produto",
+                saveButton: "Criar",
+                cancelButton: "Cancelar"
+            });
         },
         handleEditProduct: function (item) {
-            this.$myFunctions.openModal(this, "Editar produto", "Salvar", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Editar produto",
+                saveButton: "Salvar",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         },
         handleDeleteProduct: function (item) {
-            this.$myFunctions.openModal(this, "Excluir produto", "Excluir", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Excluir produto",
+                saveButton: "Excluir",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         }
     }
 }

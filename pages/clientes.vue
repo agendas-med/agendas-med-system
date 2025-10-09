@@ -2,10 +2,12 @@
     <section>
         <UtilsPageheader title="Clientes" subtitle="Veja todas as informações dos seus clientes" />
         <UtilsTabs :tabs="tabs" @changedTab="changeCustomers($event)" />
-        <UtilsDataTable :loaded="!loading" :dataTable="filteredClientes" :rowsPerPage="7" :newButton="true" @handleNew="newCustomer" table="cliente">
+        <UtilsDataTable :loaded="!loading" :dataTable="filteredClientes" :rowsPerPage="7" :newButton="true"
+            @handleNew="newCustomer" table="cliente">
             <template #column-cliente="{ item }">
                 <div class="flex items-center">
-                    <img :teste="item.image" :src="item.image == '' ? defaultUserImage : item.image" class="avatar avatar-pp">
+                    <img :teste="item.image" :src="item.image == '' ? defaultUserImage : item.image"
+                        class="avatar avatar-pp">
                     <div>
                         <p><strong>{{ item.name }}</strong></p>
                     </div>
@@ -35,8 +37,10 @@
             </template>
         </UtilsDataTable>
         <UtilsModal excludepath="/customers/" @closeModal="$myFunctions.closeModal(this); returnCustomers()">
-            <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent" @savedContent="$myFunctions.closeModal(this, [], true); goToSchedule()" />
-            <ModalContentClientes v-if="modalContentClientes" @savedContent="$myFunctions.closeModal(this, []); returnCustomers()" />
+            <ModalContentAgenda v-if="modalContentAgenda" :event="selectedEvent"
+                @savedContent="$myFunctions.closeModal(this, [], true); goToSchedule()" />
+            <ModalContentClientes v-if="modalContentClientes"
+                @savedContent="$myFunctions.closeModal(this, []); returnCustomers()" />
         </UtilsModal>
     </section>
 </template>
@@ -94,7 +98,7 @@ export default {
         returnCustomers: function () {
             let self = this;
 
-            this.$base.api.get("/customers").then(function(response){            
+            this.$base.api.get("/customers").then(function (response) {
                 self.clientes = response.data.returnObj;
                 self.filteredClientes = response.data.returnObj;
                 self.loading = false;
@@ -110,10 +114,24 @@ export default {
                 observations: ""
             }
 
-            this.$myFunctions.openModal(this, "Criar agendamento", "Criar", "Cancelar", {}, "modalContentAgenda", rowUser);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Criar agendamento",
+                saveButton: "Criar",
+                cancelButton: "Cancelar",
+                modalContentVariable: "modalContentAgenda",
+                contentObject: rowUser
+            });
         },
         handleEditCustomer: function (item) {
-            this.$myFunctions.openModal(this, "Alterar cliente", "Salvar", "Cancelar", {}, 'modalContentClientes', item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Alterar cliente",
+                saveButton: "Salvar",
+                cancelButton: "Cancelar",
+                modalContentVariable: "modalContentClientes",
+                contentObject: item
+            });
         },
         goToSchedule: function () {
             setTimeout(() => {
@@ -121,10 +139,22 @@ export default {
             }, 400)
         },
         handleDeleteCustomer: function (item) {
-            this.$myFunctions.openModal(this, "Excluir cliente", "Excluir", "Cancelar", {}, "", item);
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Excluir cliente",
+                saveButton: "Excluir",
+                cancelButton: "Cancelar",
+                contentObject: item
+            });
         },
         newCustomer: function () {
-            this.$myFunctions.openModal(this, "Cadastrar cliente", "Cadastrar", "Cancelar", {}, "modalContentClientes");
+            this.$myFunctions.openModal({
+                instance: this,
+                title: "Cadastrar cliente",
+                saveButton: "Cadastrar",
+                cancelButton: "Cancelar",
+                modalContentVariable: "modalContentClientes"
+            });
         }
     }
 }

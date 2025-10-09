@@ -16,9 +16,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   //Métodos de modal
-  const openModal = (instance, title, saveButton, cancelButton, props = {}, modalContentVariable = "", contentObject = null) => {
+  const openModal = ({ instance, title, saveButton, saveButton2 = "", cancelButton, props = {}, modalContentVariable = "", contentObject = null }) => {
     instance.$global.modalUtils.modalTitle = title;
     instance.$global.modalUtils.modalSaveButton = saveButton;
+    instance.$global.modalUtils.modalSaveButton2 = saveButton2;
     instance.$global.modalUtils.modalCancelButton = cancelButton;
 
     if (contentObject) {
@@ -205,7 +206,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   const sanitizeHtml = (str) => {
-    if (str.trim() == "") return "";
+    if (!str || str.trim() == "") return "";
     
     const allowedTags = ['b', 'i', 'p', 'br'];
     const regex = new RegExp(`<\/?(?!${allowedTags.join('|')})[^>]*>`, 'gi');

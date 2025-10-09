@@ -1,25 +1,39 @@
 <template>
-    <div class="modal flex items-center justify-center" v-if="$global.modalUtils.modalTitle != ''" :class="showModal ? 'show' : ''">
+    <div class="modal flex items-center justify-center" v-if="$global.modalUtils.modalTitle != ''"
+        :class="showModal ? 'show' : ''">
         <div class="modal-wrapper" v-on:click="closeModal()"></div>
-        <div class="modal-container" :style="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1 ? 'height: 35vh;': ''">
+        <div class="modal-container"
+            :style="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1 ? 'height: 35vh;' : ''">
             <div class="modal-header flex justify-between items-center">
                 <p class="fontsize-lg preto">{{ $global.modalUtils.modalTitle }}</p>
                 <font-awesome icon="times" v-on:click="closeModal()" class="cursor-pointer" />
             </div>
             <div class="modal-body">
-                <div v-if="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 && $global.modalUtils.modalTitle.indexOf('Confirmar') == -1">
+                <div
+                    v-if="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 && $global.modalUtils.modalTitle.indexOf('Confirmar') == -1">
                     <slot />
                 </div>
-                <div class="flex items-center justify-center h-full w-full" v-if="$global.modalUtils.modalTitle.indexOf('Excluir') != -1">
-                    <UtilsExcludeModalContent :excludepath="excludepath + $global.contentObject.id" @excludedContent="closeModal(true)"></UtilsExcludeModalContent>
+                <div class="flex items-center justify-center h-full w-full"
+                    v-if="$global.modalUtils.modalTitle.indexOf('Excluir') != -1">
+                    <UtilsExcludeModalContent :excludepath="excludepath + $global.contentObject.id"
+                        @excludedContent="closeModal(true)"></UtilsExcludeModalContent>
                 </div>
-                <div class="flex items-center justify-center h-full w-full" v-if="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1">
-                    <UtilsConfirmModalContent @confirmed="closeModal(true); callbackConfirm();" :internalTitle="$global.modalUtils.internalTitle"></UtilsConfirmModalContent>
+                <div class="flex items-center justify-center h-full w-full"
+                    v-if="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1">
+                    <UtilsConfirmModalContent @confirmed="closeModal(true); callbackConfirm();"
+                        :internalTitle="$global.modalUtils.internalTitle"></UtilsConfirmModalContent>
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
-                <button type="button" class="btn" :class="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'" id="modal-submit-button" v-if="$global.modalUtils.modalSaveButton" v-on:click="saveData()">{{ $global.modalUtils.modalSaveButton }}</button>
-                <button type="button" class="btn btn-cinza" v-if="$global.modalUtils.modalCancelButton" v-on:click="closeModal()">{{ $global.modalUtils.modalCancelButton }}</button>
+                <button type="button" class="btn btn-blue" v-if="$global.modalUtils.modalSaveButton2"
+                    v-on:click="saveData2()" id="modal-submit-button2">{{ $global.modalUtils.modalSaveButton2
+                    }}</button>
+                <button type="button" class="btn"
+                    :class="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'"
+                    id="modal-submit-button" v-if="$global.modalUtils.modalSaveButton" v-on:click="saveData()">{{
+                        $global.modalUtils.modalSaveButton }}</button>
+                <button type="button" class="btn btn-cinza" v-if="$global.modalUtils.modalCancelButton"
+                    v-on:click="closeModal()">{{ $global.modalUtils.modalCancelButton }}</button>
             </div>
         </div>
     </div>
@@ -42,9 +56,10 @@ export default {
                     $("#submit-button").off("click").on("click", () => {
                         setTimeout(() => {
                             let informationsForm = $("#informations-form");
-                        
+
                             if (informationsForm.attr("invalid") == "true") {
                                 $("#modal-submit-button").removeAttr("disabled").removeClass("btn-loading");
+                                $("#modal-submit-button2").removeAttr("disabled").removeClass("btn-loading");
                             }
                         }, 100)
                     })
@@ -74,6 +89,11 @@ export default {
             $("#modal-submit-button").attr("disabled", "disabled").addClass("btn-loading");
 
             $("#submit-button").click();
+        },
+        saveData2: function () {
+            $("#modal-submit-button2").attr("disabled", "disabled").addClass("btn-loading");
+
+            $("#submit-button2").click();
         }
     },
     beforeUnmount: function () {
@@ -82,11 +102,8 @@ export default {
 }
 </script>
 <style scoped>
-.btn-cinza {
-    margin-left: var(--space-4);
-}
-
-.modal, .modal-wrapper {
+.modal,
+.modal-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -131,7 +148,9 @@ export default {
     flex-direction: column;
 }
 
-.modal-header, .modal-body, .modal-footer {
+.modal-header,
+.modal-body,
+.modal-footer {
     padding: var(--space-5);
 }
 
@@ -141,6 +160,9 @@ export default {
 
 .modal-footer {
     border-top: 1px solid var(--cinza-medio);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
 
     & button {
         max-width: inherit;

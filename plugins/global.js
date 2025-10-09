@@ -76,6 +76,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     let modalUtils = reactive({
         modalTitle: "",
         modalSaveButton: "",
+        modalSaveButton2: "",
         modalCancelButton: "",
         internalTitle: ""
     })
