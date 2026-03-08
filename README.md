@@ -28,6 +28,7 @@ O AgendasPRO é um sistema desenvolvido para automatizar a rotina de marcações
 **Interface e Lógica:**
 - [Vue.js / Nuxt]
 - [TypeScript / JavaScript]
+- [Node.js e MySQL]
 
 **Infraestrutura e Deploy:**
 - Netlify
