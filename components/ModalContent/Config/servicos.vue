@@ -18,27 +18,24 @@
                 <select id="duration" v-model="service.duration" required>
                     <option value="">* Selecione *</option>
                     <option v-for="option in $global.durations" :key="option.value" :value="option.value">
-                    {{ option.label }}
+                        {{ option.label }}
                     </option>
                 </select>
             </div>
             <div class="input-group">
                 <label for="observations">Observações</label>
-                <input type="text" id="name" required v-model="service.observations">
+                <input type="text" id="observations" required v-model="service.observations">
             </div>
-            <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
     </form>
-    
+
 </template>
 <script>
 export default {
     emits: ["savedContent"],
     data() {
         return {
-            response: "",
-            responseType: "",
             isEdit: this.$global.contentObject.id != 0
         }
     },
@@ -51,8 +48,6 @@ export default {
         saveService: function () {
             let self = this;
 
-            self.$myFunctions.resetResponse(this);
-
             let data = {
                 name: self.service.name,
                 value: self.$myFunctions.returnFloatNumber($("#value").val()),
@@ -61,13 +56,14 @@ export default {
                 duration: self.service.duration
             }
 
-            self.$base.api.post("/companies/services" + (self.isEdit ? "/" + self.service.id : ""), data) 
-            .then(function (response) { 
-                self.$myFunctions.setResponse(self, response.data.message, "success");                
-                self.$emit("savedContent");
-            }).catch((error) => {
-                self.$myFunctions.setResponse(self, error.response.data, "error");
-            })
+            self.$base.api.post("/companies/services" + (self.isEdit ? "/" + self.service.id : ""), data)
+                .then(function (response) {
+                    self.$emit("savedContent");
+                    self.$myFunctions.showFeedbackModal(self, "Sucesso", response.data.message || "Serviço salvo com sucesso.", "success");
+                }).catch((error) => {
+                    self.$myFunctions.stopModalLoading(self);
+                    self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao salvar o serviço.", "error");
+                });
         }
     },
     mounted: function () {
@@ -77,5 +73,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -7,7 +7,8 @@
             </div>
             <div class="input-group">
                 <label for="cpf">CPF</label>
-                <input type="text" id="cpf" required v-model="customer.cpf" @input="$myFunctions.formatCpfInput($event, customer.cpf)">
+                <input type="text" id="cpf" required v-model="customer.cpf"
+                    @input="$myFunctions.formatCpfInput($event, customer.cpf)">
             </div>
             <div class="input-group">
                 <label for="birthday">Data de nascimento</label>
@@ -15,7 +16,8 @@
             </div>
             <div class="input-group">
                 <label for="tel">Telefone</label>
-                <input type="text" id="tel" required v-model="customer.tel" @input="$myFunctions.formatTelInput($event, customer.tel)">
+                <input type="text" id="tel" required v-model="customer.tel"
+                    @input="$myFunctions.formatTelInput($event, customer.tel)">
             </div>
             <div class="input-group">
                 <label>Foto de perfil</label>
@@ -24,11 +26,10 @@
                     <input type="file" @change="onFileChange" accept="image/*">
                 </div>
             </div>
-            <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
     </form>
-    
+
 </template>
 <script>
 import defaultUserImage from '@/assets/img/default-user-image.png';
@@ -37,8 +38,6 @@ export default {
     emits: ["savedContent"],
     data() {
         return {
-            response: "",
-            responseType: "",
             invalidForm: true,
             defaultUserImage: defaultUserImage
         }
@@ -55,34 +54,49 @@ export default {
     methods: {
         saveCustomer: function () {
             let self = this;
-
-            self.$myFunctions.resetResponse(this);
             self.invalidForm = false;
+
+            if (!self.customer.name || !self.customer.cpf) {
+                self.$myFunctions.stopModalLoading(self);
+                return;
+            }
 
             self.customer.tel = this.$myFunctions.returnCleanNumber(self.customer.tel);
             self.customer.cpf = this.$myFunctions.returnCleanNumber(self.customer.cpf);
 
             if (self.customer.id) {
-                self.$base.api.patch("/customers/" + self.customer.id, self.customer).then(function () {            
-                    self.$emit("savedContent");
-                })
+                self.$base.api.patch("/customers/" + self.customer.id, self.customer)
+                    .then(function () {
+                        self.$emit("savedContent");
+                        self.$myFunctions.showFeedbackModal(self, "Sucesso", "Cliente atualizado com sucesso.", "success");
+                    })
+                    .catch(function (error) {
+                        self.$myFunctions.stopModalLoading(self);
+                        self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao atualizar o cliente.", "error");
+                    });
             } else {
-                self.$base.api.post("/customers", self.customer).then(function () {            
-                    self.$emit("savedContent");
-                })
+                self.$base.api.post("/customers", self.customer)
+                    .then(function () {
+                        self.$emit("savedContent");
+                        self.$myFunctions.showFeedbackModal(self, "Sucesso", "Cliente cadastrado com sucesso.", "success");
+                    })
+                    .catch(function (error) {
+                        self.$myFunctions.stopModalLoading(self);
+                        self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao cadastrar o cliente.", "error");
+                    });
             }
         },
         onFileChange(event) {
-            const file = event.target.files[0]; // Obtém o arquivo selecionado
+            const file = event.target.files[0];
 
             if (file && file.type.startsWith("image/")) {
                 const reader = new FileReader();
 
                 reader.onload = (e) => {
-                    this.customer.image = e.target.result; // Define a URL base64 no estado
+                    this.customer.image = e.target.result;
                 };
 
-                reader.readAsDataURL(file); // Lê o arquivo como um Data URL (base64)
+                reader.readAsDataURL(file);
             }
         },
     },
@@ -94,5 +108,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

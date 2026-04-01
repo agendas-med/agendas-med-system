@@ -54,6 +54,7 @@ export default {
     background: var(--vermelho-claro-2);
     width: 80px;
     height: 80px;
+    min-height: 80px;
     border-radius: var(--radius-full);
     display: flex;
     align-items: center;

@@ -8,31 +8,33 @@
 @tailwind utilities;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html, body, #__nuxt {
-    overflow: hidden;
-    min-height: 100vh;
-    position: relative;
+html,
+body,
+#__nuxt {
+  overflow: hidden;
+  min-height: 100vh;
+  position: relative;
 }
 
 .avatar {
-    border-radius: var(--radius-full);
-    margin-right: var(--space-3);
-    object-fit: cover;
-    display: flex;
+  border-radius: var(--radius-full);
+  margin-right: var(--space-3);
+  object-fit: cover;
+  display: flex;
 }
 
 .avatar-pp {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-    max-width: 40px;
-    max-height: 40px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  max-width: 40px;
+  max-height: 40px;
 }
 
 .avatar-g {
@@ -83,7 +85,8 @@ html, body, #__nuxt {
     color: var(--branco);
 
     &::after {
-      border-top-color: var(--verde-escuro);
+      border: 5px solid var(--verde);
+      border-left: 5px solid var(--branco);
     }
 
     &:disabled {
@@ -96,39 +99,42 @@ html, body, #__nuxt {
     }
   }
 
-    &.btn-primary:hover {
-      background: var(--verde-escuro-2);
+  &.btn-primary:hover {
+    background: var(--verde-escuro-2);
+  }
+
+  &.btn-primary:active,
+  &.btn-primary:focus {
+    outline: 2px solid var(--verde);
+  }
+
+  &.btn-cinza {
+    background: var(--cinza-claro);
+    color: var(--preto);
+
+    &::after {
+      border: 5px solid var(--cinza-medio);
+      border-left: 5px solid var(--preto);
     }
 
-    &.btn-primary:active, &.btn-primary:focus {
-      outline: 2px solid var(--verde);
-    }
-
-    &.btn-cinza {
+    &:disabled {
       background: var(--cinza-claro);
-      color: var(--preto);
+      cursor: initial;
 
-      &::after {
-        border-top-color: var(--cinza);
-      }
-
-      &:disabled {
+      &:hover {
         background: var(--cinza-claro);
-        cursor: initial;
-  
-        &:hover {
-          background: var(--cinza-claro);
-        }
       }
     }
-  
-      &.btn-cinza:hover {
-        background: var(--cinza-medio);
-      }
-  
-      &.btn-cinza:active, &.btn-cinza:focus {
-        outline: 2px solid var(--cinza);
-      }
+  }
+
+  &.btn-cinza:hover {
+    background: var(--cinza-medio);
+  }
+
+  &.btn-cinza:active,
+  &.btn-cinza:focus {
+    outline: 2px solid var(--cinza);
+  }
 
   &.btn-blue {
     background: var(--azul);
@@ -147,11 +153,12 @@ html, body, #__nuxt {
       background: var(--azul-escuro);
     }
 
-    &:active, &:focus {
+    &:active,
+    &:focus {
       outline: 2px solid var(--azul);
     }
   }
-  
+
   &.btn-red {
     background: var(--vermelho);
     color: var(--branco);
@@ -170,13 +177,14 @@ html, body, #__nuxt {
     }
   }
 
-    &.btn-red:hover {
-      background: var(--vermelho-claro);
-    }
+  &.btn-red:hover {
+    background: var(--vermelho-claro);
+  }
 
-    &.btn-red:active, &.btn-red:focus {
-      outline: 2px solid var(--vermelho);
-    }
+  &.btn-red:active,
+  &.btn-red:focus {
+    outline: 2px solid var(--vermelho);
+  }
 
   &.btn-primary-alt {
     background: var(--branco);
@@ -184,15 +192,16 @@ html, body, #__nuxt {
     border: 1px solid var(--verde-escuro);
   }
 
-    &.btn-primary-alt:hover {
-      background: var(--verde-escuro-2);
-      color: var(--branco);
-    }
+  &.btn-primary-alt:hover {
+    background: var(--verde-escuro-2);
+    color: var(--branco);
+  }
 
-    &.btn-primary-alt:active, &.btn-primary-alt:focus {
-      outline: 2px solid var(--verde);
-    }
- 
+  &.btn-primary-alt:active,
+  &.btn-primary-alt:focus {
+    outline: 2px solid var(--verde);
+  }
+
   &.btn-square {
     max-width: 40px;
   }
@@ -216,12 +225,12 @@ html, body, #__nuxt {
   cursor: pointer;
 
   &.small {
-      width: 30px;
-      height: 30px;
-      min-width: 30px;
-      min-height: 30px;
-      max-width: 30px;
-      max-height: 30px;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
   }
 
   & span {
@@ -280,28 +289,31 @@ input[type="submit"] {
 }
 
 .btn-loading::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: var(--radius-full);
-  border: 5px solid var(--black);
-  border-left: 5px solid var(--white);
+  border: 5px solid var(--preto);
+  border-left: 5px solid var(--branco);
   animation: spin 1s linear infinite;
   margin-left: var(--space-3);
 }
 
 @keyframes spin {
   0% {
-      transform: rotate(0);
+    transform: rotate(0);
   }
 
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
-input:not([type="checkbox"]):not([type="radio"]), textarea, select, .input {
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select,
+.input {
   max-width: 300px;
   padding: var(--space-3);
   border-radius: var(--radius-md);
@@ -310,45 +322,57 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select, .input {
   position: relative;
 }
 
-  input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, select:focus, .input.focus {
-    outline: 2px solid var(--verde-escuro);
-  }
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus,
+select:focus,
+.input.focus {
+  outline: 2px solid var(--verde-escuro);
+}
 
-.form-group, .input-group {
+.form-group,
+.input-group {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-  .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group .input, .form-group select, .input-group input:not([type="checkbox"]):not([type="radio"]), .input-group select, .input-group textarea, .input-group .input {
-    max-width: 100%;
-    width: 100%;
-    height: 44px;
-    margin: 0;
-  }
+.form-group input:not([type="checkbox"]):not([type="radio"]),
+.form-group .input,
+.form-group select,
+.input-group input:not([type="checkbox"]):not([type="radio"]),
+.input-group select,
+.input-group textarea,
+.input-group .input {
+  max-width: 100%;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+}
 
-  .form-group select[multiple], .input-group select[multiple] {
-    height: 100px !important;
-  }
+.form-group select[multiple],
+.input-group select[multiple] {
+  height: 100px !important;
+}
 
-  .input-group textarea {
-    height: 150px;
-    resize: none;
-  }
+.input-group textarea {
+  height: 150px;
+  resize: none;
+}
 
-  .form-group label, .input-group label {
-    font-size: var(--fontsize-md);
-    color: var(--preto);
-    cursor: pointer;
-  }
+.form-group label,
+.input-group label {
+  font-size: var(--fontsize-md);
+  color: var(--preto);
+  cursor: pointer;
+}
 
 .filter {
-    margin: var(--space-6) 0;
-    display: flex;
+  margin: var(--space-6) 0;
+  display: flex;
 
-    & button {
-      max-width: 200px;
-    }
+  & button {
+    max-width: 200px;
+  }
 }
 
 input[type="radio"] {
@@ -359,7 +383,8 @@ input[type="checkbox"] {
   border-radius: var(--radius-sm);
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
   width: 23px;
   height: 23px;
   border: 2px solid var(--cinza-medio);
@@ -369,44 +394,47 @@ input[type="checkbox"], input[type="radio"] {
   transition: all 0.4s;
 }
 
-  input[type="checkbox"]:hover, input[type="radio"]:hover {
-    border: 2px solid var(--verde-escuro);
-  }
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+  border: 2px solid var(--verde-escuro);
+}
 
-  input[type="checkbox"]:checked, input[type="radio"]:checked {
-    background: var(--verde-escuro);
-    border: 2px solid var(--verde-escuro);
-  }
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: var(--verde-escuro);
+  border: 2px solid var(--verde-escuro);
+}
 
-    input[type="checkbox"]:checked::after {
-      content: "\f00c"; /* Código unicode do ícone de check */
-      font-family: "Font Awesome 6 Free"; /* Especifica a fonte do Font Awesome */
-      font-weight: 900; /* Necessário para o estilo "solid" do Font Awesome */
-      color: white;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+input[type="checkbox"]:checked::after {
+  content: "\f00c"; /* Código unicode do ícone de check */
+  font-family: "Font Awesome 6 Free"; /* Especifica a fonte do Font Awesome */
+  font-weight: 900; /* Necessário para o estilo "solid" do Font Awesome */
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    input[type="radio"]:checked::after {
-      content: "";
-      width: 17px;
-      height: 17px;
-      border-radius: var(--radius-full);
-      border: 2px solid var(--branco);
-      background: var(--verde-escuro);
-      display: inline-block;
-      position: absolute;
-      left: 1px;
-      top: 1px;
-    }
+input[type="radio"]:checked::after {
+  content: "";
+  width: 17px;
+  height: 17px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--branco);
+  background: var(--verde-escuro);
+  display: inline-block;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+}
 
-.input-checkbox-group, .input-radio-group {
+.input-checkbox-group,
+.input-radio-group {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
@@ -419,8 +447,9 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 @media (max-width: 768px) {
-  input:not([type="checkbox"]):not([type="radio"]), textarea, select {
-    
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
     max-width: 100%;
     margin-right: 0;
     margin-bottom: var(--space-3);
@@ -445,7 +474,9 @@ input[type="checkbox"], input[type="radio"] {
 /* Animação de entrada e saída */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .fade-enter,
@@ -484,7 +515,7 @@ input[type="checkbox"], input[type="radio"] {
     font-size: 17.28px;
     font-weight: bold;
   }
-  
+
   & form {
     width: 100%;
     display: grid;

@@ -3,7 +3,7 @@
         :class="showModal ? 'show' : ''">
         <div class="modal-wrapper" v-on:click="closeModal()"></div>
         <div class="modal-container"
-            :style="$global.modalUtils.modalTitle.indexOf('Confirmar') != -1 ? 'height: 35vh;' : ''">
+            :style="($global.modalUtils.modalTitle.indexOf('Confirmar') != -1 || $global.modalUtils.modalTitle.indexOf('Excluir') != -1) ? 'height: 35vh; min-height: 280px;' : ''">
             <div class="modal-header flex justify-between items-center">
                 <p class="fontsize-lg preto">{{ $global.modalUtils.modalTitle }}</p>
                 <font-awesome icon="times" v-on:click="closeModal()" class="cursor-pointer" />
@@ -26,12 +26,15 @@
             </div>
             <div class="modal-footer flex justify-end">
                 <button type="button" class="btn btn-blue" v-if="$global.modalUtils.modalSaveButton2"
-                    v-on:click="saveData2()" id="modal-submit-button2">{{ $global.modalUtils.modalSaveButton2
-                    }}</button>
-                <button type="button" class="btn"
-                    :class="$global.modalUtils.modalTitle.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red'"
-                    id="modal-submit-button" v-if="$global.modalUtils.modalSaveButton" v-on:click="saveData()">{{
-                        $global.modalUtils.modalSaveButton }}</button>
+                    :class="{ 'btn-loading': $global.modalUtils.isLoading }" :disabled="$global.modalUtils.isLoading"
+                    v-on:click="saveData2()" id="modal-submit-button2">
+                    {{ $global.modalUtils.modalSaveButton2 }}
+                </button>
+                <button type="button" class="btn" v-if="$global.modalUtils.modalSaveButton"
+                    :class="[$global.modalUtils.modalTitle.indexOf('Excluir') == -1 ? 'btn-primary' : 'btn-red', { 'btn-loading': $global.modalUtils.isLoading }]"
+                    :disabled="$global.modalUtils.isLoading" id="modal-submit-button" v-on:click="saveData()">
+                    {{ $global.modalUtils.modalSaveButton }}
+                </button>
                 <button type="button" class="btn btn-cinza" v-if="$global.modalUtils.modalCancelButton"
                     v-on:click="closeModal()">{{ $global.modalUtils.modalCancelButton }}</button>
             </div>
@@ -52,22 +55,14 @@ export default {
             if (this.$global.modalUtils.modalTitle != "") {
                 setTimeout(() => {
                     this.showModal = true;
-
-                    $("#submit-button").off("click").on("click", () => {
-                        setTimeout(() => {
-                            let informationsForm = $("#informations-form");
-
-                            if (informationsForm.attr("invalid") == "true") {
-                                $("#modal-submit-button").removeAttr("disabled").removeClass("btn-loading");
-                                $("#modal-submit-button2").removeAttr("disabled").removeClass("btn-loading");
-                            }
-                        }, 100)
-                    })
                 }, 100)
             } else {
-                setTimeout(() => {
-                    this.showModal = false;
-                }, 50)
+                this.showModal = false;
+            }
+        },
+        "$global.modalUtils.isClosing": function (isClosing) {
+            if (isClosing) {
+                this.showModal = false;
             }
         }
     },
@@ -76,24 +71,18 @@ export default {
             this.$emit("confirm");
         },
         closeModal: function (exclude = false) {
-            this.showModal = false;
-            setTimeout(() => {
-                if (exclude) {
-                    this.$emit("excluded");
-                }
-
-                this.$emit("closeModal");
-            }, 400);
+            if (exclude) {
+                this.$emit("excluded");
+            }
+            this.$emit("closeModal");
         },
         saveData: function () {
-            $("#modal-submit-button").attr("disabled", "disabled").addClass("btn-loading");
-
-            $("#submit-button").click();
+            this.$global.modalUtils.isLoading = true;
+            setTimeout(() => { $("#submit-button").click(); }, 50);
         },
         saveData2: function () {
-            $("#modal-submit-button2").attr("disabled", "disabled").addClass("btn-loading");
-
-            $("#submit-button2").click();
+            this.$global.modalUtils.isLoading = true;
+            setTimeout(() => { $("#submit-button2").click(); }, 50);
         }
     },
     beforeUnmount: function () {

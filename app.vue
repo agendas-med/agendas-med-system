@@ -1,7 +1,10 @@
 <template>
-  <NuxtLayout :name="layoutName">
-    <NuxtPage />
-  </NuxtLayout>  
+  <div>
+    <NuxtLayout :name="layoutName">
+      <NuxtPage />
+    </NuxtLayout>
+    <UtilsFeedbackModal />
+  </div>
 </template>
 
 <script setup>
@@ -10,10 +13,8 @@ import { ref, watch } from 'vue'
 
 const route = useRoute()
 
-// Definir o layout inicial
 const layoutName = ref(getLayoutName(route.path))
 
-// Função para determinar o layout com base na rota
 function getLayoutName(path) {
   if (isValidRoute(path)) {
     return 'default'
@@ -22,14 +23,12 @@ function getLayoutName(path) {
   }
 }
 
-// Função que verifica se a rota é válida
 function isValidRoute(path) {
   let routes = [
     "/agenda",
     "/vendas",
     "/clientes",
     "/relatorios",
-    "/agenda",
     "/financeiro",
     "/financeiro/pagamentos",
     "/financeiro/metodos-pagamento",
@@ -45,11 +44,10 @@ function isValidRoute(path) {
     "/checkin",
     "/estoque"
   ]
-  
+
   return routes.some(route => route == path);
 }
 
-// Observar mudanças na rota e atualizar o layout
 watch(() => route.path, (newPath) => {
   layoutName.value = getLayoutName(newPath)
 })

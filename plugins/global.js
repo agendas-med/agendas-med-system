@@ -78,7 +78,16 @@ export default defineNuxtPlugin((nuxtApp) => {
         modalSaveButton: "",
         modalSaveButton2: "",
         modalCancelButton: "",
-        internalTitle: ""
+        internalTitle: "",
+        isLoading: false,
+        isClosing: false,
+        feedback: {
+            show: false,
+            isClosing: false,
+            title: "",
+            message: "",
+            type: "success" 
+        }
     })
 
     let screenUtils = reactive({

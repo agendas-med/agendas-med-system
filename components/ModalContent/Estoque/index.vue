@@ -13,25 +13,25 @@
                 <label for="product">Produto</label>
                 <select id="product" required v-model="stockMovement.product">
                     <option :value="productModel">* Selecione *</option>
-                    <option v-for="(product, index) in $global.company.products" :key="index" :value="product">{{ product.name }}</option>
+                    <option v-for="(product, index) in $global.company.products" :key="index" :value="product">{{
+                        product.name }}</option>
                 </select>
             </div>
             <div class="input-group">
-                <label for="quantity">Quantidade {{ stockMovement.product.unit_of_measure_abbreviation ? `(${stockMovement.product.unit_of_measure_abbreviation})` : "" }}</label>
+                <label for="quantity">Quantidade {{ stockMovement.product.unit_of_measure_abbreviation ?
+                    `(${stockMovement.product.unit_of_measure_abbreviation})` : "" }}</label>
                 <input type="number" required v-model="stockMovement.quantity">
             </div>
-            <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
     </form>
-    
+
 </template>
 <script>
 export default {
     emits: ["savedContent"],
     data() {
         return {
-            response: "",
             stockMovement: {
                 type: "",
                 product: {
@@ -40,7 +40,6 @@ export default {
                 },
                 quantity: null
             },
-            responseType: "",
             invalidForm: true,
             productModel: {
                 unit_of_measure_abbreviation: "",
@@ -50,8 +49,6 @@ export default {
     },
     methods: {
         insertMovement: function () {
-            this.$myFunctions.resetResponse(this);
-
             let data = {
                 product_id: this.stockMovement.product.id,
                 quantity: this.stockMovement.quantity
@@ -59,16 +56,17 @@ export default {
 
             let self = this;
 
-            this.$base.api.post("/stock/" + this.stockMovement.type, data).then(function(response){     
-                self.$myFunctions.getCompany(self);       
+            this.$base.api.post("/stock/" + this.stockMovement.type, data).then(function (response) {
+                self.$myFunctions.getCompany(self);
                 self.$emit("savedContent");
+                self.$myFunctions.showFeedbackModal(self, "Sucesso", "Movimentação registrada com sucesso.", "success");
             }).catch((error) => {
-                this.invalidForm = true;
-                this.$myFunctions.setResponse(this, error.response.data, "error");
+                self.$myFunctions.stopModalLoading(self);
+                self.invalidForm = true;
+                self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao registrar movimentação.", "error");
             });
         }
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -6,26 +6,24 @@
                 <input type="text" id="name" required v-model="role.name">
             </div>
             <div class="input-group">
-                <label for="permission">Permissão <font-awesome icon="circle-info" class="cinza" title="Define se o usuário possui acesso administrativo à empresa. Usuários com permissão de administrador podem gerenciar configurações e outros usuários da empresa." /></label>
+                <label for="permission">Permissão <font-awesome icon="circle-info" class="cinza"
+                        title="Define se o usuário possui acesso administrativo à empresa. Usuários com permissão de administrador podem gerenciar configurações e outros usuários da empresa." /></label>
                 <select id="permission" v-model="role.permission" required>
                     <option value="">* Selecione *</option>
                     <option value="0">Membro</option>
                     <option value="1">Administrador</option>
                 </select>
             </div>
-            <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
         </div>
         <input type="submit" id="submit-button" />
     </form>
-    
+
 </template>
 <script>
 export default {
     emits: ["savedContent"],
     data() {
         return {
-            response: "",
-            responseType: "",
             isEdit: this.$global.contentObject.id != 0
         }
     },
@@ -38,21 +36,20 @@ export default {
         saveRole: function () {
             let self = this;
 
-            self.$myFunctions.resetResponse(this);
-
             let data = {
                 id: self.role.id,
                 name: self.role.name,
                 permission: self.role.permission
             }
 
-            self.$base.api.post("/companies/roles" + (self.isEdit ? "/" + self.role.id : ""), data) 
-            .then(function (response) { 
-                self.$myFunctions.setResponse(self, response.data.message, "success");                
-                self.$emit("savedContent");
-            }).catch((error) => {
-                self.$myFunctions.setResponse(self, error.response.data, "error");
-            })
+            self.$base.api.post("/companies/roles" + (self.isEdit ? "/" + self.role.id : ""), data)
+                .then(function (response) {
+                    self.$emit("savedContent");
+                    self.$myFunctions.showFeedbackModal(self, "Sucesso", response.data.message || "Cargo salvo com sucesso.", "success");
+                }).catch((error) => {
+                    self.$myFunctions.stopModalLoading(self);
+                    self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao salvar cargo.", "error");
+                });
         }
     },
     mounted: function () {
@@ -60,5 +57,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>
