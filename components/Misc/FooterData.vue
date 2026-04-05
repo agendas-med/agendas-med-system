@@ -15,5 +15,8 @@ export default {
 <style scoped>
 footer {
     margin: var(--space-10) 0;
+        position: absolute;
+    bottom: var(--space-3);
+    right: var(--space-16);
 }
 </style>

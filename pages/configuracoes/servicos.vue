@@ -10,6 +10,9 @@
             </template>
             <template #column-observações="{ item }">
                 <p>{{ item.observations }}</p>
+                <span v-if="item.requires_location === 1" style="font-size: 11px; background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-weight: 500;">
+                    <font-awesome icon="location-dot" /> Em Domicílio
+                </span>
             </template>
             <template #column-valor="{ item }">
                 <p>{{ $myFunctions.formatCurrency(item.value) }}</p>

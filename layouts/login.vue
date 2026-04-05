@@ -3,9 +3,9 @@
         <div class="flex items-center background-detail">
             <div class="authentication-container">
                 <slot></slot>
-                <MiscFooterData />
             </div>
             <img src="../assets/img/system-print.png" alt="Systema AgendasPro">
+            <MiscFooterData />
         </div>
     </div>
 </template>
@@ -58,7 +58,7 @@ export default {
         justify-content: center;
         left: 9vw;
         overflow-y: auto;
-        padding: var(--space-5) 0;
+        padding: 0 var(--space-2);
     }
 
     .authentication-page-internal {

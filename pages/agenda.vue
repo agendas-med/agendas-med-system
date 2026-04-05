@@ -17,6 +17,7 @@
       </div>
     </div>
     <div class="legendas">
+      <div class="pendente">Aguard. Pagamento</div>
       <div class="agendado">Agendado</div>
       <div class="iniciado">Iniciado</div>
       <div class="realizado">Realizado</div>
@@ -112,7 +113,19 @@ export default {
 
           for (let i = 0; i < this.calendarEvents.length; i++) {
             this.calendarEvents[i]["displayEventEnd"] = true;
-            this.calendarEvents[i]["color"] = this.calendarEvents[i].status == "agendado" ? "var(--amarelo)" : this.calendarEvents[i].status == "iniciado" ? "var(--azul)" : this.calendarEvents[i].status == "cancelado" ? "var(--vermelho)" : "var(--verde)";
+
+            let statusColor = "var(--verde)";
+            if (this.calendarEvents[i].status === "pendente_pagamento") {
+              statusColor = "#f97316";
+            } else if (this.calendarEvents[i].status === "agendado") {
+              statusColor = "var(--amarelo)";
+            } else if (this.calendarEvents[i].status === "iniciado") {
+              statusColor = "var(--azul)";
+            } else if (this.calendarEvents[i].status === "cancelado") {
+              statusColor = "var(--vermelho)";
+            }
+
+            this.calendarEvents[i]["color"] = statusColor;
           }
         })
         .catch((error) => {
@@ -179,7 +192,13 @@ export default {
         duration: finalDuration.toString(),
         observations: event.observations,
         services: event.services,
-        status: event.status
+        status: event.status,
+        zip_code: event.zip_code,
+        address: event.address,
+        number: event.number,
+        complement: event.complement,
+        city: event.city,
+        state: event.state
       };
 
       this.$base.api.patch(`/appointments/${event.id}`, updatedEvent)
@@ -295,6 +314,7 @@ export default {
   }
 }
 
+.pendente::after,
 .agendado::after,
 .iniciado::after,
 .realizado::after,
@@ -309,6 +329,10 @@ export default {
   top: 0;
   bottom: 0;
   margin: auto;
+}
+
+.pendente::after {
+  background: #f97316; 
 }
 
 .agendado::after {

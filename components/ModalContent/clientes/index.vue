@@ -11,6 +11,10 @@
                     @input="$myFunctions.formatCpfInput($event, customer.cpf)">
             </div>
             <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" v-model="customer.email" placeholder="cliente@email.com">
+            </div>
+            <div class="input-group">
                 <label for="birthday">Data de nascimento</label>
                 <input type="date" id="birthday" required v-model="customer.birthday">
             </div>
@@ -52,20 +56,29 @@ export default {
         }
     },
     methods: {
-        saveCustomer: function () {
+        saveCustomer() {
             let self = this;
-            self.invalidForm = false;
+            
+            let payload = { ...self.customer };
 
-            if (!self.customer.name || !self.customer.cpf) {
-                self.$myFunctions.stopModalLoading(self);
-                return;
+            if (payload.tel) {
+                payload.tel = payload.tel.replace(/\D/g, ""); 
+                
+                if (payload.tel.startsWith("55") && payload.tel.length > 11) {
+                    payload.tel = payload.tel.substring(2);
+                }
             }
 
-            self.customer.tel = this.$myFunctions.returnCleanNumber(self.customer.tel);
-            self.customer.cpf = this.$myFunctions.returnCleanNumber(self.customer.cpf);
+            if (payload.cpf) {
+                payload.cpf = payload.cpf.replace(/\D/g, "");
+            }
+
+            delete payload.last_appointment;
+            delete payload.created_at;
+            delete payload.updated_at;
 
             if (self.customer.id) {
-                self.$base.api.patch("/customers/" + self.customer.id, self.customer)
+                self.$base.api.patch("/customers/" + self.customer.id, payload)
                     .then(function () {
                         self.$emit("savedContent");
                         self.$myFunctions.showFeedbackModal(self, "Sucesso", "Cliente atualizado com sucesso.", "success");
@@ -75,7 +88,7 @@ export default {
                         self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao atualizar o cliente.", "error");
                     });
             } else {
-                self.$base.api.post("/customers", self.customer)
+                self.$base.api.post("/customers", payload) 
                     .then(function () {
                         self.$emit("savedContent");
                         self.$myFunctions.showFeedbackModal(self, "Sucesso", "Cliente cadastrado com sucesso.", "success");

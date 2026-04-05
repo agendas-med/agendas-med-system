@@ -9,8 +9,17 @@
             <div class="input-group">
                 <label for="service">Serviço</label>
                 <UtilsMultiselect :selectedOptions="agendamento.services"
-                    @updateSelectedOptions="agendamento.services = $event" :options="servicos" :required="true">
+                    @updateSelectedOptions="handleServiceSelection($event)" :options="servicos" :required="true">
                 </UtilsMultiselect>
+            </div>
+            <div v-for="srv in agendamento.services" :key="srv.id" class="flex items-center gap-4 mb-2 justify-between">
+                <span class="font-bold">{{ srv.name }}</span>
+                <div v-if="srv.accepts_quantity == 1 || srv.accepts_quantity === true" class="flex items-center gap-2">
+                    <input type="number" v-model.number="srv.quantity" min="1" style="width: 70px;">
+                    <span class="text-gray-500 text-sm">
+                        {{ formatUnitLabel(srv.measurement_unit, srv.quantity) }}
+                    </span>
+                </div>
             </div>
             <div class="grid grid-cols-[2fr_1fr] gap-4">
                 <div class="input-group">
@@ -31,6 +40,7 @@
                 <label for="status">Status</label>
                 <select id="status" v-model="agendamento.status" required>
                     <option value="">* Selecione *</option>
+                    <option value="pendente_pagamento">Aguardando Pagamento</option>
                     <option value="agendado">Agendado</option>
                     <option value="iniciado">Iniciado</option>
                     <option value="realizado">Realizado</option>
@@ -41,8 +51,22 @@
                 <label for="observations">Observações</label>
                 <textarea id="observations" v-model="agendamento.observations" style="height: 101px;"></textarea>
             </div>
-            <div v-if="acceptsCustomLocation" class="mt-4 border-t pt-4">
+            <div v-if="needsAddress" class="mt-4 border-t pt-4">
                 <p class="font-bold mb-2">Local do Atendimento</p>
+
+                <div class="mb-4 p-3 rounded-md"
+                    style="background-color: #eff6ff; color: #1e3a8a; border: 1px solid #bfdbfe;">
+                    <p class="fontsize-sm-bold flex items-center gap-2 mb-1">
+                        <font-awesome icon="location-dot" />
+                        Serviços que exigem endereço:
+                    </p>
+                    <ul class="list-disc pl-5 fontsize-sm">
+                        <li v-for="srv in servicesRequiringLocation" :key="srv.id">
+                            {{ srv.name }}
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="input-group">
                         <label for="zip_code">CEP</label>
@@ -68,8 +92,9 @@
                         <label for="state">Estado</label>
                         <select id="state" v-model="agendamento.state">
                             <option value="">* Selecione *</option>
-                            <option :value="state.sigla" v-for="(state, index) in $global.estados" :key="index">{{
-                                state.nome }}</option>
+                            <option :value="state.sigla" v-for="(state, index) in $global.estados" :key="index">
+                                {{ state.nome }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -151,14 +176,51 @@ export default {
 
             return agendamento;
         },
-        acceptsCustomLocation() {
-            if (!this.$global.company || !this.$global.company.configurations) return false;
+        servicesRequiringLocation() {
+            if (!this.agendamento.services || this.agendamento.services.length === 0) return [];
 
-            let pref = this.$global.company.configurations.notifications.find(p => p.code === 'accept_custom_location');
-            return pref ? pref.active : false;
+            return this.servicos.filter(service => {
+                const isSelected = this.agendamento.services.some(agService => agService.id === service.id);
+                const requires = service.requires_location === 1 || service.requires_location === true;
+
+                return isSelected && requires;
+            });
+        },
+        needsAddress() {
+            return this.servicesRequiringLocation.length > 0;
         }
     },
     methods: {
+        formatUnitLabel(unit, quantity) {
+            const qty = quantity || 1;
+            const isPlural = qty > 1;
+
+            const labels = {
+                'unidade': isPlural ? 'unidades' : 'unidade',
+                'pessoa': isPlural ? 'pessoas' : 'pessoa',
+                'peca': isPlural ? 'peças' : 'peça',
+                'hora': isPlural ? 'horas' : 'hora',
+                'sessao': isPlural ? 'sessões' : 'sessão',
+                'm2': isPlural ? 'm²' : 'm²',
+                'km': isPlural ? 'km' : 'km'
+            };
+
+            return labels[unit] || (isPlural ? 'unidades' : 'unidade');
+        },
+        handleServiceSelection(selectedOptions) {
+            this.agendamento.services = selectedOptions.map(newSrv => {
+                const existing = this.agendamento.services.find(s => s.id === newSrv.id);
+
+                if (existing) {
+                    return existing;
+                }
+
+                return {
+                    ...newSrv,
+                    quantity: (newSrv.accepts_quantity == 1 || newSrv.accepts_quantity == true) ? 1 : undefined
+                };
+            });
+        },
         formatDuration(minutes) {
             const hours = Math.floor(minutes / 60);
             const remainingMinutes = minutes % 60;

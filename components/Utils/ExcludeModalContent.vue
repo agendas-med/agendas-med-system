@@ -7,40 +7,39 @@
             <h2 class="fontsize-md-bold">Tem certeza que deseja excluir?</h2>
             <h3>Essa ação é irreversível</h3>
         </div>
-        <UtilsLoadingResponse :msg="response" :type="responseType" styletype="small" @eraseError="$myFunctions.resetResponse(this)" />
+
         <input type="submit" id="submit-button" v-on:click="deleteItem()" style="display: none;">
     </div>
 </template>
+
 <script>
 export default {
     emit: ["excludedContent"],
     props: ["excludepath"],
-    data() {
-        return {
-            response: "",
-            responseType: ""
-        }
-    },
     methods: {
         deleteItem: function () {
             let self = this;
 
             self.$base.api.delete(self.excludepath).then((response) => {
-                self.$myFunctions.setResponse(self, response.data.message, "success");
+                self.$myFunctions.stopModalLoading(self);
+
                 self.$emit("excludedContent", true);
+
+                const msg = response.data.message || "Registro excluído com sucesso.";
+                self.$myFunctions.showFeedbackModal(self, "Sucesso!", msg, "success");
+
             }).catch((error) => {
-                self.$myFunctions.setResponse(self, error.response.data, "error");
-            }).then(() => {
-                setTimeout(() => {
-                    self.$emit("excludedContent", true);
-                }, 5000)
-            })
+                self.$myFunctions.stopModalLoading(self);
+
+                const errorMsg = error.response?.data?.message || error.response?.data || "Ocorreu um erro ao tentar excluir.";
+                self.$myFunctions.showFeedbackModal(self, "Não foi possível excluir", errorMsg, "error");
+            });
         }
     }
 }
 </script>
-<style scoped>
 
+<style scoped>
 .exclude-modal-content {
     display: flex;
     align-items: center;

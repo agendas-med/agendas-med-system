@@ -88,35 +88,27 @@
                         </tr>
                     </tbody>
                 </table>
-                <!--<table class="sale-paid">
+
+                <table class="sale-subtotal mt-2" style="border-top: 1px solid #eee; padding-top: 10px;">
                     <tbody>
-                        <tr v-if="sale.payments_summary.pix">
-                            <td class="text-left"><span class="fontsize-sm">Pix</span></td>
-                            <td class="text-right fontsize-sm">{{ $myFunctions.formatCurrency(sale.payments_summary.pix) }}</td>
-                        </tr>
-                        <tr v-if="sale.payments_summary.cartao_debito">
-                            <td class="text-left"><span class="fontsize-sm">Cartão de débito</span></td>
-                            <td class="text-right fontsize-sm">{{ $myFunctions.formatCurrency(sale.payments_summary.cartao_debito) }}</td>
-                        </tr>
-                        <tr v-if="sale.payments_summary.cartao_credito">
-                            <td class="text-left"><span class="fontsize-sm">Cartão de Crédito</span></td>
-                            <td class="text-right fontsize-sm">{{ $myFunctions.formatCurrency(sale.payments_summary.cartao_credito) }}</td>
-                        </tr>
-                        <tr v-if="sale.payments_summary.dinheiro">
-                            <td class="text-left"><span class="fontsize-sm">Dinheiro</span></td>
-                            <td class="text-right fontsize-sm">{{ $myFunctions.formatCurrency(sale.payments_summary.dinheiro) }}</td>
+                        <tr>
+                            <td class="text-left"><span class="fontsize-sm-bold"
+                                    style="color: var(--primary-color);">Total
+                                    Pago</span></td>
+                            <td class="text-right fontsize-sm-bold" style="color: var(--primary-color);">{{
+                                $myFunctions.formatCurrency(totalPaid) }}</td>
                         </tr>
                         <tr>
-                            <td class="text-left"><span class="fontsize-sm-bold">Total Pago</span></td>
-                            <td class="text-right fontsize-sm-bold">{{ $myFunctions.formatCurrency(sale.total_paid) }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><span class="fontsize-sm-bold">Restante</span></td>
-                            <td class="text-right fontsize-sm-bold">{{ $myFunctions.formatCurrency(sale.total - sale.total_paid) }}</td>
+                            <td class="text-left"><span class="fontsize-sm-bold">Restante a Pagar</span></td>
+                            <td class="text-right fontsize-sm-bold"
+                                :style="{ color: remainingAmount > 0 ? '#ef4444' : '#10b981' }">
+                                {{ remainingAmount > 0 ? $myFunctions.formatCurrency(remainingAmount) : 'PAGO' }}
+                            </td>
                         </tr>
                     </tbody>
-                </table>-->
-                <UtilsDataTable :loaded="true" :dataTable="sale.payments" :rowsPerPage="2" table="pagamento" @handleNew="" :newButton="false">
+                </table>
+                <UtilsDataTable :loaded="true" :dataTable="sale.payments" :rowsPerPage="2" table="pagamento"
+                    @handleNew="" :newButton="false">
                     <template #column-id="{ item }">
                         <p>{{ item.id }}</p>
                     </template>
@@ -135,21 +127,24 @@
                         </div>
                     </template>
                 </UtilsDataTable>
-                <button class="btn btn-blue" id="insert-payment-button" type="button"
-                    v-on:click="showPaymentModal = !showPaymentModal">Inserir pagamento</button>
+                <button class="btn btn-blue" id="insert-payment-button" type="button" @click="openPaymentModal">Inserir
+                    pagamento</button>
             </div>
         </div>
         <input type="submit" id="submit-button" />
         <input type="submit" id="submit-button2" />
     </form>
     <div class="payment-modal-wrapper" v-if="showPaymentModal" v-on:click="showPaymentModal = !showPaymentModal"></div>
+    <div class="payment-modal-wrapper" v-if="showPaymentModal" v-on:click="showPaymentModal = !showPaymentModal"></div>
     <div class="small-modal" :class="{ 'show': showPaymentModal }" data-title="Adicionar pagamento">
-        <form @submit.prevent="insertPayment">
+
+        <form @submit.prevent="insertPayment" v-if="!pixData">
             <div class="form-group">
                 <label for="payment_type">Forma de pagamento</label>
                 <select id="payment_type" required v-model="paymentType">
                     <option value="">* Selecione *</option>
-                    <option value="pix">Pix</option>
+                    <option value="pix_asaas">Pix Automático (Gerar QR Code Asaas)</option>
+                    <option value="pix">Pix (Conferência Manual)</option>
                     <option value="cartao_debito" v-if="false">Cartão de Débito</option>
                     <option value="cartao_credito" v-if="false">Cartão de Crédito</option>
                     <option value="dinheiro">Dinheiro</option>
@@ -161,6 +156,33 @@
             </div>
             <button class="btn btn-primary" type="submit">Adicionar</button>
         </form>
+
+        <div v-else-if="pixData && pixData.payload" class="flex flex-col items-center justify-center p-2 text-center">
+            <p class="fontsize-sm cinza mb-4">Escaneie o QR Code abaixo no app do seu banco.</p>
+
+            <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixData.payload)}`"
+                class="w-48 h-48 border p-2 mb-4 bg-white" style="border-radius: 8px;" alt="QR Code PIX" />
+
+            <div class="w-full relative mb-4 text-left">
+                <label class="text-xs cinza font-bold">Pix Copia e Cola:</label>
+                <input type="text" readonly :value="pixData.payload" class="w-full text-sm bg-gray-100 p-2 border mt-1"
+                    style="border-radius: 4px; padding-right: 40px;" />
+                <button type="button" @click="copyPix" class="absolute right-2 bottom-2" title="Copiar PIX"
+                    style="color: var(--primary-color)">
+                    <font-awesome icon="copy" />
+                </button>
+            </div>
+
+            <div class="flex items-center justify-center mb-4 text-sm" style="color: var(--primary-color)">
+                <font-awesome icon="circle-notch" spin class="mr-2" />
+                Aguardando pagamento...
+            </div>
+
+            <button type="button" @click="cancelarPix" class="btn btn-red w-full text-sm">
+                Cancelar este PIX
+            </button>
+        </div>
+
     </div>
 </template>
 <script>
@@ -172,7 +194,9 @@ export default {
             idProductToAdd: "",
             quantityProductToAdd: 0,
             paymentType: "",
-            showPaymentModal: false
+            showPaymentModal: false,
+            pixData: null,
+            pollingInterval: null
         }
     },
     computed: {
@@ -195,16 +219,53 @@ export default {
             }
 
             return reactive(sale);
+        },
+        totalPaid: function () {
+            if (!this.sale || !this.sale.payments) return 0;
+            return this.sale.payments.reduce((acc, currentPayment) => {
+                return acc + parseFloat(currentPayment.amount || 0);
+            }, 0);
+        },
+        remainingAmount: function () {
+            if (!this.sale) return 0;
+            let total = parseFloat(this.sale.total || 0);
+            let remaining = total - this.totalPaid;
+
+            return remaining > 0 ? remaining : 0;
+        }
+    },
+    unmounted() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
         }
     },
     methods: {
+        openPaymentModal() {
+            if (this.sale.pix_payload) {
+                let expDate = new Date(this.sale.pix_expiration_date);
+                if (expDate > new Date()) {
+                    this.pixData = {
+                        payload: this.sale.pix_payload
+                    };
+                    this.iniciarPollingDePagamento();
+                } else {
+                    this.pixData = null;
+                    this.$myFunctions.showFeedbackModal(this, "Aviso", "O PIX gerado anteriormente expirou. Por favor, gere um novo.", "warning");
+                }
+            } else {
+                this.pixData = null;
+            }
+            this.showPaymentModal = true;
+        },
         handleDeletePayment: function (payment) {
             console.log("Estornar pagamento: ", payment)
         },
         retornaMetodo: function (metodo) {
             switch (metodo) {
+                case "pix_asaas":
+                    return "Pix Asaas";
                 case "pix":
-                    return "Pix";
+                    return "Pix Manual";
                 case "cartao_debito":
                     return "Cartão de Débito";
                 case "cartao_credito":
@@ -240,21 +301,102 @@ export default {
         },
         insertPayment: function () {
             let self = this;
-            let payment = {
-                sale_id: this.sale.id,
-                amount: this.$myFunctions.returnFloatNumber($("#amount").val()),
-                payment_type: this.paymentType,
-                customer_id: this.sale.customer_id
+            let amountValue = this.$myFunctions.returnFloatNumber($("#amount").val());
+
+            if (this.paymentType === 'pix_asaas' && amountValue < 5) {
+                self.$myFunctions.showFeedbackModal(self, "Atenção", "O valor mínimo estipulado pelo Banco Central para gerar um QRCode Pix via API é de R$ 5,00.", "warning");
+                return;
             }
 
-            self.$base.api.post("/sales/insert_payment", payment).then(() => {
-                self.$myFunctions.getCompany(self);
-                self.sale.payments.push(payment);
-                self.showPaymentModal = false;
-                self.$myFunctions.showFeedbackModal(self, "Sucesso", "Pagamento registrado com sucesso.", "success");
+            let payment = {
+                sale_id: this.sale.id,
+                amount: amountValue,
+                payment_type: this.paymentType,
+                customer_id: this.sale.customer_id
+            };
+
+            self.$base.api.post("/sales/insert_payment", payment).then((response) => {
+                if (response.data && response.data.pix) {
+                    self.pixData = response.data.pix;
+                    self.sale.pix_payload = response.data.pix.payload;
+                    self.sale.pix_expiration_date = response.data.pix.expirationDate;
+
+                    self.iniciarPollingDePagamento();
+
+                } else {
+                    if (!self.sale.payments) {
+                        self.sale.payments = [];
+                    }
+
+                    self.sale.payments.push({
+                        amount: amountValue,
+                        payment_type: self.paymentType
+                    });
+
+                    self.paymentType = "";
+                    $("#amount").val("");
+                    self.showPaymentModal = false;
+                    self.$myFunctions.showFeedbackModal(self, "Sucesso", "Pagamento registrado com sucesso!", "success");
+                }
             }).catch((error) => {
-                self.$myFunctions.showFeedbackModal(self, "Erro", error.response?.data || "Ocorreu um erro ao registrar pagamento.", "error");
+                self.$myFunctions.showFeedbackModal(self, "Erro", "Erro ao processar o pagamento.", "error");
             });
+        },
+        iniciarPollingDePagamento() {
+            let self = this;
+
+            if (self.pollingInterval) {
+                clearInterval(self.pollingInterval);
+            }
+
+            self.pollingInterval = setInterval(() => {
+
+                self.$base.api.get(`/sales/${self.sale.id}`).then((response) => {
+                    let vendaAtualizada = response.data;
+
+                    self.sale.payments = vendaAtualizada.payments || [];
+
+                    let pixConfirmado = self.sale.payments.find(p => p.payment_type === 'pix_asaas');
+
+                    if (pixConfirmado) {
+                        clearInterval(self.pollingInterval);
+
+                        self.pixData = null;
+                        self.sale.pix_payload = null;
+                        self.sale.pix_expiration_date = null;
+                        self.paymentType = "";
+
+                        self.showPaymentModal = false;
+
+                        self.$emit("savedContent");
+
+                        self.$myFunctions.showFeedbackModal(self, "Sucesso!", "Pagamento via PIX recebido e confirmado na hora!", "success");
+                    }
+                }).catch(() => {
+                });
+
+            }, 5000);
+        },
+        copyPix: function () {
+            navigator.clipboard.writeText(this.pixData.payload);
+            this.$myFunctions.showFeedbackModal(this, "Sucesso", "Código PIX copiado!", "success");
+        },
+        cancelarPix: function () {
+            let self = this;
+            clearInterval(self.pollingInterval);
+
+            if (self.sale.id) {
+                self.$base.api.post("/sales/cancel_pix", { sale_id: self.sale.id }).then(() => {
+                    self.pixData = null;
+                    self.sale.pix_payload = null;
+                    self.sale.pix_expiration_date = null;
+                    self.paymentType = "";
+                    self.showPaymentModal = false;
+                });
+            } else {
+                self.pixData = null;
+                self.showPaymentModal = false;
+            }
         },
         saveSale: function (event) {
             let self = this;

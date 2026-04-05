@@ -265,7 +265,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   const sanitizeHtml = (str) => {
-    if (!str || str.trim() == "") return "";
+    if (!str || (typeof str === "string" && str.trim() === "")) return "";
 
     const allowedTags = ["b", "i", "p", "br"];
     const regex = new RegExp(`<\/?(?!${allowedTags.join("|")})[^>]*>`, "gi");

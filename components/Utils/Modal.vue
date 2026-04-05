@@ -95,7 +95,7 @@ export default {
 .modal-wrapper {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 2;
@@ -112,7 +112,7 @@ export default {
 .show {
     & .modal-container {
         overflow: hidden;
-        transform: translateY(0);
+        transform: translateY(0) translateX(22%);
         opacity: 1;
     }
 
@@ -123,7 +123,7 @@ export default {
 
 .modal-container {
     transition: transform 0.4s, opacity 0.4s;
-    transform: translateY(-20px);
+    transform: translateY(-20px) translateX(22%);
     opacity: 0;
     z-index: 4;
     width: 95vw;
@@ -159,10 +159,22 @@ export default {
     }
 }
 
+@media (max-width: 1029px) {
+    .modal-container {
+        transform: translateY(100vh) translateX(0);
+    }
+
+    .show {
+        & .modal-container {
+            transform: translateY(0) translateX(0);
+        }
+    }
+}
+
 @media (max-width: 480px) {
     .modal-container {
         opacity: 1 !important;
-        transform: translateY(100vh);
+        transform: translateY(100vh) translateX(0);
         width: 100vw;
         height: 100%;
         max-height: 100%;
